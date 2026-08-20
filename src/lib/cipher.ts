@@ -140,7 +140,7 @@ export const CIPHER_PLATES: CipherPlateSpec[] = [
     word: "Question",
     display: "QUESTION",
     face: "reverseReduction",
-    note: "Adams gave the culture an Answer. The cipher returns the Question.",
+    note: "Adams gave the culture an Answer. Consciousness is how a better Question arrives.",
   },
   {
     word: "Don’t Panic",

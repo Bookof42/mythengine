@@ -1,12 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageTitle } from "@/lib/seo";
 import { MYTHS, mythArt } from "@/lib/myths";
-import { NightSky } from "@/components/night-sky";
 import { WithApuleius } from "@/components/with-apuleius";
 import { useMemo, useState } from "react";
 import type { Myth, Tradition } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/library/")({ component: LibraryGrid });
+export const Route = createFileRoute("/library/")({
+  component: LibraryGrid,
+  head: () => ({
+    meta: [
+      { title: pageTitle("Library") },
+      {
+        name: "description",
+        content:
+          "Forty-two old plots still happening. Read them without flying. Psyche is the hinge. The rest are mirrors.",
+      },
+    ],
+  }),
+});
 
 function LibraryGrid() {
   const [q, setQ] = useState("");
@@ -35,32 +47,28 @@ function LibraryGrid() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/35 to-transparent" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-bg to-transparent" />
-        <NightSky />
         <div className="relative z-10 mx-auto flex min-h-[70dvh] max-w-6xl flex-col justify-end px-5 pb-12 pt-24 sm:min-h-screen sm:px-8 sm:pb-16">
-          <p className="text-sm tracking-[0.42em] text-gold uppercase">Archive</p>
-          <h1 className="display mt-4 w-full text-[clamp(2rem,10vw,6rem)] leading-[1.05] text-fg">
+          <p className="text-base tracking-[0.32em] text-gold uppercase sm:text-sm sm:tracking-[0.42em]">Archive</p>
+          <h1 className="display mt-4 w-full text-[clamp(2.4rem,12vw,6rem)] leading-[1.05] text-fg">
             The myth library
           </h1>
-          <p className="font-garamond mt-5 w-full text-base text-fg/90 sm:mt-6 sm:text-2xl lg:text-3xl">
+          <p className="font-garamond mt-5 w-full text-xl leading-snug text-fg/90 sm:mt-6 sm:text-2xl lg:text-3xl">
             Myth is not an old story about somebody else. It is the plot you are
             already inside. You may read these rooms without flying. You may fly
             and never open this door. Either way you have already left home.
           </p>
-          <p className="font-garamond mt-4 w-full text-base text-muted sm:mt-5 sm:text-2xl lg:text-3xl">
+          <p className="font-garamond mt-4 w-full text-xl leading-snug text-muted sm:mt-5 sm:text-2xl lg:text-3xl">
             These are not types. They are images. Do not take a number and go
             home improved. Stand in front of one until it looks back.
           </p>
-          <p className="display mt-6 w-full text-[clamp(1.35rem,6.5vw,3.75rem)] text-gold sm:mt-8">
+          <p className="display mt-6 w-full text-[clamp(1.6rem,7vw,3.75rem)] text-gold sm:mt-8">
             Forty-two, because the Answer arrived first.
           </p>
-          <p className="font-garamond mt-3 w-full text-base text-fg/90 sm:mt-4 sm:text-2xl">
+          <p className="font-garamond mt-3 w-full text-xl leading-snug text-fg/90 sm:mt-4 sm:text-2xl">
             The Question is still outstanding. Don’t Panic. The towel is in the
             Codex. The mice have not been consulted. Psyche is the hinge. The rest
             are mirrors, and one of them is you, which is awkward, and also the
             point.
-          </p>
-          <p className="font-garamond mt-6 w-full text-lg text-muted sm:text-xl">
-            Public plots. Not a church. Not a conversion. A shape a life can wear.
           </p>
         </div>
       </section>
@@ -74,14 +82,14 @@ function LibraryGrid() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search by name or image"
-          className="min-h-11 w-full border-0 border-b border-line bg-transparent px-0 text-base text-fg placeholder:text-faint focus:border-gold focus:outline-none"
+          className="min-h-12 w-full border-0 border-b border-line bg-transparent px-0 text-xl text-fg placeholder:text-faint focus:border-gold focus:outline-none"
         />
         <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2">
           <button
             type="button"
             onClick={() => setTradition("all")}
             className={cn(
-              "min-h-11 text-sm tracking-wide",
+              "min-h-11 text-base tracking-wide",
               tradition === "all" ? "text-gold" : "text-muted hover:text-fg",
             )}
           >
@@ -93,7 +101,7 @@ function LibraryGrid() {
               type="button"
               onClick={() => setTradition(t)}
               className={cn(
-                "min-h-11 text-sm tracking-wide",
+                "min-h-11 text-base tracking-wide",
                 tradition === t ? "text-gold" : "text-muted hover:text-fg",
               )}
             >
@@ -101,7 +109,7 @@ function LibraryGrid() {
             </button>
           ))}
         </div>
-        <p className="mt-4 text-xs tracking-[0.2em] text-faint uppercase">
+        <p className="mt-4 text-sm tracking-[0.2em] text-faint">
           {list.length} of 42
         </p>
       </div>
@@ -131,11 +139,11 @@ function LibraryGrid() {
       )}
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
-        <p className="text-sm tracking-[0.28em] text-gold uppercase">The shadow</p>
-        <h2 className="display mt-4 w-full text-[clamp(1.6rem,8vw,4.5rem)] text-fg">
+        <p className="text-base tracking-[0.22em] text-gold">The shadow</p>
+        <h2 className="display mt-4 w-full text-[clamp(2rem,9vw,4.5rem)] text-fg">
           Not the villain. The figure the tale will not leave out.
         </h2>
-        <p className="font-garamond mt-6 w-full text-base text-fg/90 sm:mt-8 sm:text-2xl lg:text-3xl">
+        <p className="font-garamond mt-6 w-full text-xl leading-snug text-fg/90 sm:mt-8 sm:text-2xl lg:text-3xl">
           Jung called it the shadow: what the persona will not claim. von Franz
           found it in the rejected sibling, the animal, the witch who is also the
           helper. Hillman said do not improve it. Personify it. Let it have an
@@ -180,24 +188,28 @@ function MythDoor({
       <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/25 to-transparent" />
       <span className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
         {featured ? (
-          <span className="block text-[11px] tracking-[0.28em] text-gold uppercase">
+          <span className="block text-sm tracking-[0.22em] text-gold">
             The hinge
           </span>
         ) : null}
         {closing ? (
-          <span className="block text-[11px] tracking-[0.28em] text-gold uppercase">
+          <span className="block text-sm tracking-[0.22em] text-gold">
             The last night
           </span>
         ) : null}
-        <span className="display mt-1 block text-3xl text-fg sm:text-5xl lg:text-6xl">{myth.name}</span>
-        <span className="mt-1 block text-xs tracking-[0.18em] text-teal uppercase">
+        <span className="display mt-1 block text-4xl leading-tight text-fg sm:text-5xl lg:text-6xl">{myth.name}</span>
+        <span className="mt-1 block text-sm tracking-[0.14em] text-teal">
           {myth.origin}
         </span>
         {wide ? (
-          <span className="font-garamond mt-4 block max-w-3xl text-lg text-fg/90 sm:text-xl">
+          <span className="font-garamond mt-4 block max-w-3xl text-xl text-fg/90 sm:text-2xl">
             <WithApuleius text={myth.short} />
           </span>
-        ) : null}
+        ) : (
+          <span className="font-garamond mt-3 block text-lg text-fg/90 sm:text-xl">
+            <WithApuleius text={myth.short} />
+          </span>
+        )}
       </span>
     </Link>
   );

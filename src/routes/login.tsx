@@ -14,7 +14,7 @@ function Login() {
       />
       <div className="absolute inset-0 bg-bg/70" />
       <div className="relative w-full max-w-sm rounded-[var(--radius-xl)] border border-line bg-bg/80 p-7">
-        <p className="display text-sm tracking-[0.3em] text-gold">mythengine</p>
+        <p className="display text-sm tracking-[0.3em] text-gold">Mythengine</p>
         <h1 className="display mt-3 text-3xl">Keep a journal</h1>
         <p className="mt-3 text-sm text-muted">
           Play works without an account. Sign in only if you want your lived myths

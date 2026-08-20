@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageTitle } from "@/lib/seo";
 import {
   ARCHIVE_DOORS,
   BOOK,
@@ -9,7 +10,19 @@ import {
   RATHER,
 } from "@/lib/family";
 
-export const Route = createFileRoute("/bridge")({ component: BridgePage });
+export const Route = createFileRoute("/bridge")({
+  component: BridgePage,
+  head: () => ({
+    meta: [
+      { title: pageTitle("Family") },
+      {
+        name: "description",
+        content:
+          "Mythengine belongs to The Book of 42 family. Consciousness, the next question, love, the unobserved test. A room that asks whether the door was a level or a myth.",
+      },
+    ],
+  }),
+});
 
 const COORDINATES = [
   { n: "01", title: "Consciousness", href: MEANING },
@@ -43,11 +56,11 @@ export function BridgePage() {
             A bridge between the rooms of the same house.
           </h1>
           <p className="font-garamond mt-8 w-full text-xl leading-snug text-fg/90 sm:text-3xl lg:text-4xl">
-            mythengine belongs to the family of{" "}
+            Mythengine belongs to the family of{" "}
             <a href={BOOK} target="_blank" rel="noreferrer" className="text-gold hover:text-teal">
               The Book of 42
             </a>
-            . The Book is not this game, and not a bible. It is a living archive:
+            . The Book is not this game. It is a living archive:
             a love letter, an aperture, a looking where psyche meets matter.{" "}
             <a href={MEANING} target="_blank" rel="noreferrer" className="text-gold hover:text-teal">
               The Meaning of Life
@@ -89,12 +102,13 @@ export function BridgePage() {
           Aperture, not oracle. Chronicle, not creed.
         </h2>
         <p className="font-garamond mt-8 w-full text-xl text-fg/90 sm:text-2xl lg:text-3xl">
-          Its mythic role is mythopoesis. Experience first. Recognition afterward.
-          Then numbers, stars, dates, old fragments of a life. Forty-two among
-          them. The Book does not hand you a cosmology. It keeps a living archive
-          of pattern and meaning: Love and synchronicity, where psyche meets
-          matter, where number meets myth, where sacred text meets physics, and
-          what happens when those threads hold, or do not.
+          Mythopoesis: making a life speak in images, without turning the images
+          into a creed. Experience first. Recognition afterward. Then numbers,
+          stars, dates, old fragments of a life. Forty-two among them. The Book
+          does not hand you a cosmology. It keeps a living archive of pattern and
+          meaning: Love and synchronicity, where psyche meets matter, where
+          number meets myth, where sacred text meets physics, and what happens
+          when those threads hold, or do not.
         </p>
         <p className="font-garamond mt-6 w-full text-xl text-muted sm:text-2xl lg:text-3xl">
           At heart it is a love letter: to 42, to the cosmos, to Love itself, and
@@ -104,9 +118,18 @@ export function BridgePage() {
         </p>
         <p className="font-garamond mt-6 w-full text-xl text-fg/90 sm:text-2xl">
           This engine is a room in that house. The moth makes the looking
-          playable. The Book keeps the longer night. Neither is a superstition.
-          Both are practice for a consciousness that can love with the light on,
-          and still go to the stars.
+          playable. The Book keeps the longer night. Both are practices for a
+          consciousness that can love with the light on, and still go to the
+          stars. In the Book that last motion already has a name:{" "}
+          <a
+            href={`${BOOK}/flows`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-gold hover:text-teal"
+          >
+            Seven Flows
+          </a>
+          , from rigorous looking through to Love.
         </p>
         <a
           href={BOOK}
@@ -136,14 +159,18 @@ export function BridgePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 sm:px-8">
-        <p className="text-[11px] tracking-[0.28em] text-gold uppercase">
-          Six degrees, one crossing
+        <p className="text-sm tracking-[0.22em] text-gold">
+          Six rooms, one crossing
         </p>
-        <h2 className="display mt-3 max-w-3xl text-3xl sm:text-5xl">
+        <h2 className="display mt-3 w-full text-[clamp(1.8rem,7vw,4.5rem)] leading-[1.06] text-fg">
           Identity. Soul. Love. Recognition. Witness. Return.
         </h2>
-        <p className="mt-4 max-w-2xl text-muted">
-          Walked in six rooms of the Book, and in every walk of this engine.
+        <p className="copy mt-6 w-full text-fg/90">
+          Not a chart. Six figures a life already walks. Campbell mapped the
+          shape: leave, suffer, see, come back changed. Hillman kept the image
+          and refused the cure. Coelho hid the next step in the ordinary. Elon
+          asked if he was inside a game. The Book has a room for each. This
+          engine walks them as moth and as Psyche, then hands you one question.
         </p>
         <ol className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {DEGREES.map((d) => (
@@ -152,13 +179,13 @@ export function BridgePage() {
                 href={d.href}
                 target="_blank"
                 rel="noreferrer"
-                className="block h-full rounded-[var(--radius-lg)] border border-line bg-surface p-5 transition-colors hover:border-teal"
+                className="block h-full border-t border-line bg-transparent py-5 transition-colors hover:border-gold"
               >
-                <p className="text-[11px] tracking-[0.22em] text-teal">
+                <p className="text-sm tracking-[0.18em] text-teal">
                   {d.n} · {d.mark}
                 </p>
-                <h3 className="display mt-2 text-2xl text-fg">{d.name}</h3>
-                <p className="mt-2 text-sm text-muted">{d.body}</p>
+                <h3 className="display mt-2 text-3xl text-fg">{d.name}</h3>
+                <p className="copy mt-3 text-muted">{d.body}</p>
               </a>
             </li>
           ))}

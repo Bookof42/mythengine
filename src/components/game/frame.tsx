@@ -1,36 +1,35 @@
+import { useGame } from "@/lib/game-store";
 import { cn } from "@/lib/utils";
+import { ChevronLeft } from "lucide-react";
 
 export function ArtFrame({
   src,
   children,
   align = "end",
+  fit = "cover",
 }: {
   src: string;
   children: React.ReactNode;
   align?: "end" | "center";
   dim?: string;
+  fit?: "cover" | "contain";
 }) {
+  const stepBack = useGame((s) => s.stepBack);
   return (
-    <main
-      className="fixed inset-0 z-40 overflow-y-auto overflow-x-hidden bg-bg"
-      style={{
-        backgroundImage: `url("${src}")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <img
-        src={src}
-        alt=""
-        className="pointer-events-none absolute inset-0 h-full min-h-full w-full object-cover"
-      />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-bg via-bg/50 to-transparent" />
-      <div
-        className={cn(
-          "relative z-10 mx-auto flex min-h-dvh w-full max-w-6xl flex-col px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(3.5rem,env(safe-area-inset-top))] sm:px-8 sm:pt-20",
-          align === "center" ? "justify-center" : "justify-end",
-        )}
+    <main className={cn("walk-frame", fit === "contain" && "walk-contain")}>
+      <div className="walk-art">
+        <img src={src} alt="" />
+      </div>
+      <button
+        type="button"
+        onClick={() => stepBack()}
+        className="absolute left-2 top-[max(0.5rem,env(safe-area-inset-top))] z-30 flex h-11 items-center gap-0.5 pr-2 text-gold hover:text-teal sm:left-5"
+        aria-label="Back"
       >
+        <ChevronLeft className="h-5 w-5" />
+        <span className="display text-sm tracking-[0.12em]">Back</span>
+      </button>
+      <div className={cn("walk-copy", align === "center" && "walk-copy-center")}>
         {children}
       </div>
     </main>
@@ -45,10 +44,7 @@ export function PathDots({
   index: number;
 }) {
   return (
-    <div
-      className="mb-6 flex items-center justify-center gap-2"
-      aria-hidden
-    >
+    <div className="mb-6 flex items-center justify-center gap-2" aria-hidden>
       {Array.from({ length: total }).map((_, i) => (
         <span
           key={i}
@@ -66,7 +62,13 @@ export function PathDots({
   );
 }
 
-export function Panel({ children, className }: { children: React.ReactNode; className?: string }) {
+export function Panel({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <div
       className={cn(

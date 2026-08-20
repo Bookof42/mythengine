@@ -73,3 +73,20 @@ export function emptyHeld(): Record<SignKind, boolean> {
 export function carried(held: Record<SignKind, boolean>): SignKind[] {
   return SIGNS.filter((k) => held[k]);
 }
+
+export function carriedSentence(
+  held: Record<SignKind, boolean>,
+  mythName?: string,
+) {
+  const names = carried(held).map((k) => SIGN[k].title.toLowerCase());
+  let took = "You carried the looking.";
+  if (names.length === 1) took = `You carried the ${names[0]}.`;
+  else if (names.length === 2) {
+    took = `You carried the ${names[0]} and the ${names[1]}.`;
+  } else if (names.length > 2) {
+    const last = names[names.length - 1];
+    took = `You carried the ${names.slice(0, -1).join(", ")}, and the ${last}.`;
+  }
+  if (!mythName) return took;
+  return `${took} The weather is ${mythName}.`;
+}

@@ -51,7 +51,7 @@ export async function drawShareCard(myth: Myth): Promise<Blob> {
 
   ctx.fillStyle = "#E4D0A0";
   ctx.font = "500 22px Georgia, serif";
-  ctx.fillText("mythengine  ·  42", 540, 1288);
+  ctx.fillText("Mythengine  ·  42", 540, 1288);
 
   return await new Promise((resolve, reject) => {
     canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("blob"))), "image/png");

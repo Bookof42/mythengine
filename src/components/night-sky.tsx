@@ -32,9 +32,9 @@ export function NightSky() {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const far = seed(70, 0.12, 1.1);
-    const mid = seed(36, 0.38, 1.6);
-    const near = seed(14, 0.72, 2.2);
+    const far = seed(22, 0.1, 0.7);
+    const mid = seed(10, 0.32, 0.95);
+    const near = seed(4, 0.62, 1.2);
     const all = [...far, ...mid, ...near];
     let px = 0;
     let py = 0;
@@ -74,22 +74,14 @@ export function NightSky() {
         const oy = py * 32 * s.z;
         const x = s.x * w + ox;
         const y = s.y * h + oy;
-        const pulse = 0.45 + 0.55 * (0.5 + 0.5 * Math.sin(t * 1.4 + s.tw));
-        const a = (0.35 + s.z * 0.55) * pulse;
+        const pulse = 0.7 + 0.3 * (0.5 + 0.5 * Math.sin(t * 0.8 + s.tw));
+        const a = (0.12 + s.z * 0.22) * pulse;
         ctx.beginPath();
         ctx.fillStyle = s.gold
           ? `rgba(228,208,160,${a})`
-          : `rgba(142,196,192,${a * 0.85})`;
+          : `rgba(142,196,192,${a * 0.7})`;
         ctx.arc(x, y, s.r, 0, Math.PI * 2);
         ctx.fill();
-        if (s.z > 0.55) {
-          ctx.beginPath();
-          ctx.fillStyle = s.gold
-            ? `rgba(228,208,160,${a * 0.22})`
-            : `rgba(142,196,192,${a * 0.18})`;
-          ctx.arc(x, y, s.r * 3.2, 0, Math.PI * 2);
-          ctx.fill();
-        }
       }
       raf = requestAnimationFrame(loop);
     };

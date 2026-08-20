@@ -168,8 +168,8 @@ export const OMENS: Omen[] = [
   {
     id: "bridge-night",
     title: "One appointed crossing",
-    body: "Two callings can be real. Fuse them and both go dark. The river of stars is not a punishment. It is how the loom and the herd keep their names. Magpies make a bridge only on the night you keep.",
-    prompt: "Where are you demanding a life with no river in it?",
+    body: "Two callings can be real. They do not have to become one life. A crossing is enough.",
+    prompt: "Which two things have you been trying to fuse that need their own names?",
     sigil: "bridge",
     moon: "full",
     weights: { eros: 2, craft: 1, threshold: 1 },

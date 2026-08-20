@@ -2,7 +2,6 @@ import { BOOK, FIELD69, MEANING, RATHER } from "./family";
 
 export const PLAY_LINKS = [
   { to: "/library", label: "Library", line: "Forty-two mirrors." },
-  { to: "/omen", label: "Omen", line: "A daily aperture." },
 ] as const;
 
 export const HOUSE_LINKS = [
@@ -14,7 +13,6 @@ export const HEADER_LINKS = [
   { to: "/library", label: "Library" },
   { to: "/codex", label: "Codex" },
   { to: "/bridge", label: "Bridge" },
-  { to: "/omen", label: "Omen" },
 ] as const;
 
 export const FAMILY_LINKS = [

@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ShareLooking } from "@/components/share-looking";
+import { Fold } from "@/components/fold";
 import { WithApuleius } from "@/components/with-apuleius";
 import { QUESTION_VOICES } from "@/lib/myth-questions";
 import { getMyth, mythArt } from "@/lib/myths";
@@ -41,10 +42,10 @@ function MythPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/25 to-transparent" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-bg to-transparent" />
         <div className="relative z-10 mx-auto flex min-h-[62vh] max-w-6xl flex-col justify-end px-5 pb-12 pt-24 sm:min-h-[78vh] sm:px-8 sm:pb-16">
-          <Link to="/library" className="text-sm text-teal hover:text-gold">
+          <Link to="/library" className="text-base text-teal hover:text-gold">
             Library
           </Link>
-          <p className="mt-6 text-[11px] tracking-[0.28em] text-teal uppercase">
+          <p className="mt-6 text-sm tracking-[0.22em] text-teal">
             {myth.origin}
           </p>
           <h1 className="display mt-3 max-w-5xl text-5xl leading-[1.02] text-fg sm:text-7xl lg:text-8xl">
@@ -54,10 +55,10 @@ function MythPage() {
       </section>
 
       <article className="mx-auto max-w-3xl px-5 pt-10 sm:px-8">
-        <p className="font-garamond text-2xl text-fg sm:text-3xl">
+        <p className="font-garamond text-2xl leading-snug text-fg sm:text-3xl">
           <WithApuleius text={myth.short} />
         </p>
-        <div className="font-garamond mt-10 space-y-6 text-lg leading-relaxed text-fg/92 sm:text-xl">
+        <div className="font-garamond mt-10 space-y-6 text-xl leading-relaxed text-fg/92 sm:text-2xl">
           {myth.full.split("\n\n").map((para) => (
             <p key={para.slice(0, 48)}>
               <WithApuleius text={para} />
@@ -77,43 +78,44 @@ function MythPage() {
           />
         </div>
 
-        <details className="mt-16 border-t border-line pt-6">
-          <summary className="min-h-11 cursor-pointer list-none text-[11px] tracking-[0.28em] text-gold uppercase">
-            Inspect
-          </summary>
-          <div className="font-garamond mt-6 space-y-6 text-base text-muted sm:text-lg">
+        <Fold
+          label="Inspect"
+          className="mt-16"
+          summaryClassName="display text-xl"
+        >
+          <div className="font-garamond mt-6 space-y-6 text-xl text-muted sm:text-2xl">
             <p>{myth.psychology}</p>
-            <p className="text-sm tracking-[0.22em] text-gold uppercase">
+            <p className="display text-lg tracking-[0.14em] text-gold">
               The shadow
             </p>
             <p className="text-fg/90">{myth.shadow}</p>
-            <p className="text-sm tracking-[0.22em] text-gold uppercase">
+            <p className="display text-lg tracking-[0.14em] text-gold">
               Four lookings
             </p>
             <ul className="space-y-5">
               {QUESTION_VOICES.map(([key, label]) => (
                 <li key={key}>
-                  <p className="text-xs tracking-[0.22em] text-teal uppercase">{label}</p>
+                  <p className="display text-base text-teal">{label}</p>
                   <p className="mt-1 text-fg/90">{myth.questions[key]}</p>
                 </li>
               ))}
             </ul>
           </div>
-        </details>
+        </Fold>
 
         {myth.id === "psyche" ? (
           <section className="mt-16">
-            <p className="text-[11px] tracking-[0.28em] text-gold uppercase">
+            <p className="display text-lg tracking-[0.14em] text-gold">
               Play the structure
             </p>
-            <p className="font-garamond mt-4 text-lg text-fg/90">
+            <p className="font-garamond mt-4 text-xl text-fg/90">
               A short night: lamp, loss, return. The long night: eight stations.
               No explanation first.
             </p>
             <div className="mt-6 flex flex-wrap gap-5">
               <button
                 type="button"
-                className="min-h-11 text-sm tracking-wide text-gold hover:text-teal"
+                className="min-h-12 text-lg tracking-wide text-gold hover:text-teal"
                 onClick={() => {
                   beginPsyche("short");
                   void navigate({ to: "/" });
@@ -123,7 +125,7 @@ function MythPage() {
               </button>
               <button
                 type="button"
-                className="min-h-11 text-sm tracking-wide text-muted hover:text-gold"
+                className="min-h-12 text-lg tracking-wide text-muted hover:text-gold"
                 onClick={() => {
                   beginPsyche("long");
                   void navigate({ to: "/" });
@@ -137,13 +139,13 @@ function MythPage() {
 
         {plot ? (
           <section className="mt-16">
-            <p className="text-[11px] tracking-[0.28em] text-gold uppercase">
+            <p className="display text-lg tracking-[0.14em] text-gold">
               Enter the plot
             </p>
-            <p className="font-garamond mt-4 text-lg text-fg/90">{plot.night}</p>
+            <p className="font-garamond mt-4 text-xl text-fg/90">{plot.night}</p>
             <button
               type="button"
-              className="mt-6 min-h-11 text-sm tracking-wide text-gold hover:text-teal"
+              className="mt-6 min-h-12 text-lg tracking-wide text-gold hover:text-teal"
               onClick={() => {
                 beginWalk(plot.id);
                 void navigate({ to: "/" });

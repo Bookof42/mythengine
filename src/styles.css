@@ -6,7 +6,7 @@
   --color-fg: #ede6d6;
   --color-muted: #c5d0cd;
   --color-faint: #8b9694;
-  --color-teal: #8ec4c0;
+  --color-teal: #8eaaa4;
   --color-gold: #e4d0a0;
   --color-surface: #0c0e0e;
   --color-raised: #121616;
@@ -34,24 +34,28 @@
     -moz-osx-font-smoothing: grayscale;
     background: var(--color-bg);
     color: var(--color-fg);
-    font-size: 16px;
-    overflow-x: hidden;
+    font-size: calc(18px * var(--text-scale, 1));
+    overflow-x: clip;
+    overflow-y: auto;
   }
 
   @media (min-width: 640px) {
     html {
-      font-size: 18px;
+      font-size: calc(20px * var(--text-scale, 1));
     }
   }
 
   html,
-  body,
-  #app {
-    min-height: 100dvh;
+  body {
+    min-height: 100%;
     max-width: 100%;
-    overflow-x: hidden;
     background: var(--color-bg);
-    overscroll-behavior: none;
+  }
+
+  body {
+    min-height: 100dvh;
+    overflow-x: clip;
+    overflow-y: visible;
   }
 
   img {
@@ -123,6 +127,128 @@
     font-family: var(--font-serif);
   }
 
+  .copy {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 4.4vw, 1.65rem);
+    line-height: 1.45;
+  }
+
+  @media (min-width: 640px) {
+    .copy {
+      font-size: clamp(1.5rem, 2.2vw, 2rem);
+    }
+  }
+
+  .walk-frame {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--color-bg);
+  }
+  .walk-art {
+    position: relative;
+    height: 36dvh;
+    width: 100%;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: var(--color-bg);
+  }
+  .walk-art img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+    background: transparent;
+  }
+  .walk-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklab, var(--color-bg) 42%, transparent);
+  }
+  .walk-copy {
+    position: relative;
+    z-index: 10;
+    flex: 1 1 auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: max(0.75rem, env(safe-area-inset-top)) 1rem
+      max(1.25rem, env(safe-area-inset-bottom));
+    background: var(--color-bg);
+  }
+  .walk-copy-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .walk-contain .walk-art {
+    height: 48dvh;
+  }
+  .walk-contain .walk-art img {
+    object-fit: contain;
+    object-position: center;
+  }
+  .walk-contain .walk-art::after {
+    background: color-mix(in oklab, var(--color-bg) 18%, transparent);
+  }
+
+  @media (orientation: landscape) and (max-height: 640px) {
+    .walk-frame {
+      flex-direction: row;
+    }
+    .walk-art {
+      height: 100%;
+      width: min(42vw, 22rem);
+    }
+    .walk-copy {
+      padding-top: max(0.6rem, env(safe-area-inset-top));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .walk-frame {
+      display: block;
+    }
+    .walk-art {
+      position: absolute;
+      inset: 0;
+      height: auto;
+      width: auto;
+    }
+    .walk-copy {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 5rem 2rem max(1.5rem, env(safe-area-inset-bottom));
+      background: linear-gradient(
+        to top,
+        var(--color-bg) 0%,
+        color-mix(in oklab, var(--color-bg) 88%, transparent) 38%,
+        color-mix(in oklab, var(--color-bg) 55%, transparent) 62%,
+        color-mix(in oklab, var(--color-bg) 22%, transparent) 100%
+      );
+    }
+    .walk-copy-center {
+      justify-content: center;
+      background: color-mix(in oklab, var(--color-bg) 55%, transparent);
+    }
+    .walk-contain .walk-art img {
+      object-fit: contain;
+    }
+    .walk-contain .walk-art::after {
+      background: transparent;
+    }
+  }
+
   .hairline {
     height: 1px;
     background: var(--color-line);
@@ -181,11 +307,20 @@
   }
 
   .hero-stage {
-    background-color: #12181c;
-    background-image: url("/art/hero.jpg");
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-color: #050506;
+    background-image: none;
+  }
+
+  .hero-shot,
+  .hero-shot img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
   }
 
   .hero-stage::before {
@@ -207,6 +342,14 @@
     animation: ken-burns 32s ease-in-out infinite alternate;
     will-change: transform;
     object-position: center center;
+  }
+
+  @media (max-width: 1023px) {
+    .hero-ken {
+      transform: none;
+      animation: none;
+      will-change: auto;
+    }
   }
 
   .hero-floor {

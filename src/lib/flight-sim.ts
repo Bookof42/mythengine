@@ -168,7 +168,7 @@ export function createFlight(opts?: {
     records: [],
     done: false,
     doneT: 0,
-    hint: kept ? "You kept one. The last ellipse is still in the night." : "Hold to burn.",
+    hint: "Hold. Take the gold. Come back through the gap.",
     ghost: opts?.ghost ?? [],
   };
 }
@@ -221,24 +221,19 @@ function predictPath(sim: FlightSim) {
 function speak(sim: FlightSim, event: string) {
   const w = weatherFor(event);
   if (!w) return;
-  sim.weather = w;
-  sim.hint = w.name;
-  sim.giftT = 4.4;
   mark(sim, w.cardId, "weather");
 }
 
 function stateHint(sim: FlightSim) {
-  if (sim.done) return "You returned. The myth names itself.";
-  if (!sim.everThrust) return sim.t < 12 ? "The bright seam in the ring. Hold to burn." : "Hold to burn.";
-  if (carried(sim.held).length === 0 && !sim.entered) return "Take the gold.";
-  if (!sim.entered && !sim.exited && !sim.burned) return "The bright seam in the ring.";
-  if (sim.burned && sim.inWell) return "Don’t Panic. Descent is still a path. The seam is the door.";
-  if (sim.entered && !sim.exited) return "Inside. Return through the seam.";
+  const loot = carried(sim.held).length;
+  if (sim.done) return sim.hint;
+  if (!sim.everThrust) return "Hold. Take the gold. Come back through the gap.";
+  if (loot === 0) return "Take the gold.";
+  if (!sim.entered && !sim.exited) return "The seam is open.";
+  if (sim.burned && sim.inWell) return "Don’t Panic.";
+  if (sim.entered && !sim.exited) return "Return through the seam.";
   if (sim.exited) return "You returned.";
-  if (!sim.bound) return "Unbound. A hyperbola has no home.";
-  if (sim.held.seed && sim.ecc < 0.18) return "Held. The work is ordinary.";
-  if (sim.ecc > 0.55) return "A long ellipse. Periapsis wants the lamp.";
-  return "An ellipse. Burns at periapsis raise apoapsis.";
+  return "";
 }
 
 export function stepFlight(sim: FlightSim, dt: number, input: FlightInput) {
@@ -345,10 +340,14 @@ function physics(sim: FlightSim, dt: number, input: FlightInput) {
     m.x = nx * target;
     m.y = ny * target;
     const vr = m.vx * nx + m.vy * ny;
-    m.vx -= nx * vr * (sim.held.stone ? 1.25 : 1.85);
-    m.vy -= ny * vr * (sim.held.stone ? 1.25 : 1.85);
-    sim.trauma = Math.min(1, sim.trauma + (sim.held.stone ? 0.08 : 0.2));
-    burst(sim, m.x, m.y, false, 7);
+    const first = carried(sim.held).length === 0;
+    m.vx -= nx * vr * (first ? 1.05 : sim.held.stone ? 1.25 : 1.85);
+    m.vy -= ny * vr * (first ? 1.05 : sim.held.stone ? 1.25 : 1.85);
+    sim.trauma = Math.min(first ? 0.12 : 1, sim.trauma + (first ? 0.04 : sim.held.stone ? 0.08 : 0.2));
+    burst(sim, m.x, m.y, true, 8);
+    sim.weather = null;
+    sim.hint = "Don’t Panic.";
+    sim.giftT = 1.8;
   }
 
   const wasInside = sim.inside;
@@ -390,6 +389,22 @@ function physics(sim: FlightSim, dt: number, input: FlightInput) {
   sim.inWell = m.y > 470 || (sim.inWell && m.y > 140);
   if (Math.hypot(m.x - WELL.x, m.y - WELL.y) < WELL.r) {
     sim.inWell = true;
+  }
+
+  if (!sim.bound && el.r > 880) {
+    const r0 = 500;
+    const vc = Math.sqrt(MU / r0);
+    m.x = -r0;
+    m.y = 0;
+    m.vx = 0;
+    m.vy = -vc * 0.97;
+    m.angle = -Math.PI / 2;
+    sim.inWell = false;
+    sim.burned = false;
+    burst(sim, m.x, m.y, true, 16);
+    sim.weather = null;
+    sim.hint = "Don’t Panic.";
+    sim.giftT = 2.2;
   }
   if (sim.inWell) sim.wellTime += dt;
   if (sim.inWell && sim.wellTime > 0.8 && !sim.boxReady && !sim.held.box) {

@@ -5,14 +5,12 @@ class ApertureAudio {
   private master: GainNode | null = null;
   private music: GainNode | null = null;
   private sfx: GainNode | null = null;
-  private comp: DynamicsCompressorNode | null = null;
   private nodes: AudioNode[] = [];
   private wind: GainNode | null = null;
   private lampGain: GainNode | null = null;
-  private wellFilter: BiquadFilterNode | null = null;
   private lastFlap = 0;
   private armed = false;
-  muted = false;
+  muted = true;
   unlocked = false;
   section: Section = "threshold";
 
@@ -28,18 +26,11 @@ class ApertureAudio {
       this.master = this.ctx.createGain();
       this.music = this.ctx.createGain();
       this.sfx = this.ctx.createGain();
-      this.comp = this.ctx.createDynamicsCompressor();
-      this.comp.threshold.value = -18;
-      this.comp.knee.value = 18;
-      this.comp.ratio.value = 3;
-      this.comp.attack.value = 0.01;
-      this.comp.release.value = 0.18;
-      this.music.gain.value = 0.1;
-      this.sfx.gain.value = 0.22;
-      this.master.gain.value = this.muted ? 0 : 0.48;
-      this.sfx.connect(this.comp);
-      this.music.connect(this.comp);
-      this.comp.connect(this.master);
+      this.music.gain.value = 0.16;
+      this.sfx.gain.value = 0.38;
+      this.master.gain.value = this.muted ? 0 : 0.55;
+      this.sfx.connect(this.master);
+      this.music.connect(this.master);
       this.master.connect(this.ctx.destination);
     }
     if (this.ctx.state === "suspended") void this.ctx.resume();
@@ -58,25 +49,16 @@ class ApertureAudio {
   setMuted(muted: boolean) {
     this.muted = muted;
     if (!this.master || !this.ctx) return;
-    this.master.gain.setTargetAtTime(muted ? 0 : 0.48, this.ctx.currentTime, 0.05);
+    this.master.gain.setTargetAtTime(muted ? 0 : 0.55, this.ctx.currentTime, 0.04);
     if (!muted && this.nodes.length === 0) this.setSection(this.section);
   }
 
   setSection(section: Section) {
-    const same = this.section === section && this.nodes.length > 0;
     this.section = section;
     if (!this.ctx || !this.music) return;
-    if (same) return;
-    this.clearAmbient(0.35);
+    this.clearAmbient(0.12);
     if (this.muted || !this.unlocked) return;
-    if (section === "quiet") return;
-    if (section === "play") {
-      this.startFlightBus();
-      return;
-    }
-    this.air();
-    if (section === "reveal") this.pad(196, 0.008);
-    else this.pad(174.61, 0.006);
+    if (section === "play") this.startFlightBus();
   }
 
   cue(
@@ -93,158 +75,75 @@ class ApertureAudio {
   ) {
     if (!this.ctx || !this.sfx || this.muted) return;
     const t = this.ctx.currentTime;
-    if (name === "flip") {
-      this.blip(t, 392, 0.09, 0.04);
-    } else if (name === "step") {
-      this.blip(t, 164, 0.1, 0.04);
-    } else if (name === "choose") {
-      this.blip(t, 220, 0.1, 0.035);
-    } else if (name === "begin") {
-      this.blip(t, 174.61, 0.18, 0.05);
-    } else if (name === "capture" || name === "take") {
-      this.blip(t, 246.94, 0.16, 0.06);
-      this.noise(t, 0.07, 900, 0.03);
-    } else if (name === "gap") {
-      this.blip(t, 130.81, 0.22, 0.05);
-    } else if (name === "omen") {
-      this.blip(t, 196, 0.2, 0.035);
-    } else if (name === "reveal") {
-      this.blip(t, 146.83, 0.28, 0.05);
+    if (name === "flip") this.pluck(t, 784, 0.12, 0.09);
+    else if (name === "step") this.pluck(t, 523.25, 0.1, 0.07);
+    else if (name === "choose") this.pluck(t, 659.25, 0.11, 0.08);
+    else if (name === "begin") {
+      this.pluck(t, 392, 0.16, 0.1);
+      this.pluck(t + 0.08, 587.33, 0.18, 0.08);
+    }
+    else if (name === "capture" || name === "take") {
+      this.pluck(t, 659.25, 0.1, 0.11);
+      this.pluck(t + 0.05, 987.77, 0.14, 0.08);
+    }
+    else if (name === "gap") this.pluck(t, 329.63, 0.2, 0.07);
+    else if (name === "omen") this.pluck(t, 587.33, 0.18, 0.08);
+    else if (name === "reveal") {
+      this.pluck(t, 392, 0.2, 0.09);
+      this.pluck(t + 0.12, 493.88, 0.22, 0.07);
+      this.pluck(t + 0.24, 659.25, 0.28, 0.06);
     }
   }
 
   setFlight(state: { speed: number; lamp: number; well: boolean; flap: boolean }) {
-    if (!this.ctx || this.muted) return;
+    if (!this.ctx || this.muted || !this.wind) return;
     const t = this.ctx.currentTime;
-    if (this.wind) {
-      const air = Math.min(0.07, 0.01 + state.speed / 4200);
-      this.wind.gain.setTargetAtTime(air, t, 0.12);
-    }
-    if (this.lampGain) {
-      const near = Math.min(0.045, 18 / Math.max(40, state.lamp));
-      this.lampGain.gain.setTargetAtTime(near, t, 0.2);
-    }
-    if (this.wellFilter) {
-      this.wellFilter.frequency.setTargetAtTime(state.well ? 280 : 900, t, 0.3);
-    }
-    if (state.flap && t - this.lastFlap > 0.48) {
-      this.lastFlap = t;
-      this.noise(t, 0.06, 480, 0.018);
-    }
+    const air = state.flap ? Math.min(0.035, 0.012 + state.speed / 8000) : 0.0001;
+    this.wind.gain.setTargetAtTime(air, t, state.flap ? 0.06 : 0.04);
   }
 
   private startFlightBus() {
     if (!this.ctx || !this.music) return;
     const ctx = this.ctx;
-    const filter = ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.value = 900;
-    filter.Q.value = 0.7;
-    filter.connect(this.music);
-    this.wellFilter = filter;
-
     const windGain = ctx.createGain();
-    windGain.gain.value = 0.012;
+    windGain.gain.value = 0.0001;
     const src = ctx.createBufferSource();
-    src.buffer = this.pinkBuffer(2);
-    src.loop = true;
-    const wf = ctx.createBiquadFilter();
-    wf.type = "bandpass";
-    wf.frequency.value = 520;
-    wf.Q.value = 0.45;
-    src.connect(wf);
-    wf.connect(windGain);
-    windGain.connect(filter);
-    src.start();
-    this.wind = windGain;
-    this.nodes.push(src, wf, windGain, filter);
-
-    const lg = ctx.createGain();
-    lg.gain.value = 0.01;
-    const o1 = ctx.createOscillator();
-    o1.type = "sine";
-    o1.frequency.value = 82.41;
-    o1.connect(lg);
-    lg.connect(filter);
-    o1.start();
-    this.lampGain = lg;
-    this.nodes.push(o1, lg);
-  }
-
-  private air() {
-    if (!this.ctx || !this.music) return;
-    const ctx = this.ctx;
-    const src = ctx.createBufferSource();
-    src.buffer = this.pinkBuffer(3);
+    src.buffer = this.pinkBuffer(1.2);
     src.loop = true;
     const hp = ctx.createBiquadFilter();
     hp.type = "highpass";
-    hp.frequency.value = 1200;
+    hp.frequency.value = 1400;
     const bp = ctx.createBiquadFilter();
     bp.type = "bandpass";
     bp.frequency.value = 2400;
-    bp.Q.value = 0.6;
-    const g = ctx.createGain();
-    g.gain.value = 0.018;
+    bp.Q.value = 0.9;
     src.connect(hp);
     hp.connect(bp);
-    bp.connect(g);
-    g.connect(this.music);
+    bp.connect(windGain);
+    windGain.connect(this.music);
     src.start();
-    this.nodes.push(src, hp, bp, g);
+    this.wind = windGain;
+    this.nodes.push(src, hp, bp, windGain);
   }
 
-  private pad(freq: number, gain: number) {
-    if (!this.ctx || !this.music) return;
-    const ctx = this.ctx;
-    const g = ctx.createGain();
-    g.gain.value = 0;
-    g.gain.setTargetAtTime(gain, ctx.currentTime, 0.9);
-    const f = ctx.createBiquadFilter();
-    f.type = "lowpass";
-    f.frequency.value = Math.max(1800, freq * 3);
-    f.Q.value = 0.5;
-    const a = ctx.createOscillator();
-    const b = ctx.createOscillator();
-    a.type = "sine";
-    b.type = "sine";
-    a.frequency.value = freq;
-    b.frequency.value = freq * 1.002;
-    const lfo = ctx.createOscillator();
-    const lg = ctx.createGain();
-    lfo.type = "sine";
-    lfo.frequency.value = 0.07;
-    lg.gain.value = gain * 0.12;
-    lfo.connect(lg);
-    lg.connect(g.gain);
-    a.connect(f);
-    b.connect(f);
-    f.connect(g);
-    g.connect(this.music);
-    a.start();
-    b.start();
-    lfo.start();
-    this.nodes.push(a, b, lfo, lg, f, g);
-  }
-
-  private blip(when: number, freq: number, dur: number, vol: number) {
+  private pluck(when: number, freq: number, dur: number, vol: number) {
     if (!this.ctx || !this.sfx) return;
     const osc = this.ctx.createOscillator();
     const g = this.ctx.createGain();
     const f = this.ctx.createBiquadFilter();
-    osc.type = "sine";
+    osc.type = "triangle";
     osc.frequency.setValueAtTime(freq, when);
-    osc.frequency.exponentialRampToValueAtTime(Math.max(40, freq * 0.72), when + dur);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(80, freq * 0.92), when + dur);
     f.type = "lowpass";
-    f.frequency.value = freq * 3;
+    f.frequency.value = freq * 6;
     g.gain.setValueAtTime(0.0001, when);
-    g.gain.exponentialRampToValueAtTime(vol, when + 0.012);
+    g.gain.exponentialRampToValueAtTime(vol, when + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
     osc.connect(f);
     f.connect(g);
     g.connect(this.sfx);
     osc.start(when);
-    osc.stop(when + dur + 0.06);
+    osc.stop(when + dur + 0.05);
   }
 
   private noise(when: number, dur: number, cutoff: number, vol = 0.08) {
@@ -252,13 +151,18 @@ class ApertureAudio {
     const src = this.ctx.createBufferSource();
     src.buffer = this.pinkBuffer(Math.max(0.05, dur));
     const f = this.ctx.createBiquadFilter();
-    f.type = "lowpass";
-    f.frequency.value = cutoff;
+    f.type = "highpass";
+    f.frequency.value = cutoff * 0.45;
+    const bp = this.ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = cutoff;
+    bp.Q.value = 0.8;
     const g = this.ctx.createGain();
     g.gain.setValueAtTime(vol, when);
     g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
     src.connect(f);
-    f.connect(g);
+    f.connect(bp);
+    bp.connect(g);
     g.connect(this.sfx);
     src.start(when);
   }
@@ -296,7 +200,6 @@ class ApertureAudio {
     this.nodes = [];
     this.wind = null;
     this.lampGain = null;
-    this.wellFilter = null;
     if (!ctx) return;
     const t = ctx.currentTime;
     for (const node of dying) {

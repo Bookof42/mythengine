@@ -41,6 +41,7 @@ type GameStore = {
   toQuestion: () => void;
   toAfter: () => void;
   abandon: () => void;
+  stepBack: () => void;
   setMuted: (muted: boolean) => void;
   setBirth: (date: string, time: string, place: string, use: boolean) => void;
   markOmen: (omenId: string, response: OmenMark["response"]) => void;
@@ -104,11 +105,11 @@ function finishSession(save: SaveState, priors: Priors | null): SaveState {
 export const useGame = create<GameStore>((set, get) => ({
   ready: false,
   save: {
-    version: 1,
+    version: 2,
     history: [],
     omens: [],
     usePattern: false,
-    muted: false,
+    muted: true,
     anonId: "",
     signs: [],
     seals: [],
@@ -138,6 +139,7 @@ export const useGame = create<GameStore>((set, get) => ({
 
   begin: () => {
     audio.unlock();
+    get().setMuted(false);
     audio.cue("begin");
     audio.setSection("play");
     const seed = Date.now() % 2147483646;
@@ -159,10 +161,11 @@ export const useGame = create<GameStore>((set, get) => ({
 
   beginPsyche: (night = "short") => {
     audio.unlock();
+    get().setMuted(false);
     audio.cue("begin");
     audio.setSection("play");
     const seed = Date.now() % 2147483646;
-    const steps = buildPsycheSequence(night);
+    const steps = buildPsycheSequence(night, seed);
     const current: PlaySnapshot = {
       seed,
       sessionId: crypto.randomUUID(),
@@ -183,6 +186,7 @@ export const useGame = create<GameStore>((set, get) => ({
     const steps = buildPlotSequence(mythId);
     if (!steps.length) return;
     audio.unlock();
+    get().setMuted(false);
     audio.cue("begin");
     audio.setSection("play");
     const seed = Date.now() % 2147483646;
@@ -315,6 +319,48 @@ export const useGame = create<GameStore>((set, get) => ({
   abandon: () => {
     audio.setSection("threshold");
     const next = write({ ...get().save, current: undefined });
+    set({ save: next });
+  },
+
+  stepBack: () => {
+    const { save } = get();
+    const current = save.current;
+    if (!current) return;
+    if (current.screen !== "play") {
+      get().abandon();
+      return;
+    }
+    if (current.cardFlipped) {
+      const next = write({
+        ...save,
+        current: { ...current, cardFlipped: false },
+      });
+      set({ save: next });
+      return;
+    }
+    if (current.index <= 0) {
+      get().abandon();
+      return;
+    }
+    const records = current.records.slice(0, -1);
+    let weights = emptyWeights();
+    for (const record of records) {
+      const step = current.steps.find(
+        (s) => s.kind === record.kind && s.id === record.itemId,
+      );
+      if (step) weights = addWeights(weights, resolveChoiceWeights(step, record.choice));
+    }
+    const next = write({
+      ...save,
+      current: {
+        ...current,
+        index: current.index - 1,
+        records,
+        weights,
+        afterText: undefined,
+        cardFlipped: false,
+      },
+    });
     set({ save: next });
   },
 

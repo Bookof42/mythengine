@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { livingMyth, useGame } from "@/lib/game-store";
 import { mythArt } from "@/lib/myths";
 import { SIGN_ICONS } from "@/lib/kit";
-import { SIGN, type SignKind } from "@/lib/signs";
+import { SIGN, carriedSentence, emptyHeld, type SignKind } from "@/lib/signs";
 import { ArtFrame } from "./frame";
 
 export function RevealScreen() {
@@ -15,17 +15,17 @@ export function RevealScreen() {
   const taken = (save.history.at(-1)?.signs ?? []) as SignKind[];
   if (!myth) return null;
   const looking = question ?? myth.reflection;
+  const held = emptyHeld();
+  for (const k of taken) held[k] = true;
+  const reason = carriedSentence(held, myth.name);
 
   return (
     <ArtFrame src={mythArt(myth.id)} align="end" dim="bg-bg/45">
-      <p className="text-sm tracking-[0.32em] text-gold uppercase">The weather</p>
-      <p className="mt-3 text-base tracking-[0.22em] text-teal uppercase">{myth.name}</p>
+      <p className="display text-2xl text-gold sm:text-4xl">{myth.name}</p>
       <h1 className="display mt-4 w-full text-4xl leading-[1.08] text-fg sm:text-6xl">
         {looking}
       </h1>
-      <p className="font-garamond mt-6 w-full text-xl text-fg/90 sm:text-2xl">
-        The myth names the weather you flew. Not fate. A question you can carry.
-      </p>
+      <p className="copy mt-6 w-full text-fg/90">{reason}</p>
       {taken.length ? (
         <ul className="mt-8 flex flex-wrap gap-3">
           {taken.map((k) => (

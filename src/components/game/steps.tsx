@@ -9,7 +9,7 @@ import { SCENE_BY_ID } from "@/lib/scenes";
 import { useGame } from "@/lib/game-store";
 import type { PlayStep } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ArtFrame, PathDots } from "./frame";
 import { WithApuleius } from "@/components/with-apuleius";
 
@@ -18,43 +18,20 @@ export function PlayStepView() {
   const choose = useGame((s) => s.choose);
   const continueAfter = useGame((s) => s.continueAfter);
   const flipCard = useGame((s) => s.flipCard);
+
+  useEffect(() => {
+    if (current?.afterText) continueAfter();
+  }, [current?.afterText, continueAfter]);
+
   if (!current) return null;
   const step = current.steps[current.index];
   if (!step) return null;
+  if (current.afterText) return null;
   const psyche = current.mode === "psyche" ? PSYCHE_BY_ID[step.id] : undefined;
   const plotNight =
     current.mode === "walk" && current.mythId
       ? PLOT_BY_ID[current.mythId]?.night
       : undefined;
-
-  if (current.afterText) {
-    return (
-      <ArtFrame src={artFor(step)} align="end">
-        <StationChrome
-          total={current.steps.length}
-          index={current.index}
-          psyche={psyche}
-          plotNight={plotNight}
-          prop={step.kind === "scene" ? STATION_PROP[step.id] : CARD_PROP[step.id]}
-        />
-        <p className="enter display w-full text-3xl text-fg sm:text-5xl lg:text-6xl">
-          {current.afterText}
-        </p>
-        <div className="mt-8 flex flex-wrap items-center gap-5">
-          <Button className="enter min-h-14 w-full sm:w-auto" onClick={() => continueAfter()}>
-            Continue
-          </Button>
-          <button
-            type="button"
-            className="enter min-h-11 text-sm tracking-[0.2em] text-muted uppercase hover:text-gold"
-            onClick={() => continueAfter()}
-          >
-            Skip
-          </button>
-        </div>
-      </ArtFrame>
-    );
-  }
 
   if (step.kind === "scene") {
     return (
@@ -134,12 +111,12 @@ function StationChrome({
         <img src={prop} alt="" className="mb-4 h-16 w-16 bg-transparent object-contain sm:h-20 sm:w-20" />
       ) : null}
       {psyche ? (
-        <p className="mb-3 text-sm tracking-[0.28em] text-gold uppercase">
-          {psyche.gameWord} · {psyche.beat}
+        <p className="mb-3 text-base tracking-[0.2em] text-gold">
+          {psyche.beat}
         </p>
       ) : null}
       {plotNight ? (
-        <p className="mb-3 text-sm tracking-[0.28em] text-gold uppercase">{plotNight}</p>
+        <p className="mb-3 text-base tracking-[0.2em] text-gold">{plotNight}</p>
       ) : null}
       <PathDots total={total} index={index} />
     </div>
@@ -175,7 +152,7 @@ function SceneView({
       <h2 className="display mt-2 w-full text-[clamp(1.6rem,8vw,4.5rem)] leading-[1.08] text-fg">
         {scene.title}
       </h2>
-      <p className="font-garamond mt-4 w-full text-base text-fg/90 sm:mt-5 sm:text-2xl lg:text-3xl">
+      <p className="copy mt-4 w-full text-fg/90 sm:mt-5">
         <WithApuleius text={scene.body} />
       </p>
       <ul className="mt-10 flex w-full flex-col gap-2">
@@ -186,7 +163,7 @@ function SceneView({
               className="flex w-full min-h-14 items-center py-3 text-left sm:min-h-16"
               onClick={() => onChoose(choice.id)}
             >
-              <span className="display text-lg leading-snug text-gold hover:text-teal sm:text-3xl lg:text-4xl">
+              <span className="display text-xl leading-snug text-gold hover:text-teal sm:text-3xl lg:text-4xl">
                 {choice.label}
               </span>
             </button>
@@ -219,7 +196,7 @@ function CardView({
   if (!card) return null;
 
   return (
-    <ArtFrame src="/art/card-back.jpg" align="center" dim="bg-bg/70">
+    <ArtFrame src="/art/card-back.jpg" align="center" dim="bg-bg/70" fit="contain">
       <div className="mx-auto flex w-full max-w-lg flex-col items-center text-center">
         <PathDots total={total} index={index} />
         <p className="mb-5 text-sm tracking-[0.28em] text-gold uppercase">
@@ -265,7 +242,7 @@ function CardView({
                   <Sigil kind={card.sigil} className="h-16 w-16" />
                 )}
                 <h2 className="display mt-4 text-3xl text-fg">{card.name}</h2>
-                <p className="font-garamond mt-3 text-lg text-muted sm:text-xl">
+                <p className="copy mt-3 text-fg/90">
                   {card.fragment}
                 </p>
               </div>

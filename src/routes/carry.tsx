@@ -14,8 +14,15 @@ function CarryPage() {
   const { m, q } = Route.useSearch();
   const myth = getMyth(m);
   const question = q || myth?.reflection || "A question you can carry.";
-  const name = myth?.name ?? (m === "omen" ? "Today’s omen" : "mythengine");
-  const art = myth ? mythArt(myth.id) : m === "omen" ? "/art/omen.jpg" : "/art/hero.jpg";
+  const name =
+    myth?.name ??
+    (m === "pattern" || m === "omen" ? "Today’s pattern" : "Mythengine");
+  const art =
+    myth?.id
+      ? mythArt(myth.id)
+      : m === "pattern" || m === "omen"
+        ? "/art/omen.jpg"
+        : "/art/hero.jpg";
 
   return (
     <main className="min-h-dvh bg-bg">
@@ -24,7 +31,7 @@ function CarryPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/45 to-transparent" />
         <div className="relative z-10 mx-auto flex min-h-dvh max-w-6xl flex-col justify-end px-5 pb-16 pt-24 sm:px-8">
           <p className="text-sm tracking-[0.42em] text-gold uppercase">
-            mythengine · 42
+            Mythengine · 42
           </p>
           <p className="mt-4 text-sm tracking-[0.22em] text-teal uppercase">{name}</p>
           <h1 className="display mt-4 w-full text-4xl leading-[1.08] text-fg sm:text-6xl lg:text-7xl">

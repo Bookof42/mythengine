@@ -10,9 +10,9 @@ import {
 import { KIT, SIGN_ICONS } from "@/lib/kit";
 import { audio } from "@/lib/audio";
 import { type Weather } from "@/lib/cards";
-import { matchMyth, pickQuestion } from "@/lib/engine";
-import { SIGNS, carried, emptyHeld, type SignKind } from "@/lib/signs";
-import { Volume2, VolumeX, X } from "lucide-react";
+import { matchMyth } from "@/lib/engine";
+import { SIGNS, carried, carriedSentence, emptyHeld, type SignKind } from "@/lib/signs";
+import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 function load(src: string) {
@@ -41,8 +41,6 @@ export function FieldView() {
   });
   const finishArcade = useGame((s) => s.finishArcade);
   const abandon = useGame((s) => s.abandon);
-  const muted = useGame((s) => s.save.muted);
-  const setMuted = useGame((s) => s.setMuted);
   const lastTrail = useGame((s) => s.save.lastTrail);
   const lastKept = useGame((s) => s.save.lastKept);
   const history = useGame((s) => s.save.history);
@@ -67,6 +65,9 @@ export function FieldView() {
     finished.current = false;
     const input = inputRef.current;
     const keys = new Set<string>();
+    const coarse =
+      typeof window !== "undefined" &&
+      window.matchMedia("(pointer: coarse)").matches;
     const pad = { hold: false };
 
     const view = () => {
@@ -120,11 +121,13 @@ export function FieldView() {
     };
 
     const onPoint = (e: PointerEvent) => {
+      if (coarse) return;
       if (e.type === "pointermove" && e.buttons === 0) return;
       input.aim = worldFromEvent(e);
       input.thrust = true;
     };
     const onUp = () => {
+      if (coarse) return;
       input.aim = null;
       syncKeys();
     };
@@ -134,10 +137,12 @@ export function FieldView() {
       else keys.delete(e.code);
       syncKeys();
     };
-    canvas.addEventListener("pointerdown", onPoint);
-    canvas.addEventListener("pointermove", onPoint);
-    canvas.addEventListener("pointerup", onUp);
-    canvas.addEventListener("pointercancel", onUp);
+    if (!coarse) {
+      canvas.addEventListener("pointerdown", onPoint);
+      canvas.addEventListener("pointermove", onPoint);
+      canvas.addEventListener("pointerup", onUp);
+      canvas.addEventListener("pointercancel", onUp);
+    }
     const kd = (e: KeyboardEvent) => onKey(e, true);
     const ku = (e: KeyboardEvent) => onKey(e, false);
     window.addEventListener("keydown", kd);
@@ -148,6 +153,7 @@ export function FieldView() {
       e.preventDefault();
       e.stopPropagation();
       pad.hold = true;
+      input.aim = null;
       syncKeys();
       try {
         (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -158,13 +164,18 @@ export function FieldView() {
     const onPadUp = (e: PointerEvent) => {
       e.preventDefault();
       e.stopPropagation();
+      if (e.type === "pointerleave") return;
       pad.hold = false;
+      input.aim = null;
       syncKeys();
     };
-    padEl?.addEventListener("pointerdown", onPadDown);
-    padEl?.addEventListener("pointerup", onPadUp);
-    padEl?.addEventListener("pointercancel", onPadUp);
-    padEl?.addEventListener("pointerleave", onPadUp);
+    const padOpts: AddEventListenerOptions = { passive: false };
+    padEl?.addEventListener("pointerdown", onPadDown, padOpts);
+    padEl?.addEventListener("pointerup", onPadUp, padOpts);
+    padEl?.addEventListener("pointercancel", onPadUp, padOpts);
+    padEl?.addEventListener("lostpointercapture", onPadUp);
+    const noScroll = (e: TouchEvent) => e.preventDefault();
+    canvas.parentElement?.addEventListener("touchmove", noScroll, { passive: false });
 
     window.__controlsTest = {
       getYaw: () => sim.moth.angle,
@@ -201,7 +212,6 @@ export function FieldView() {
       const weatherKey = sim.weather?.cardId ?? "";
       if (weatherKey !== lastWeather) {
         lastWeather = weatherKey;
-        setWeather(sim.weather);
       }
       const heldKey = SIGNS.map((k) => (sim.held[k] ? "1" : "0")).join("");
       if (heldKey !== lastHeld) {
@@ -248,13 +258,13 @@ export function FieldView() {
           excludeIds: history.slice(-2).map((h) => h.mythId),
           priors,
         });
-        const question = pickQuestion(myth, Date.now() % 2147483646);
+        const reason = carriedSentence(sim.held, myth.name);
         setWeather({
           name: myth.name,
-          line: question,
+          line: reason,
           cardId: "return",
         });
-        sim.hint = question;
+        sim.hint = reason;
       }
       const { w, h } = view();
       drawWorld(ctx, sim, w, h);
@@ -277,7 +287,8 @@ export function FieldView() {
       padEl?.removeEventListener("pointerdown", onPadDown);
       padEl?.removeEventListener("pointerup", onPadUp);
       padEl?.removeEventListener("pointercancel", onPadUp);
-      padEl?.removeEventListener("pointerleave", onPadUp);
+      padEl?.removeEventListener("lostpointercapture", onPadUp);
+      canvas.parentElement?.removeEventListener("touchmove", noScroll);
       window.removeEventListener("keydown", kd);
       window.removeEventListener("keyup", ku);
       delete window.__controlsTest;
@@ -286,57 +297,55 @@ export function FieldView() {
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-hidden bg-bg"
-      style={{ position: "fixed", inset: 0, width: "100%", height: "100dvh", zIndex: 50 }}
+      className="fixed inset-0 z-50 overflow-hidden overscroll-none bg-bg touch-none"
+      style={{
+        position: "fixed",
+        inset: 0,
+        width: "100%",
+        height: "100dvh",
+        zIndex: 50,
+        touchAction: "none",
+      }}
     >
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
         style={{ touchAction: "none" }}
       />
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between px-3 pt-[max(0.6rem,env(safe-area-inset-top))] sm:px-5">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center px-2 pt-[max(0.4rem,env(safe-area-inset-top))] sm:px-5">
         <button
           type="button"
-          className="pointer-events-auto grid h-12 w-12 place-items-center text-gold/80 hover:text-gold"
+          className="pointer-events-auto flex h-11 items-center gap-0.5 pr-2 text-gold/80 hover:text-gold"
           onClick={() => abandon()}
-          aria-label="Leave the field"
+          aria-label="Back"
         >
           <X className="h-5 w-5" />
         </button>
-        <img src={KIT.icons.aperture} alt="" className="h-7 w-7 opacity-80 sm:h-8 sm:w-8" />
-        <button
-          type="button"
-          className="pointer-events-auto grid h-12 w-12 place-items-center text-gold/80 hover:text-gold"
-          onClick={() => setMuted(!muted)}
-          aria-label={muted ? "Unmute" : "Mute"}
-        >
-          {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-        </button>
       </div>
-      <div className="pointer-events-none absolute inset-x-0 top-[max(3.6rem,calc(env(safe-area-inset-top)+2.6rem))] z-10 px-4 text-center sm:top-24 sm:px-6">
+      <div className="pointer-events-none absolute inset-x-0 top-[max(2.6rem,calc(env(safe-area-inset-top)+1.8rem))] z-10 px-4 text-center sm:top-16 sm:px-6">
         {weather ? (
           <>
-            <p className="display text-lg text-gold sm:text-4xl">{weather.name}</p>
-            <p className="font-garamond mx-auto mt-2 max-w-2xl text-sm text-fg/90 sm:mt-3 sm:text-xl">
+            <p className="display text-base text-gold sm:text-3xl">{weather.name}</p>
+            <p className="mx-auto mt-2 max-w-xl text-sm text-fg/90 sm:text-xl">
               {weather.line}
             </p>
           </>
         ) : (
-          <p className="font-garamond text-sm text-gold sm:text-2xl">{hint}</p>
+          <p className="display text-sm text-gold/80 sm:text-xl">{hint}</p>
         )}
       </div>
-      <div className="pointer-events-none absolute bottom-[max(4.6rem,calc(env(safe-area-inset-bottom)+3.6rem))] left-3 right-[5.6rem] z-10 flex justify-center gap-1 rounded-full border border-gold/25 bg-bg/55 px-2 py-1.5 backdrop-blur-sm sm:left-1/2 sm:right-auto sm:bottom-20 sm:w-auto sm:-translate-x-1/2 sm:gap-2 sm:px-3 sm:py-2">
+      <div className="pointer-events-none absolute bottom-[max(1.1rem,calc(env(safe-area-inset-bottom)+0.5rem))] left-2 right-[4.6rem] z-10 flex justify-center gap-1 sm:left-1/2 sm:right-auto sm:bottom-8 sm:w-auto sm:-translate-x-1/2 sm:gap-2">
         {SIGNS.map((k) => (
           <img
             key={k}
             src={SIGN_ICONS[k]}
             alt={k}
-            className={`h-7 w-7 sm:h-11 sm:w-11 transition-all ${
+            className={`h-6 w-6 sm:h-10 sm:w-10 transition-all ${
               held[k]
                 ? lastTaken === k
                   ? "scale-110 opacity-100"
                   : "opacity-100"
-                : "opacity-20"
+                : "opacity-25"
             }`}
           />
         ))}
@@ -345,13 +354,15 @@ export function FieldView() {
         ref={holdRef}
         id="field-hold"
         type="button"
-        className="absolute right-[max(0.7rem,env(safe-area-inset-right))] bottom-[max(4.4rem,calc(env(safe-area-inset-bottom)+3.4rem))] z-20 grid h-[4.4rem] w-[4.4rem] place-items-center rounded-full border border-gold/60 bg-bg/55 text-gold touch-none sm:right-8 sm:bottom-24 sm:h-24 sm:w-24"
+        className="absolute right-0 bottom-0 z-20 flex h-28 w-28 items-end justify-end p-4 text-gold touch-none sm:right-6 sm:bottom-8 sm:h-28 sm:w-28 sm:p-3"
         style={{ touchAction: "none" }}
         aria-label="Hold to burn"
       >
-        <span className="display text-[0.62rem] tracking-[0.2em] uppercase sm:text-sm">Hold</span>
+        <span className="grid h-[4.4rem] w-[4.4rem] place-items-center rounded-full border border-gold/50 bg-bg/55 sm:h-20 sm:w-20">
+          <span className="display text-[0.62rem] tracking-[0.18em] uppercase sm:text-sm">Hold</span>
+        </span>
       </button>
-      <p className="pointer-events-none absolute inset-x-0 bottom-[max(0.35rem,env(safe-area-inset-bottom))] z-10 px-4 pr-[5.8rem] text-center text-[0.62rem] tracking-[0.14em] text-muted uppercase sm:bottom-6 sm:px-6 sm:pr-6 sm:text-base">
+      <p className="pointer-events-none absolute inset-x-0 bottom-[max(0.15rem,env(safe-area-inset-bottom))] z-10 hidden px-4 text-center text-[0.6rem] tracking-[0.14em] text-muted sm:block sm:bottom-2">
         {telem}
       </p>
       {ending ? (
@@ -418,26 +429,51 @@ function drawWorld(
     ctx.drawImage(lampImg, -18, -22, 36, 44);
   }
 
+  let nearest: (typeof sim.motes)[number] | null = null;
+  let nearestD = Infinity;
+  for (const mote of sim.motes) {
+    const d = Math.hypot(mote.x - sim.moth.x, mote.y - sim.moth.y);
+    if (d < nearestD) {
+      nearestD = d;
+      nearest = mote;
+    }
+  }
   for (const mote of sim.motes) {
     const icon = signImgs[mote.kind];
-    const pulse = 1 + 0.06 * Math.sin(sim.t * 2.4 + mote.x * 0.01);
-    const r = 26 * pulse;
+    const near = mote === nearest;
+    const pulse = near
+      ? 1.12 + 0.2 * Math.abs(Math.sin(sim.t * 3.4))
+      : 1 + 0.04 * Math.sin(sim.t * 2.2 + mote.x * 0.01);
+    const r = (near ? 38 : 24) * pulse;
     const g = ctx.createRadialGradient(mote.x, mote.y, 0, mote.x, mote.y, r);
-    g.addColorStop(0, "rgba(228,208,160,0.28)");
+    g.addColorStop(0, near ? "rgba(228,208,160,0.55)" : "rgba(228,208,160,0.22)");
     g.addColorStop(1, "rgba(228,208,160,0)");
     ctx.fillStyle = g;
     ctx.beginPath();
     ctx.arc(mote.x, mote.y, r, 0, Math.PI * 2);
     ctx.fill();
+    if (near) {
+      ctx.beginPath();
+      ctx.arc(
+        mote.x,
+        mote.y,
+        22 + 10 * Math.abs(Math.sin(sim.t * 3.4)),
+        0,
+        Math.PI * 2,
+      );
+      ctx.strokeStyle = "rgba(228,208,160,0.85)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
     if (icon?.complete) {
-      const s = 36 * pulse;
+      const s = (near ? 44 : 34) * (near ? pulse : 1);
       ctx.drawImage(icon, mote.x - s / 2, mote.y - s / 2, s, s);
     }
   }
 
   for (const s of sim.sparks) {
     ctx.globalAlpha = Math.max(0, s.life);
-    ctx.fillStyle = s.gold ? "#e4d0a0" : "#8ec4c0";
+    ctx.fillStyle = s.gold ? "#e4d0a0" : "#8eaaa4";
     ctx.fillRect(s.x, s.y, 2.2, 2.2);
   }
   ctx.globalAlpha = 1;
@@ -482,28 +518,27 @@ function drawRing(ctx: CanvasRenderingContext2D, sim: FlightSim) {
   const gap = RING.gap + (sim.held.key ? 0.28 : 0);
   const a0 = sim.gapAngle + gap;
   const a1 = sim.gapAngle - gap + Math.PI * 2;
-  const teach = sim.t < 30 ? 1 : 0;
+  const open = carried(sim.held).length > 0;
+  const beat = open ? 0.45 + 0.55 * Math.abs(Math.sin(sim.t * 2.6)) : 0.12;
   ctx.lineCap = "round";
   ctx.beginPath();
   ctx.arc(0, 0, r - t / 2, a0, a1);
-  ctx.strokeStyle = "rgba(228,208,160,0.55)";
+  ctx.strokeStyle = "rgba(228,208,160,0.5)";
   ctx.lineWidth = 2.2;
   ctx.stroke();
   ctx.beginPath();
-  ctx.arc(0, 0, r - t / 2, a0, a0 + 0.14 + teach * 0.08);
-  ctx.strokeStyle = teach
-    ? "rgba(228,208,160,1)"
-    : "rgba(228,208,160,0.95)";
-  ctx.lineWidth = teach ? 5.2 : 3.4;
+  ctx.arc(0, 0, r - t / 2, sim.gapAngle - gap, sim.gapAngle + gap);
+  ctx.strokeStyle = `rgba(228,208,160,${open ? 0.28 + beat * 0.5 : 0.06})`;
+  ctx.lineWidth = open ? 8 + beat * 6 : 3;
   ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(0, 0, r - t / 2, a1 - 0.14 - teach * 0.08, a1);
-  ctx.stroke();
-  if (teach) {
+  if (open) {
     ctx.beginPath();
-    ctx.arc(0, 0, r - t / 2, sim.gapAngle - gap, sim.gapAngle + gap);
-    ctx.strokeStyle = "rgba(228,208,160,0.35)";
-    ctx.lineWidth = 7;
+    ctx.arc(0, 0, r - t / 2, a0, a0 + 0.16);
+    ctx.strokeStyle = `rgba(228,208,160,${0.7 + beat * 0.3})`;
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(0, 0, r - t / 2, a1 - 0.16, a1);
     ctx.stroke();
   }
 }

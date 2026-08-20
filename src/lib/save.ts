@@ -12,7 +12,7 @@ import { ARCHETYPES } from "./types";
 
 const KEY = "mythengine.save.v1";
 const LEGACY_KEY = "aperture.save.v1";
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 2;
 
 export type PlaySnapshot = {
   seed: number;
@@ -50,7 +50,7 @@ const defaults = (): SaveState => ({
   history: [],
   omens: [],
   usePattern: false,
-  muted: false,
+  muted: true,
   anonId: "",
   signs: [],
   seals: [],
@@ -65,7 +65,7 @@ function migrate(raw: SaveState): SaveState {
     history: Array.isArray(raw.history) ? raw.history : [],
     omens: Array.isArray(raw.omens) ? raw.omens : [],
     usePattern: Boolean(raw.usePattern),
-    muted: Boolean(raw.muted),
+    muted: raw.version >= 2 ? Boolean(raw.muted) : true,
     anonId: raw.anonId || "",
     signs: Array.isArray(raw.signs) ? raw.signs : [],
     seals: Array.isArray(raw.seals) ? raw.seals : [],

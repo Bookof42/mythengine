@@ -2,7 +2,7 @@ export const KIT = {
   palette: {
     bg: "#050506",
     gold: "#e4d0a0",
-    teal: "#8ec4c0",
+    teal: "#8eaaa4",
     stone: "#12181c",
   },
   field: "/art/field.jpg",

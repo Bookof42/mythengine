@@ -1,5 +1,4 @@
 import { audio } from "@/lib/audio";
-import { NightSky } from "@/components/night-sky";
 import { useGame } from "@/lib/game-store";
 import { useEffect } from "react";
 
@@ -12,33 +11,28 @@ export function Threshold() {
   }, []);
 
   return (
-    <main className="min-h-dvh bg-bg">
-      <section className="hero-stage relative h-dvh min-h-[100dvh] w-full overflow-hidden">
+    <main className="h-dvh overflow-hidden bg-bg">
+      <section className="hero-stage relative h-full w-full overflow-hidden">
+        <picture className="hero-shot pointer-events-none absolute inset-0 block h-full w-full">
+          <source media="(max-width: 1023px)" srcSet="/art/hero-mobile.jpg" />
+          <img
+            src="/art/hero.jpg"
+            alt=""
+            fetchPriority="high"
+            decoding="sync"
+            className="hero-ken absolute inset-0 h-full w-full max-w-none object-cover object-center"
+          />
+        </picture>
         <button
           type="button"
           onClick={() => begin()}
-          className="hero-frame absolute inset-0 block w-full"
+          className="absolute inset-0 z-10 block"
           aria-label="Play the field"
-        >
-          <img
-            src="/art/hero.jpg"
-            alt="mythengine: a moth, a lamp, a sky held in gold rings"
-            fetchPriority="high"
-            decoding="sync"
-            className="hero-ken pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
-          />
-          <div className="hero-rings" aria-hidden>
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-          <NightSky />
-        </button>
-        <h1 className="sr-only">mythengine</h1>
+        />
+        <h1 className="sr-only">Mythengine</h1>
         <nav
           aria-label="Enter"
-          className="absolute inset-x-0 bottom-0 z-20 border-t border-line/50 bg-bg/55 backdrop-blur-[2px]"
+          className="absolute inset-x-0 bottom-0 z-20 border-t border-line bg-bg"
         >
           <div className="mx-auto grid max-w-6xl grid-cols-3">
             <button

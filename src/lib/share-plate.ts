@@ -71,7 +71,7 @@ export async function composeSharePlate(payload: SharePayload, kind: Kind = "x")
   ctx.font = "500 18px 'DM Sans', sans-serif";
   ctx.fillText("MYTHENGINE  ·  42", 64, 72);
 
-  ctx.fillStyle = "#8ec4c0";
+  ctx.fillStyle = "#8eaaa4";
   ctx.font = "500 16px 'DM Sans', sans-serif";
   ctx.fillText("THE WEATHER", 64, kind === "card" ? h - 420 : 390);
 
@@ -109,7 +109,7 @@ export function carryHref(mythId: string, question: string) {
 
 export function tweetHref(question: string, url: string) {
   const intent = new URL("https://twitter.com/intent/tweet");
-  intent.searchParams.set("text", `${question}\n\nmythengine · 42`);
+  intent.searchParams.set("text", `${question}\n\nMythengine · 42`);
   intent.searchParams.set("url", url);
   return intent.toString();
 }

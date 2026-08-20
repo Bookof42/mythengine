@@ -2,10 +2,11 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-r
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { Shell } from "@/components/shell";
+import { SEO } from "@/lib/seo";
 import "../styles.css";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "mythengine";
+const APP_NAME = SEO.name;
 
 function publicHost() {
   const raw = String(
@@ -29,12 +30,33 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
       { name: "theme-color", content: "#050506" },
-      {
-        name: "description",
-        content:
-          "mythengine is reverse reduction 42, the same seal as Myth in reverse ordinal. A game about the question: is life a game, or a myth we live from the inside?",
-      },
+      { name: "description", content: SEO.description },
+      { name: "author", content: "The Book of 42" },
+      { name: "robots", content: "index,follow" },
+      { name: "apple-mobile-web-app-title", content: APP_NAME },
       ...(xBanner ? [{ property: "x:game:image", content: xBanner }] : []),
+    ],
+    scripts: [
+      {
+        children:
+          "(function(){try{var s=localStorage.getItem('book42-text-scale');var f=s==='xl'?'1.42':s==='lg'?'1.18':'1';var r=document.documentElement;if(s==='lg'||s==='xl'||s==='md'){r.dataset.textScale=s;r.style.setProperty('--text-scale',f);}}catch(e){}})();",
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          name: SEO.name,
+          description: SEO.description,
+          url: host ? `https://${host}/` : SEO.url,
+          genre: ["Adventure", "Mythology"],
+          applicationCategory: "GameApplication",
+          operatingSystem: "Web browser",
+          inLanguage: "en",
+          isFamilyFriendly: true,
+          author: { "@type": "Organization", name: "The Book of 42", url: "https://bookof42.grok.me" },
+        }),
+      },
     ],
     styles: [
       {
@@ -44,7 +66,9 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      ...(host ? [{ rel: "canonical", href: `https://${host}/` }] : []),
       { rel: "preload", as: "image", href: "/art/hero.jpg" },
+      { rel: "preload", as: "image", href: "/art/hero-mobile.jpg", media: "(max-width: 1023px), (orientation: portrait)" },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
@@ -82,7 +106,7 @@ function NotFound() {
   return (
     <main className="grid min-h-dvh place-items-center px-6 text-center">
       <div>
-        <p className="display text-sm tracking-[0.3em] text-gold">mythengine</p>
+        <p className="display text-sm tracking-[0.3em] text-gold">Mythengine</p>
         <h1 className="display mt-4 text-4xl">This path is not marked.</h1>
         <p className="mt-3 text-muted">The threshold is still open.</p>
         <a href="/" className="mt-8 inline-flex min-h-11 items-center text-teal hover:text-gold">

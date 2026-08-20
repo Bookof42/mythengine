@@ -56,7 +56,7 @@ export function DeckTile({ card }: { card: OracleCard }) {
                 <Sigil kind={card.sigil} className="h-12 w-12" />
               )}
               <span className="display mt-3 block text-2xl text-fg">{card.name}</span>
-              <span className="font-garamond mt-2 block text-base text-muted">
+              <span className="copy mt-2 block text-muted">
                 {card.fragment}
               </span>
             </span>

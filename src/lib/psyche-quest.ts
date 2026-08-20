@@ -1,4 +1,6 @@
 import type { Scene } from "./types";
+import { CARDS } from "./cards";
+import { pickOne, seededRandom } from "./utils";
 
 export type PsycheBeat = {
   id: string;
@@ -15,7 +17,7 @@ export const PSYCHE_STATIONS: PsycheBeat[] = [
     scene: {
       id: "psyche-palace",
       title: "A palace, and no map",
-      body: "You are given a life already in progress: food, music, a bed that remembers you. The one who loves you comes only in the dark. No one explains the system. There is only a room, a body, and a tenderness you are not allowed to look at yet.",
+      body: "You wake inside a life already made: food, music, a bed that knows you. By night the beloved comes. By day he is gone. This is the known world. The god has not yet shown a face. The adventure waits in the one rule you have been given: do not look.",
       art: "/art/myths/psyche.jpg",
       choices: [
         {
@@ -264,23 +266,34 @@ export const PSYCHE_BY_ID = Object.fromEntries(
   PSYCHE_STATIONS.map((s) => [s.id, s]),
 );
 
-export function buildPsycheSequence(night: "short" | "long" = "long") {
-  const earned: Record<string, string> = {
-    "psyche-lamp": "flame",
-    "psyche-tasks": "seed",
-    "psyche-underworld": "well",
-  };
+export function buildPsycheSequence(
+  night: "short" | "long" = "long",
+  seed = Date.now() % 2147483646,
+) {
   const stations =
     night === "short"
       ? PSYCHE_STATIONS.filter((s) =>
           ["psyche-lamp", "psyche-loss", "psyche-return"].includes(s.id),
         )
       : PSYCHE_STATIONS;
+  const earned: Record<string, string> = {
+    "psyche-lamp": "flame",
+    "psyche-tasks": "seed",
+    "psyche-underworld": "well",
+  };
   const steps: { kind: "scene" | "card"; id: string }[] = [];
+  const gift =
+    night === "short" ? pickOne(CARDS, seededRandom(seed)).id : null;
   for (const station of stations) {
     steps.push({ kind: "scene", id: station.id });
-    const card = earned[station.id];
-    if (card) steps.push({ kind: "card", id: card });
+    if (night === "short") {
+      if (station.id === "psyche-lamp" && gift) {
+        steps.push({ kind: "card", id: gift });
+      }
+    } else {
+      const card = earned[station.id];
+      if (card) steps.push({ kind: "card", id: card });
+    }
   }
   return steps;
 }
