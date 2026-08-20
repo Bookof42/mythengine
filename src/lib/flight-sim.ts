@@ -63,6 +63,7 @@ export type FlightSim = {
   done: boolean;
   doneT: number;
   hint: string;
+  ghost: { x: number; y: number }[];
 };
 
 export type FlightInput = {
@@ -106,28 +107,35 @@ function circular(radius: number, angle: number, ccw = true) {
   };
 }
 
-export function createFlight(): FlightSim {
+export function createFlight(opts?: {
+  ghost?: { x: number; y: number }[];
+  kept?: SignKind | null;
+}): FlightSim {
   const r0 = 500;
   const vc = Math.sqrt(MU / r0);
   const moth = {
     x: -r0,
     y: 0,
     vx: 0,
-    vy: -vc * 0.9,
+    vy: -vc * 0.97,
     angle: -Math.PI / 2,
   };
+  const kept = opts?.kept ?? null;
+  const motes = [
+    { ...circular(215, 0.6), kind: "seed" as const },
+    { ...circular(255, 2.3), kind: "key" as const },
+    { ...circular(400, 4.2), kind: "thread" as const },
+    { ...circular(175, 3.4), kind: "cup" as const },
+    { ...circular(330, 5.1), kind: "stone" as const },
+    { ...circular(455, 1.15), kind: "mirror" as const },
+  ].filter((m) => m.kind !== kept);
+  const held = emptyHeld();
+  if (kept) held[kept] = true;
   return {
     t: 0,
     moth,
     lamp: { x: 0, y: 0 },
-    motes: [
-      { ...circular(215, 0.6), kind: "seed" },
-      { ...circular(255, 2.3), kind: "key" },
-      { ...circular(400, 4.2), kind: "thread" },
-      { ...circular(175, 3.4), kind: "cup" },
-      { ...circular(330, 5.1), kind: "stone" },
-      { ...circular(455, 1.15), kind: "mirror" },
-    ],
+    motes,
     sparks: [],
     trail: [],
     predict: [],
@@ -149,7 +157,7 @@ export function createFlight(): FlightSim {
     bound: true,
     periapsis: RING_R,
     apoapsis: r0,
-    held: emptyHeld(),
+    held,
     giftT: 0,
     boxReady: false,
     lastTaken: null,
@@ -160,7 +168,8 @@ export function createFlight(): FlightSim {
     records: [],
     done: false,
     doneT: 0,
-    hint: "Hold to burn.",
+    hint: kept ? "You kept one. The last ellipse is still in the night." : "Hold to burn.",
+    ghost: opts?.ghost ?? [],
   };
 }
 
@@ -220,11 +229,11 @@ function speak(sim: FlightSim, event: string) {
 
 function stateHint(sim: FlightSim) {
   if (sim.done) return "You returned. The myth names itself.";
-  if (!sim.everThrust) return "Hold to burn.";
+  if (!sim.everThrust) return sim.t < 12 ? "The bright seam in the ring. Hold to burn." : "Hold to burn.";
   if (carried(sim.held).length === 0 && !sim.entered) return "Take the gold.";
-  if (!sim.entered && !sim.exited && !sim.burned) return "Find the gap in the ring.";
-  if (sim.burned && sim.inWell) return "Descent is still a path. Find the gap.";
-  if (sim.entered && !sim.exited) return "Inside. Return through the gap.";
+  if (!sim.entered && !sim.exited && !sim.burned) return "The bright seam in the ring.";
+  if (sim.burned && sim.inWell) return "Don’t Panic. Descent is still a path. The seam is the door.";
+  if (sim.entered && !sim.exited) return "Inside. Return through the seam.";
   if (sim.exited) return "You returned.";
   if (!sim.bound) return "Unbound. A hyperbola has no home.";
   if (sim.held.seed && sim.ecc < 0.18) return "Held. The work is ordinary.";
@@ -439,6 +448,7 @@ function physics(sim: FlightSim, dt: number, input: FlightInput) {
 function takeSign(sim: FlightSim, kind: SignKind) {
   sim.held[kind] = true;
   sim.lastTaken = kind;
+  if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(18);
   mark(sim, kind, "take");
   speak(sim, kind);
   if (kind === "seed") sim.weights = addWeights(sim.weights, { craft: 2, devotion: 1 });

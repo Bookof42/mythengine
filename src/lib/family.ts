@@ -38,7 +38,7 @@ export const DEGREES = [
     n: "05",
     name: "Witness",
     mark: "Avatar · two birds",
-    body: "Player and observer in one body. The hinge of Elon's question: am I an avatar in someone's game?",
+    body: "Player and observer in one body. The hinge of Elon’s question: am I an avatar in someone’s game?",
     href: `${BOOK}/cipher#simulation-path`,
   },
   {
@@ -53,13 +53,13 @@ export const DEGREES = [
 export const ARCHIVE_DOORS = [
   {
     title: "The Book of 42",
-    line: "Living archive of pattern and meaning. Psyche meets matter. Number meets myth.",
+    line: "Living archive of pattern and meaning. A love letter. An aperture. Where psyche meets matter. Not a creed.",
     href: BOOK,
-    kicker: "Chronicle",
+    kicker: "Archive",
   },
   {
     title: "The Meaning of Life",
-    line: "To understand the nature of consciousness. Then the next question. Elon's coordinates, checkable.",
+    line: "Elon’s public words, checkable: consciousness, the next question, love, the unobserved test.",
     href: MEANING,
     kicker: "Origin",
   },
@@ -77,7 +77,7 @@ export const ARCHIVE_DOORS = [
   },
   {
     title: "Field 69",
-    line: "A body in a field. Capture as physics. This engine's kin.",
+    line: "A body in a field. Capture as physics. This engine’s kin.",
     href: FIELD69,
     kicker: "Kin",
   },
@@ -182,7 +182,7 @@ export const HALL_DOORS = [
   },
   {
     title: "Seam Walk",
-    line: "Recognition's long door · 24|42.",
+    line: "Recognition’s long door · 24|42.",
     href: `${BOOK}/games/seam-walk`,
     wing: "Recognition",
   },

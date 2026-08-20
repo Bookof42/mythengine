@@ -1,4 +1,5 @@
 import type { SignKind } from "./signs";
+import type { MythQuestions } from "./myth-questions";
 
 export const ARCHETYPES = [
   "descent",
@@ -46,8 +47,9 @@ export type Myth = {
   full: string;
   psychology: string;
   reflection: string;
+  shadow: string;
   weights: Weights;
-  questions: string[];
+  questions: MythQuestions;
   sigil: SigilKind;
 };
 

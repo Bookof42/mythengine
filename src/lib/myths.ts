@@ -1,6 +1,8 @@
 import type { Myth } from "./types";
+import { MYTH_QUESTIONS } from "./myth-questions";
+import { MYTH_SHADOWS } from "./myth-shadows";
 
-export const MYTHS: Myth[] = [
+const RAW = [
   {
     id: "persephone",
     name: "Persephone",
@@ -54,7 +56,7 @@ export const MYTHS: Myth[] = [
     weights: { quest: 3, return: 2, trickster: 1, threshold: 1 },
     questions: [
       "What is the home you keep postponing, and what in you prefers the sea?",
-      "Where are you still 'nobody' because it is safer than being named?",
+      "Where are you still ‘nobody’ because it is safer than being named?",
       "Who has been weaving in your absence, and have you honored that labor?",
     ],
     sigil: "boat",
@@ -66,7 +68,7 @@ export const MYTHS: Myth[] = [
     origin: "Cretan / Greek",
     short:
       "She gives the hero a thread, then is abandoned on the shore. Later a god arrives, and the story becomes about what happens after you are left holding the method.",
-    full: "The labyrinth is her father's machine for hiding shame. Theseus is the visiting solution. Ariadne knows the architecture, so she hands him the thread: the only honest technology in the myth. He kills the bull-man, follows the thread out, and sails without her.\n\nOn Naxos she is wreckage. Then Dionysus. The constellation Corona Borealis is sometimes told as her crown, set in the sky so the abandonment is not the last frame. Ariadne is not the helper. She is the one who understood the maze, survived being useful, and had to invent a life that was not a function of someone else's victory.",
+    full: "The labyrinth is her father’s machine for hiding shame. Theseus is the visiting solution. Ariadne knows the architecture, so she hands him the thread: the only honest technology in the myth. He kills the bull-man, follows the thread out, and sails without her.\n\nOn Naxos she is wreckage. Then Dionysus. The constellation Corona Borealis is sometimes told as her crown, set in the sky so the abandonment is not the last frame. Ariadne is not the helper. She is the one who understood the maze, survived being useful, and had to invent a life that was not a function of someone else’s victory.",
     psychology:
       "Ariadne appears when you have been the thread for other people. The crisis is not the labyrinth: you already know labyrinths. The crisis is the beach after the hero leaves, and whether you can stop being infrastructure.",
     reflection: "Who has been using your thread, and what would you build if you kept it?",
@@ -104,7 +106,7 @@ export const MYTHS: Myth[] = [
     origin: "Greek",
     short:
       "A titan steals fire for humans and is chained for the gift. Every morning an eagle. The myth asks what you are willing to suffer for a warmth that is not only yours.",
-    full: "Prometheus means forethought. He tricks Zeus at the sacrifice, then smuggles fire in a fennel stalk. Civilization begins: cookery, craft, the end of shivering. The sentence is a rock, a liver, an eagle, a forever. Heracles eventually breaks the chain, but the point was never the rescue. The point was that some gifts rearrange the moral universe, and the giver does not get to live as if they didn't.\n\nFire is knowledge, techne, the capacity to make. It is also the thing that burns the giver.",
+    full: "Prometheus means forethought. He tricks Zeus at the sacrifice, then smuggles fire in a fennel stalk. Civilization begins: cookery, craft, the end of shivering. The sentence is a rock, a liver, an eagle, a forever. Heracles eventually breaks the chain, but the point was never the rescue. The point was that some gifts rearrange the moral universe, and the giver does not get to live as if they didn’t.\n\nFire is knowledge, techne, the capacity to make. It is also the thing that burns the giver.",
     psychology:
       "Prometheus arrives when you are carrying a gift the current order did not authorize. The liver is the daily cost of seeing too far ahead. The question is whether the fire was for them, for you, or for the future, and whether you confused martyrdom with meaning.",
     reflection: "What fire did you steal, and who is eating your liver for it?",
@@ -142,9 +144,9 @@ export const MYTHS: Myth[] = [
     origin: "Greek / Theban",
     short:
       "The twice-born god of wine, theater, and undoing. He arrives where the city has become too tight, and he will not be reasonable.",
-    full: "Semele burns. The child is sewn into Zeus's thigh and born again. Dionysus is the outsider who is also the most intimate god: ivy, mask, the loosening of the name you wear at work. Pentheus tries to police him and is torn apart by his own mother. The theater is his temple because pretending is how the truth gets in.\n\nDionysus is not permission to wreck your life. He is the reminder that a life with no ecstasy is already wrecked, only quietly.",
+    full: "Semele burns. The child is sewn into Zeus’s thigh and born again. Dionysus is the outsider who is also the most intimate god: ivy, mask, the loosening of the name you wear at work. Pentheus tries to police him and is torn apart by his own mother. The theater is his temple because pretending is how the truth gets in.\n\nDionysus is not permission to wreck your life. He is the reminder that a life with no ecstasy is already wrecked, only quietly.",
     psychology:
-      "When Dionysus comes, a persona has grown too small. Jung treated him as the dissolving of inflation's opposite: rigidity. The work is to let something die without throwing your entire ethics into the fire.",
+      "When Dionysus comes, a persona has grown too small. Jung treated him as the dissolving of inflation’s opposite: rigidity. The work is to let something die without throwing your entire ethics into the fire.",
     reflection: "What in you is knocking from the inside of a role that no longer fits?",
     weights: { shadow: 2, eros: 1, trickster: 2, threshold: 1 },
     questions: [
@@ -161,7 +163,7 @@ export const MYTHS: Myth[] = [
     origin: "Norse",
     short:
       "A king hangs himself from the world tree for nine nights to steal the runes. Knowledge here is not given. It is paid for in the body.",
-    full: "Odin is not a comfortable father-god. He is a wanderer with one eye, having pawned the other at Mimir's well. He hangs on Yggdrasil, wounded, without bread or horn, until the runes reveal themselves. He collects poetry from a stolen sip of mead. He knows Ragnarök is coming and prepares anyway.\n\nThe Allfather's wisdom is expensive and incomplete on purpose. He trades comfort for sight, again and again.",
+    full: "Odin is not a comfortable father-god. He is a wanderer with one eye, having pawned the other at Mimir’s well. He hangs on Yggdrasil, wounded, without bread or horn, until the runes reveal themselves. He collects poetry from a stolen sip of mead. He knows Ragnarök is coming and prepares anyway.\n\nThe Allfather’s wisdom is expensive and incomplete on purpose. He trades comfort for sight, again and again.",
     psychology:
       "Odin is the hunger for a knowledge that will cost you a version of yourself. Not all sacrifice is noble: some is compulsion. The rune is worth it if it changes how you live, not only how you speak.",
     reflection: "What are you willing to lose in order to see, and what are you only performing as sacrifice?",
@@ -180,7 +182,7 @@ export const MYTHS: Myth[] = [
     origin: "Norse",
     short:
       "A goddess of love, war, and seiðr who weeps gold and rides a chariot of cats. She seeks what was taken, and she does not pretend that desire is small.",
-    full: "Freyja owns Brísingamen, a necklace so bright it is almost a scandal. She flies in a falcon cloak. Half the slain come to her hall, not Odin's. She taught the Aesir a magic they feared because it worked. When her husband Óðr wanders, she goes looking, and the tears she sheds are red gold.\n\nShe is not the tame Venus of greeting cards. She is the dignity of wanting, the intelligence of attraction, and the refusal to split love from power.",
+    full: "Freyja owns Brísingamen, a necklace so bright it is almost a scandal. She flies in a falcon cloak. Half the slain come to her hall, not Odin’s. She taught the Aesir a magic they feared because it worked. When her husband Óðr wanders, she goes looking, and the tears she sheds are red gold.\n\nShe is not the tame Venus of greeting cards. She is the dignity of wanting, the intelligence of attraction, and the refusal to split love from power.",
     psychology:
       "Freyja arrives when desire has been shamed into hiding. Reclaiming it is not indulgence; it is restoring a faculty. Watch for the necklace: the thing you bought with too much of yourself, and for the tears that have value even when they do not bring him back.",
     reflection: "What desire have you talked yourself out of, and who benefited from that silence?",
@@ -199,9 +201,9 @@ export const MYTHS: Myth[] = [
     origin: "Norse",
     short:
       "The shape-changer who solves problems by becoming the problem. He is the glitch that keeps the gods honest, until the glitch becomes the end of the world.",
-    full: "Loki is blood-brother to Odin and father of monsters. He shears Sif's hair and then replaces it with gold. He becomes a mare and returns with an eight-legged horse. He insults every god at the feast and is bound with his son's guts while poison drips toward his face. His writhing is the earthquake.\n\nHe is not evil in the later moral sense. He is the principle that no closed system stays closed. The danger is when the trick becomes identity.",
+    full: "Loki is blood-brother to Odin and father of monsters. He shears Sif’s hair and then replaces it with gold. He becomes a mare and returns with an eight-legged horse. He insults every god at the feast and is bound with his son’s guts while poison drips toward his face. His writhing is the earthquake.\n\nHe is not evil in the later moral sense. He is the principle that no closed system stays closed. The danger is when the trick becomes identity.",
     psychology:
-      "Loki is the psyche's refusal of a false peace. He shows up as the joke, the leak, the affair, the sudden honesty. Used well, he is medicine. Used as a lifestyle, he is Ragnarök on a personal scale.",
+      "Loki is the psyche’s refusal of a false peace. He shows up as the joke, the leak, the affair, the sudden honesty. Used well, he is medicine. Used as a lifestyle, he is Ragnarök on a personal scale.",
     reflection: "What truth is trying to get in through a disruption you keep calling an accident?",
     weights: { trickster: 3, shadow: 2, threshold: 1 },
     questions: [
@@ -218,7 +220,7 @@ export const MYTHS: Myth[] = [
     origin: "Norse / Völsunga",
     short:
       "A hero kills a dragon, tastes its heart, and understands the birds. The gold is cursed. Knowing too much does not save him from the plot he can now overhear.",
-    full: "Sigurd is raised for a deed: Fafnir, once a man, now a dragon on a hoard. The sword is mended from shards. The heart is cooked; Sigurd burns his thumb, tastes, and the language of birds becomes his. They warn him. He is still woven into a betrayal involving a potion of forgetfulness and a woman who will not be a footnote.\n\nThe dragon's gold teaches that some victories are contaminated at the source. Understanding the warning is not the same as being free of the story.",
+    full: "Sigurd is raised for a deed: Fafnir, once a man, now a dragon on a hoard. The sword is mended from shards. The heart is cooked; Sigurd burns his thumb, tastes, and the language of birds becomes his. They warn him. He is still woven into a betrayal involving a potion of forgetfulness and a woman who will not be a footnote.\n\nThe dragon’s gold teaches that some victories are contaminated at the source. Understanding the warning is not the same as being free of the story.",
     psychology:
       "Sigurd is competence meeting fate without cynicism. The heart-taste is sudden insight: therapy, a dream, a confession. The curse is acting as if insight were immunity. Von Franz: the treasure is often the thing that will unmake the naive hero.",
     reflection: "What did you learn that you have not yet consented to live?",
@@ -275,34 +277,34 @@ export const MYTHS: Myth[] = [
     origin: "Egyptian",
     short:
       "The ibis-headed scribe of the gods, who invented writing and stands at the weighing of the heart. He does not save you. He records you.",
-    full: "Thoth is the cool mind of the Egyptian cosmos: moon, measurement, the word that makes the world stay put. In the hall of Ma'at he writes the outcome of the weighing. He is also the mediator who heals Horus and Set enough for the cosmos to continue.\n\nTo live a Thoth day is to discover that language is not commentary on your life. It is one of the ways your life becomes real.",
+    full: "Thoth is the cool mind of the Egyptian cosmos: moon, measurement, the word that makes the world stay put. In the hall of Ma’at he writes the outcome of the weighing. He is also the mediator who heals Horus and Set enough for the cosmos to continue.\n\nTo live a Thoth day is to discover that language is not commentary on your life. It is one of the ways your life becomes real.",
     psychology:
-      "Thoth arrives when it is time to tell the truth in a form that can be kept: a sentence, a ledger, a vow. Beware using recording as a substitute for living. The scribe is a servant of Ma'at, not a hiding place.",
+      "Thoth arrives when it is time to tell the truth in a form that can be kept: a sentence, a ledger, a vow. Beware using recording as a substitute for living. The scribe is a servant of Ma’at, not a hiding place.",
     reflection: "What have you lived that you have not yet been willing to write down?",
     weights: { craft: 3, threshold: 1, sovereignty: 1 },
     questions: [
       "If your heart were weighed tomorrow, what feather would it have to match?",
       "Which story of yours is still only spoken, and would change if it were written?",
-      "Where are you mediating other people's wars to avoid your own page?",
+      "Where are you mediating other people’s wars to avoid your own page?",
     ],
     sigil: "scale",
   },
   {
     id: "maat",
-    name: "Ma'at",
+    name: "Ma’at",
     tradition: "Egyptian",
     origin: "Egyptian",
     short:
       "Not a heroine so much as a principle: the feather against which the heart is weighed. Order, truth, right relation. The cosmos as an ethic.",
-    full: "Ma'at is the opposite of isfet: chaos, injustice, the lie. Pharaohs claimed to uphold her. The dead hoped their hearts would be light. She is often shown as a woman with an ostrich feather, but she is closer to physics than to a personality: the way things hold if you do not cheat.\n\nTo meet Ma'at is to discover that some of your suffering is not mystery. It is imbalance asking to be named.",
+    full: "Ma’at is the opposite of isfet: chaos, injustice, the lie. Pharaohs claimed to uphold her. The dead hoped their hearts would be light. She is often shown as a woman with an ostrich feather, but she is closer to physics than to a personality: the way things hold if you do not cheat.\n\nTo meet Ma’at is to discover that some of your suffering is not mystery. It is imbalance asking to be named.",
     psychology:
-      "Ma'at is the psyche's demand for right proportion. Not moralism: proportion. Jung's individuation without ethics becomes aesthetic self-absorption. Ma'at is the correction.",
+      "Ma’at is the psyche’s demand for right proportion. Not moralism: proportion. Jung’s individuation without ethics becomes aesthetic self-absorption. Ma’at is the correction.",
     reflection: "Where is your life heavy, and what lie is the extra weight?",
     weights: { sovereignty: 2, craft: 1, threshold: 2, devotion: 1 },
     questions: [
       "What are you calling complexity that is actually a refusal to come back into proportion?",
       "Whose heart are you weighing besides your own?",
-      "What would 'lightness' mean in your actual week: not as mood, as practice?",
+      "What would ‘lightness’ mean in your actual week: not as mood, as practice?",
     ],
     sigil: "scale",
   },
@@ -312,10 +314,10 @@ export const MYTHS: Myth[] = [
     tradition: "African",
     origin: "Akan, and the Atlantic world",
     short:
-      "A spider bargains with the sky for the world's stories. The treasure is not gold. It is the right to tell.",
-    full: "Kwaku Anansi is a spider, a man, a hunger for stories. In the best-known telling he goes to the sky and bargains with Nyame for the world's tales. The price is a set of impossible catches: hornets, a python, a leopard, sometimes a being who cannot be held. He pays with cunning rather than force, and the stories come down.\n\nThe spider travels. In the Caribbean he is Anancy. In the American South he is Aunt Nancy. The names change because the people had to. The pattern does not: a small being who refuses to let the large keep the narrative.\n\nThese are living stories, told in many nations, not one people's secret to flatten. The public teaching is this: the treasure is the right to tell. A game would call it unlocking the lore. A life would call it taking your mouth back.",
+      "A spider bargains with the sky for the world’s stories. The treasure is not gold. It is the right to tell.",
+    full: "Kwaku Anansi is a spider, a man, a hunger for stories. In the best-known telling he goes to the sky and bargains with Nyame for the world’s tales. The price is a set of impossible catches: hornets, a python, a leopard, sometimes a being who cannot be held. He pays with cunning rather than force, and the stories come down.\n\nThe spider travels. In the Caribbean he is Anancy. In the American South he is Aunt Nancy. The names change because the people had to. The pattern does not: a small being who refuses to let the large keep the narrative.\n\nThese are living stories, told in many nations, not one people’s secret to flatten. The public teaching is this: the treasure is the right to tell. A game would call it unlocking the lore. A life would call it taking your mouth back.",
     psychology:
-      "Anansi arrives when your story is being held in someone else's mouth. Trickster here is not mischief for its own sake. It is the intelligence of the small, paying an impossible price to own the telling. Beware using cunning as a way to never be known.",
+      "Anansi arrives when your story is being held in someone else’s mouth. Trickster here is not mischief for its own sake. It is the intelligence of the small, paying an impossible price to own the telling. Beware using cunning as a way to never be known.",
     reflection: "Whose mouth has been telling your life, and what would it cost to take the stories back?",
     weights: { trickster: 3, craft: 2, threshold: 1 },
     questions: [
@@ -332,7 +334,7 @@ export const MYTHS: Myth[] = [
     origin: "Epic of Old Mali",
     short:
       "A child who cannot walk is prophesied to found a nation. Exile, then iron, then a standing. Mali is made from a delayed body.",
-    full: "The Epic of Sundiata is West Africa's great public poem of exile and return. A prophecy says a child of Sogolon will found a nation. The child cannot walk. The court laughs. Years later, in exile, he stands: iron becomes a staff, the staff becomes a king. He returns, defeats Soumaoro of Sosso, and Mali is made.\n\nGriots have carried this across the Sahel for centuries. It is not a village cult. It is an epic, as Homer is an epic: a civilizational memory of a body that was not supposed to rise, rising.\n\nCampbell would recognize the departure, the helpers, the ordeal, the return with a boon that is a people. The engine treats the walk as playable. What was delayed was not denied.",
+    full: "The Epic of Sundiata is West Africa’s great public poem of exile and return. A prophecy says a child of Sogolon will found a nation. The child cannot walk. The court laughs. Years later, in exile, he stands: iron becomes a staff, the staff becomes a king. He returns, defeats Soumaoro of Sosso, and Mali is made.\n\nGriots have carried this across the Sahel for centuries. It is not a village cult. It is an epic, as Homer is an epic: a civilizational memory of a body that was not supposed to rise, rising.\n\nCampbell would recognize the departure, the helpers, the ordeal, the return with a boon that is a people. The engine treats the walk as playable. What was delayed was not denied.",
     psychology:
       "Sundiata is the self that was written off early. Shame about a slow body, a late start, a prophecy no one else can see. The work is not to pretend the delay did not happen. The work is to stand when standing becomes possible, and to found something from the years that looked like nothing.",
     reflection: "What in you was not supposed to stand, and what nation is waiting on that first step?",
@@ -351,9 +353,9 @@ export const MYTHS: Myth[] = [
     origin: "Kebra Nagast / Horn of Africa",
     short:
       "The Queen of the South goes to Solomon with riddles, incense, and a mind that will not be a guest. Wisdom is tested from both sides of the table.",
-    full: "Makeda, Queen of the South, goes to Solomon with riddles, incense, and a mind that will not be a guest. In the Ethiopian Kebra Nagast she is not a footnote to a king's wisdom. She tests him. She takes what is worth taking. In that telling the Ark travels with her son Menelik, and the Horn of Africa becomes a center, not a margin.\n\nSheba is not one people's private god. She is a civilizational figure of the Horn, retold in scripture, in the Kebra Nagast, and in the long argument about where wisdom lives.\n\nThe public pattern is a sovereignty that arrives as a question. She does not wait to be explained to. She comes with tests of her own.",
+    full: "Makeda, Queen of the South, goes to Solomon with riddles, incense, and a mind that will not be a guest. In the Ethiopian Kebra Nagast she is not a footnote to a king’s wisdom. She tests him. She takes what is worth taking. In that telling the Ark travels with her son Menelik, and the Horn of Africa becomes a center, not a margin.\n\nSheba is not one people’s private god. She is a civilizational figure of the Horn, retold in scripture, in the Kebra Nagast, and in the long argument about where wisdom lives.\n\nThe public pattern is a sovereignty that arrives as a question. She does not wait to be explained to. She comes with tests of her own.",
     psychology:
-      "Makeda appears when you have been invited into someone else's court as a marvel, and you refuse the role. The psyche uses her when wisdom is being treated as a northern property. The work is to arrive with your own riddles, and to leave with what is actually transferable: not the performance of being impressed.",
+      "Makeda appears when you have been invited into someone else’s court as a marvel, and you refuse the role. The psyche uses her when wisdom is being treated as a northern property. The work is to arrive with your own riddles, and to leave with what is actually transferable: not the performance of being impressed.",
     reflection: "Whose court have you been visiting as a guest, and what riddle of yours has not yet been asked?",
     weights: { sovereignty: 2, quest: 1, craft: 1, eros: 1, threshold: 1 },
     questions: [
@@ -370,9 +372,9 @@ export const MYTHS: Myth[] = [
     origin: "Told in many African nations",
     short:
       "A slow animal is sent with news that humans will rise like the moon. A faster animal arrives first with the other word. Death enters because the first message came second.",
-    full: "Across many African nations a story is told: a slow messenger is sent with news that humans will not die, or will rise again like the moon. A faster animal runs ahead with the other word. Death enters the world because the first message arrived second.\n\nThe tellers change: San, many Bantu-speaking peoples, East Africa, the South. The animal changes: chameleon, lizard, hare. The pattern does not. A world can be decided by which word is early.\n\nThese are public stories, not one people's secret. The engine offers the pattern, not a census of versions. The question is not which animal you are. The question is which message you are living as if it were the only one that arrived.",
+    full: "Across many African nations a story is told: a slow messenger is sent with news that humans will not die, or will rise again like the moon. A faster animal runs ahead with the other word. Death enters the world because the first message arrived second.\n\nThe tellers change: San, many Bantu-speaking peoples, East Africa, the South. The animal changes: chameleon, lizard, hare. The pattern does not. A world can be decided by which word is early.\n\nThese are public stories, not one people’s secret. The engine offers the pattern, not a census of versions. The question is not which animal you are. The question is which message you are living as if it were the only one that arrived.",
     psychology:
-      "The late messenger is the psyche's knowledge that timing can be fate. A true word that arrives after a louder one. Grief that is actually a delayed consolation. The work is not to become the hare. The work is to notice which message you crowned because it was first.",
+      "The late messenger is the psyche’s knowledge that timing can be fate. A true word that arrives after a louder one. Grief that is actually a delayed consolation. The work is not to become the hare. The work is to notice which message you crowned because it was first.",
     reflection: "Which message in your life is only first, not true, and what slow word is still walking?",
     weights: { descent: 2, threshold: 2, shadow: 1, return: 1 },
     questions: [
@@ -429,8 +431,8 @@ export const MYTHS: Myth[] = [
       "A weaver-goddess and a mortal herdsman are separated by the Milky Way and allowed one bridge of magpies a year. Longing becomes a calendar.",
     full: "Zhinü weaves the clouds. Niulang tends cattle. Their love is so absorbing that the work of heaven and earth slips. They are parted by a river of stars. Once a year, magpies make a bridge.\n\nThe tale is not a tragedy that forgot to end. It is a design for desire that must live alongside duty. The night of Qixi is the night the design becomes visible: love as an appointed crossing, not a permanent fusion.",
     psychology:
-      "This myth arrives in lives where two callings are real. Fusion would wreck both. The bridge is the mature form of eros: rare, prepared, enough. Coelho's omen is the magpie: the world will help you cross if you keep the appointment.",
-    reflection: "What river of duty runs between you and what you love, and where is the one night of crossing?",
+      "Two vocations, two loves, two offices. Fusion is the romantic solution and the wreck. The mature form of eros is a bridge: rare, prepared, enough. Keep the date. Do not burn the river to make a permanent noon.",
+    reflection: "What river runs between two real callings, and when is the crossing?",
     weights: { eros: 3, devotion: 1, threshold: 1, craft: 1 },
     questions: [
       "Where have you been demanding a life with no Milky Way in it?",
@@ -465,7 +467,7 @@ export const MYTHS: Myth[] = [
     origin: "Japanese folktale",
     short:
       "A wounded crane becomes a wife who weaves miraculous cloth from her own feathers. When the husband looks, the crane leaves. Mystery does not survive surveillance.",
-    full: "A poor man rescues a crane. A woman comes to his door. She weaves in a closed room and asks only that he not look. The cloth makes them rich; his curiosity (or greed) opens the door. He sees a crane plucking herself to make the weave. She flies.\n\nThe folktale is cousin to Psyche's lamp and to every relationship, calling, or art that requires a room without an audience.",
+    full: "A poor man rescues a crane. A woman comes to his door. She weaves in a closed room and asks only that he not look. The cloth makes them rich; his curiosity (or greed) opens the door. He sees a crane plucking herself to make the weave. She flies.\n\nThe folktale is cousin to Psyche’s lamp and to every relationship, calling, or art that requires a room without an audience.",
     psychology:
       "The crane wife is the vulnerable source of a gift. Looking is not always love; sometimes it is management. Hillman: the soul needs a cell of privacy or it will not keep weaving.",
     reflection: "What in you weaves only when no one is watching, and who keeps opening the door?",
@@ -484,9 +486,9 @@ export const MYTHS: Myth[] = [
     origin: "Hindu epic (Rāmāyaṇa)",
     short:
       "A princess born of the furrow walks through fire to prove a truth that should never have been asked of her. The later tellings argue, correctly, about who owed whom proof.",
-    full: "Sītā is discovered in the earth. She chooses Rāma. She is abducted by Rāvaṇa and waits, unwavering, in the aśoka grove. After the war she undergoes agniparīkṣā, the fire ordeal, because a king's reputation is treated as more fragile than a woman's truth. In some tellings she returns to the earth that bore her rather than submit to a second humiliation.\n\nTo read Sītā only as patience is to miss her agency: the choice, the endurance, the final refusal. A living tradition continues to argue with this story, which is part of its dignity.",
+    full: "Sītā is discovered in the earth. She chooses Rāma. She is abducted by Rāvaṇa and waits, unwavering, in the aśoka grove. After the war she undergoes agniparīkṣā, the fire ordeal, because a king’s reputation is treated as more fragile than a woman’s truth. In some tellings she returns to the earth that bore her rather than submit to a second humiliation.\n\nTo read Sītā only as patience is to miss her agency: the choice, the endurance, the final refusal. A living tradition continues to argue with this story, which is part of its dignity.",
     psychology:
-      "Sītā arrives when you have already been faithful and are still being asked for theater. The fire is other people's anxiety. The earth is the part of you that remembers you do not have to audition forever.",
+      "Sītā arrives when you have already been faithful and are still being asked for theater. The fire is other people’s anxiety. The earth is the part of you that remembers you do not have to audition forever.",
     reflection: "What proof is being demanded of you that love, or truth, should not have to give?",
     weights: { devotion: 2, sovereignty: 2, shadow: 1, descent: 1 },
     questions: [
@@ -505,7 +507,7 @@ export const MYTHS: Myth[] = [
       "A warrior drops his bow in the space between two armies and is given a conversation instead of a pep talk. Action without insight was the first problem; insight without action is the second.",
     full: "On the field of Kurukṣetra, Arjuna sees relatives on both sides and refuses to fight. Krishna, his charioteer, does not mock the collapse. He unfolds a teaching: the nature of the self, of action, of devotion, of what can and cannot be owned. Arjuna picks the bow back up: not as the same man who dropped it.\n\nThe Gītā is a pause that became scripture. The myth is the permission to stop in the chariot and the obligation, after seeing, to move.",
     psychology:
-      "Arjuna is the ethical freeze. A calling that once felt clean now looks like harm. The medicine is not numbness and not impulsivity. It is a reorientation of who is acting. Campbell's hero here is the one who can stay in the chariot long enough to be taught.",
+      "Arjuna is the ethical freeze. A calling that once felt clean now looks like harm. The medicine is not numbness and not impulsivity. It is a reorientation of who is acting. Campbell’s hero here is the one who can stay in the chariot long enough to be taught.",
     reflection: "What bow have you dropped, and what conversation needs to happen before you pick it up, or put it away for good?",
     weights: { threshold: 3, sovereignty: 1, devotion: 2, quest: 1 },
     questions: [
@@ -522,14 +524,14 @@ export const MYTHS: Myth[] = [
     origin: "Hindu epic (Mahābhārata)",
     short:
       "A queen is gambled away and dragged into court. Her hair stays unbraided as a vow until injustice is answered. Dignity here is not politeness.",
-    full: "Draupadī, born from a fire, is wife to the five Pāṇḍavas. In the dice hall she is staked and lost. Duhśāsana tries to strip her; the cloth keeps coming. She asks the assembly a legal and cosmic question: could she be wagered if she was not already owned? The men of the court fail the question. She refuses to braid her hair until the account is settled.\n\nShe is one of the epic's clearest minds. Wrath, in her, is not hysteria. It is memory with a spine.",
+    full: "Draupadī, born from a fire, is wife to the five Pāṇḍavas. In the dice hall she is staked and lost. Duhśāsana tries to strip her; the cloth keeps coming. She asks the assembly a legal and cosmic question: could she be wagered if she was not already owned? The men of the court fail the question. She refuses to braid her hair until the account is settled.\n\nShe is one of the epic’s clearest minds. Wrath, in her, is not hysteria. It is memory with a spine.",
     psychology:
       "Draupadī arrives when a humiliation has been public and the surrounding system has watched. The unbraided hair is a refusal to return to cosmetic peace. Healing that skips justice will not hold.",
     reflection: "What have you braided back too soon, as if the hall had already answered you?",
     weights: { sovereignty: 3, shadow: 2, threshold: 1 },
     questions: [
       "Which of your angers is actually a legal question no one in the room would answer?",
-      "Where are you being treated as stakes in someone else's game?",
+      "Where are you being treated as stakes in someone else’s game?",
       "What would it mean to keep a vow of memory without becoming only the vow?",
     ],
     sigil: "flame",
@@ -598,7 +600,7 @@ export const MYTHS: Myth[] = [
     origin: "Maya",
     short:
       "A moon goddess of weaving, water, midwifery, and flood. She holds both the gentle cloth and the storm that unweaves the world so it can be woven again.",
-    full: "Ixchel is imaged sometimes as a young weaver, sometimes as an old woman with a jug, sometimes with a serpent headdress. She governs the cycles that make bodies and cloth: menstruation, birth, rain, the moon's aging. She can destroy by flood and restore by water. Among Maya peoples this is not a dead story; it is part of a living sky.\n\nTo meet her in a life is to notice a cycle you have been treating as a straight line.",
+    full: "Ixchel is imaged sometimes as a young weaver, sometimes as an old woman with a jug, sometimes with a serpent headdress. She governs the cycles that make bodies and cloth: menstruation, birth, rain, the moon’s aging. She can destroy by flood and restore by water. Among Maya peoples this is not a dead story; it is part of a living sky.\n\nTo meet her in a life is to notice a cycle you have been treating as a straight line.",
     psychology:
       "Ixchel is the intelligence of phases. A culture addicted to constant noon will call her dangerous. She is dangerous: to anything that cannot wane. Midwifery here is psychological: she is present at the births you did not schedule.",
     reflection: "Which phase of your cycle are you in, and what does that phase actually ask for?",
@@ -638,7 +640,7 @@ export const MYTHS: Myth[] = [
       "A poet has waited seven years for a salmon that ate the nuts of wisdom. A boy burns his thumb on the cooking fish, tastes, and the waiting transfers.",
     full: "Finn mac Cumhaill, as a boy named Demne, is set to cook the salmon for his teacher Finegas. He bursts a blister, licks his thumb, and the imbas: the illuminating knowledge: lands on him instead. After that he has only to put his thumb to his tooth to know.\n\nThe tale is comic and exact. Wisdom often arrives through an accident of service, not through the person who planned to be wise.",
     psychology:
-      "This is the myth of unintended initiation. You were helping someone else's quest. The burn is the price of a knowledge you did not budget for. Jung: the unconscious does not care about your résumé.",
+      "This is the myth of unintended initiation. You were helping someone else’s quest. The burn is the price of a knowledge you did not budget for. Jung: the unconscious does not care about your résumé.",
     reflection: "What did you taste by accident that you now have a responsibility to know?",
     weights: { craft: 2, trickster: 1, threshold: 2, quest: 1 },
     questions: [
@@ -655,10 +657,10 @@ export const MYTHS: Myth[] = [
     origin: "Welsh (Mabinogi)",
     short:
       "A woman is made of flowers to be a wife, then chooses an affair and is turned into an owl. The story is usually told as betrayal. It is also a story about being manufactured.",
-    full: "Lleu is cursed not to have a wife from the race of men. Magicians make him one from oak, broom, and meadowsweet. They name her Blodeuwedd: flower-face. She has no say in the making. She falls in love with Gronw and they plot Lleu's death. As punishment she is transformed into an owl, hunted by other birds.\n\nA modern reading does not have to excuse murder to notice that a person made to be a gift will eventually want a will. The owl is night-vision after a daytime identity that was never hers.",
+    full: "Lleu is cursed not to have a wife from the race of men. Magicians make him one from oak, broom, and meadowsweet. They name her Blodeuwedd: flower-face. She has no say in the making. She falls in love with Gronw and they plot Lleu’s death. As punishment she is transformed into an owl, hunted by other birds.\n\nA modern reading does not have to excuse murder to notice that a person made to be a gift will eventually want a will. The owl is night-vision after a daytime identity that was never hers.",
     psychology:
-      "Blodeuwedd is the manufactured self: the pretty arrangement built to complete someone else's geis. When she appears, a life is clawing toward agency with unclean hands. The work is to want a will without becoming only the plot.",
-    reflection: "Which of your features were arranged for someone else's story?",
+      "Blodeuwedd is the manufactured self: the pretty arrangement built to complete someone else’s geis. When she appears, a life is clawing toward agency with unclean hands. The work is to want a will without becoming only the plot.",
+    reflection: "Which of your features were arranged for someone else’s story?",
     weights: { shadow: 3, eros: 1, sovereignty: 2, trickster: 1 },
     questions: [
       "Where were you made of flowers, assembled to be suitable, and what would a self-made night look like?",
@@ -674,7 +676,7 @@ export const MYTHS: Myth[] = [
     origin: "Irish",
     short:
       "A boy-hero takes a geis and a battle-frenzy so fierce he must be cooled in vats. He dies standing, tied to a stone, because even death has to wait for him to finish.",
-    full: "Setanta kills the smith Culann's hound and offers to take its place: hence the name. He is bound by geasa, those Irish prohibitions that are also a fate. In the Táin he holds a ford alone. The ríastrad: warp-spasm: turns him into something his friends must dunk in water until he is human again. His death comes when he is forced to break his vows; he ties himself to a standing stone so he will die on his feet.\n\nHeroism here is not health. It is a contract with excess.",
+    full: "Setanta kills the smith Culann’s hound and offers to take its place: hence the name. He is bound by geasa, those Irish prohibitions that are also a fate. In the Táin he holds a ford alone. The ríastrad: warp-spasm: turns him into something his friends must dunk in water until he is human again. His death comes when he is forced to break his vows; he ties himself to a standing stone so he will die on his feet.\n\nHeroism here is not health. It is a contract with excess.",
     psychology:
       "Cú Chulainn is the gift of being able to go beyond a limit, and the cost of not knowing how to come back. Rage, work, erotic intensity, athletic will: the vat of cold water is as important as the ford. A geis is a boundary you cannot cross without becoming a different story.",
     reflection: "What are you still fighting at the ford as if no one else could be trained?",
@@ -690,12 +692,12 @@ export const MYTHS: Myth[] = [
     id: "inanna",
     name: "Inanna",
     tradition: "Sumerian",
-    origin: "Sumerian (from Enheduanna's hymns onward)",
+    origin: "Sumerian (from Enheduanna’s hymns onward)",
     short:
       "The Queen of Heaven walks through seven gates to the underworld, is stripped at each, and is hung on a hook. She returns with a price, because no one comes back from below for free.",
     full: "Inanna opens her ear to the great below. At each of seven gates she is asked for a piece of her glory: crown, beads, breastplate, measuring rod: until she arrives naked. Ereshkigal kills her. She hangs. After three days, clever helpers go down with the food of life. She rises, but the underworld wants a substitute. The choice of who will take her place is part of the teaching: not everyone who failed to mourn you is innocent.\n\nEnheduanna, the first named poet we still have, sang this goddess with a precision that still feels like reportage from the interior.",
     psychology:
-      "Inanna is initiation by subtraction. The seven gates are the identities you cannot take into the next chamber. Jung's descent, Hillman's underworld, von Franz's fairy-tale stripping of the false skin: they all sit in this older pattern. Return is real, and it costs someone. Be honest about the cost.",
+      "Inanna is initiation by subtraction. The seven gates are the identities you cannot take into the next chamber. Jung’s descent, Hillman’s underworld, von Franz’s fairy-tale stripping of the false skin: they all sit in this older pattern. Return is real, and it costs someone. Be honest about the cost.",
     reflection: "Which gate are you at, and what are you still trying to wear through it?",
     weights: { descent: 3, sovereignty: 2, return: 2, shadow: 1 },
     questions: [
@@ -714,7 +716,7 @@ export const MYTHS: Myth[] = [
       "A king loses the only friend who could match him, fails to steal immortality, and comes home to write the story on a wall. The consolation is not forever. It is the city, and the telling.",
     full: "Gilgamesh is two-thirds divine and unbearable until Enkidu is made to be his equal. They kill the guardian of the cedars and the Bull of Heaven. Enkidu dies. Gilgamesh rages into the wild, reaches Utnapishtim, is given a plant of youth, and loses it to a snake. He returns to Uruk and looks at the walls. The poem ends by asking the reader to look too.\n\nFriendship is the first civilization in the epic. Mortality is the second. Story is the third.",
     psychology:
-      "Gilgamesh is grief that tries to become a quest for exemption. It cannot. The successful return is not the plant; it is the willingness to inhabit a finite city and to make a record. Campbell's boon, here, is ordinary time, newly seen.",
+      "Gilgamesh is grief that tries to become a quest for exemption. It cannot. The successful return is not the plant; it is the willingness to inhabit a finite city and to make a record. Campbell’s boon, here, is ordinary time, newly seen.",
     reflection: "What immortality project is standing in for a grief you have not finished?",
     weights: { quest: 2, descent: 1, eros: 1, return: 2, craft: 1 },
     questions: [
@@ -725,32 +727,13 @@ export const MYTHS: Myth[] = [
     sigil: "wall" as Myth["sigil"],
   },
   {
-    id: "scheherazade",
-    name: "Scheherazade",
-    tradition: "Arabic",
-    origin: "Arabic / Persian storytelling",
-    short:
-      "A woman marries a king who kills his wives at dawn and survives by not finishing the story. Narrative as a technology of staying alive.",
-    full: "Shahryar has been betrayed and has decided that women will not live long enough to betray him again. Scheherazade volunteers. Each night she opens a tale and leaves a door ajar. Curiosity, which had curdled into violence, becomes the reason to let the sun rise on her. After a thousand and one nights the king is different, and so is she: a mother, a weaver of worlds, a political actor.\n\nThe point is not that stories are cute. The point is that a psyche in revenge-time can be re-paced by a better pattern.",
-    psychology:
-      "Scheherazade is the part of you that knows how to keep a dangerous room interested in tomorrow. It is also the exhaustion of being the only adult in a wounded system. The myth asks whether your storytelling is still saving a life: yours included, or merely delaying a dawn you now need.",
-    reflection: "What story are you leaving unfinished in order to survive, and is it still time to survive that way?",
-    weights: { craft: 2, trickster: 1, sovereignty: 1, devotion: 2, threshold: 1 },
-    questions: [
-      "Who in your life is Shahryar, and what tale is keeping the knife down?",
-      "Where have you become only the storyteller, never the one who gets to sleep?",
-      "What would a last night look like: not as death, as completion?",
-    ],
-    sigil: "thread",
-  },
-  {
     id: "raven",
     name: "Raven",
     tradition: "Northwest Coast",
     origin: "Northwest Coast (told in many nations' public stories)",
     short:
       "A trickster steals the sun from a box because the world is too dark, then drops it into the sky. The light is stolen. That does not make it less light.",
-    full: "In widely told Northwest Coast stories, the world is dim until Raven: hungry, bored, ingenious: finds the box where a chief keeps the sun (and sometimes the moon and stars). He becomes a child, a needle, a speck of dirt in a cup of water; he cries until the box is opened; he takes the light and flings it up. The world becomes visible, including to those who did not want it visible.\n\nThese stories belong to living peoples and are not one tribe's secret to flatten. The public pattern is this: a messy messenger delivers a necessary day.",
+    full: "In widely told Northwest Coast stories, the world is dim until Raven: hungry, bored, ingenious: finds the box where a chief keeps the sun (and sometimes the moon and stars). He becomes a child, a needle, a speck of dirt in a cup of water; he cries until the box is opened; he takes the light and flings it up. The world becomes visible, including to those who did not want it visible.\n\nThese stories belong to living peoples and are not one tribe’s secret to flatten. The public pattern is this: a messy messenger delivers a necessary day.",
     psychology:
       "Raven is the undignified way a truth gets into the room. You may not like the thief. You may still need the sun. Trickster ethics: the gift does not require a clean motive.",
     reflection: "What light is still in a box because the owner of the box enjoys the dark?",
@@ -761,25 +744,6 @@ export const MYTHS: Myth[] = [
       "If the sun came out tomorrow, what would you no longer be able to hide?",
     ],
     sigil: "bird",
-  },
-  {
-    id: "maui",
-    name: "Māui",
-    tradition: "Polynesian",
-    origin: "Polynesian (told across many islands)",
-    short:
-      "A younger sibling fishes up islands, slows the sun, and dies reaching for immortality in the body of the night. The culture-hero who cannot stop at enough.",
-    full: "Māui is born early, thrown to the sea, and returns as the one who will not leave the world as he found it. He hauls land from the ocean with a grandmother's jawbone. He beats the sun into a longer day so people can finish their work. He steals fire. In some tellings he tries to abolish death by crawling through the goddess of night and is killed by a laughing bird.\n\nAcross Polynesia these are living, locally specific stories. The shared public pattern is the younger child who enlarges the world and fails the last enlargement.",
-    psychology:
-      "Māui is brilliant restlessness. He is the founder in you, and the part that cannot let a good world be good. The last exploit is often the one that was not asked for. Know which fish you are pulling and which is the night itself.",
-    reflection: "What island have you already fished up that you have not yet consented to live on?",
-    weights: { trickster: 2, craft: 2, quest: 1, shadow: 1 },
-    questions: [
-      "Where are you still slowing the sun because you do not trust there is enough day?",
-      "Which exploit is service, and which is an inability to rest in a finished gift?",
-      "What would 'enough world' feel like in your body?",
-    ],
-    sigil: "boat",
   },
   {
     id: "sedna",
@@ -800,11 +764,53 @@ export const MYTHS: Myth[] = [
     ],
     sigil: "bone",
   },
+  {
+    id: "maui",
+    name: "Māui",
+    tradition: "Polynesian",
+    origin: "Polynesian (told across many islands)",
+    short:
+      "A younger sibling fishes up islands, slows the sun, and dies reaching for immortality in the body of the night. The culture-hero who cannot stop at enough.",
+    full: "Māui is born early, thrown to the sea, and returns as the one who will not leave the world as he found it. He hauls land from the ocean with a grandmother’s jawbone. He beats the sun into a longer day so people can finish their work. He steals fire. In some tellings he tries to abolish death by crawling through the goddess of night and is killed by a laughing bird.\n\nAcross Polynesia these are living, locally specific stories. The shared public pattern is the younger child who enlarges the world and fails the last enlargement.",
+    psychology:
+      "Māui is brilliant restlessness. He is the founder in you, and the part that cannot let a good world be good. The last exploit is often the one that was not asked for. Know which fish you are pulling and which is the night itself.",
+    reflection: "What island have you already fished up that you have not yet consented to live on?",
+    weights: { trickster: 2, craft: 2, quest: 1, shadow: 1 },
+    questions: [
+      "Where are you still slowing the sun because you do not trust there is enough day?",
+      "Which exploit is service, and which is an inability to rest in a finished gift?",
+      "What would ‘enough world’ feel like in your body?",
+    ],
+    sigil: "boat",
+  },
+  {
+    id: "scheherazade",
+    name: "Scheherazade",
+    tradition: "Arabic",
+    origin: "Arabic / Persian storytelling",
+    short:
+      "A woman marries a king who kills his wives at dawn and survives by not finishing the story. Narrative as a technology of staying alive.",
+    full: "Shahryar has been betrayed and has decided that women will not live long enough to betray him again. Scheherazade volunteers. Each night she opens a tale and leaves a door ajar. Curiosity, which had curdled into violence, becomes the reason to let the sun rise on her. After a thousand and one nights the king is different, and so is she: a mother, a weaver of worlds, a political actor.\n\nThe point is not that stories are cute. The point is that a psyche in revenge-time can be re-paced by a better pattern.",
+    psychology:
+      "Scheherazade is the part of you that knows how to keep a dangerous room interested in tomorrow. It is also the exhaustion of being the only adult in a wounded system. The myth asks whether your storytelling is still saving a life: yours included, or merely delaying a dawn you now need.",
+    reflection: "What story are you leaving unfinished in order to survive, and is it still time to survive that way?",
+    weights: { craft: 2, trickster: 1, sovereignty: 1, devotion: 2, threshold: 1 },
+    questions: [
+      "Who in your life is Shahryar, and what tale is keeping the knife down?",
+      "Where have you become only the storyteller, never the one who gets to sleep?",
+      "What would a last night look like: not as death, as completion?",
+    ],
+    sigil: "thread",
+  },
 ];
 
-for (const myth of MYTHS) {
-  myth.questions.sort((a, b) => a.length - b.length || a.localeCompare(b));
-}
+export const MYTHS: Myth[] = RAW.map((myth) => {
+  const questions = MYTH_QUESTIONS[myth.id];
+  const shadow = MYTH_SHADOWS[myth.id];
+  if (!questions) throw new Error(`No lookings for ${myth.id}`);
+  if (!shadow) throw new Error(`No shadow for ${myth.id}`);
+  return { ...myth, questions, shadow } as Myth;
+});
 
 export const MYTH_BY_ID: Record<string, Myth> = Object.fromEntries(
   MYTHS.map((m) => [m.id, m]),

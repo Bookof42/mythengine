@@ -13,12 +13,12 @@ export type SignKind = (typeof SIGNS)[number];
 export const SIGN = {
   seed: {
     title: "Seed",
-    line: "Psyche's grain. Coelho's ordinary work. The ellipse steadies.",
+    line: "Psyche’s grain. Coelho’s ordinary work. The ellipse steadies.",
     earn: "Taken from orbit.",
   },
   key: {
     title: "Key",
-    line: "Campbell's threshold. The gap remembers you.",
+    line: "Campbell’s threshold. The gap remembers you.",
     earn: "Taken from orbit.",
   },
   thread: {
@@ -43,7 +43,7 @@ export const SIGN = {
   },
   box: {
     title: "Box",
-    line: "Psyche's casket. It waits at the mouth of the well.",
+    line: "Psyche’s box. It waits at the mouth of the well.",
     earn: "Taken after descent.",
   },
 } as const;

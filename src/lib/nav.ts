@@ -19,8 +19,7 @@ export const HEADER_LINKS = [
 
 export const FAMILY_LINKS = [
   { href: BOOK, label: "The Book of 42" },
-  { href: MEANING, label: "The Meaning of Life" },
-  { href: `${BOOK}/games`, label: "Hall of Games" },
-  { href: RATHER, label: "Rather" },
-  { href: FIELD69, label: "Field 69" },
+  { href: MEANING, label: "themeaningoflife" },
+  { href: RATHER, label: "rather" },
+  { href: FIELD69, label: "field69" },
 ] as const;

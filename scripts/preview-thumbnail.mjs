@@ -27,7 +27,18 @@ try {
   // networkidle never settles and would burn the whole timeout.
   const resp = await page.goto(url, { waitUntil: "domcontentloaded", timeout: timeoutMs });
   const status = resp?.status() ?? 0;
-  await page.waitForTimeout(1000);
+  await page.waitForFunction(
+    () => {
+      const img = document.querySelector(".hero-stage img, img.hero-ken, .hero-frame img");
+      if (img && img.complete && img.naturalWidth > 40) return true;
+      const stage = document.querySelector(".hero-stage");
+      if (!stage) return false;
+      const bg = getComputedStyle(stage).backgroundImage;
+      return bg && bg.includes("url(");
+    },
+    { timeout: Math.min(12000, timeoutMs) },
+  ).catch(() => {});
+  await page.waitForTimeout(600);
 
   await page.screenshot({ path: outPng, fullPage: false });
 

@@ -2,5 +2,7 @@
   "title": "mythengine",
   "type": "x:game",
   "card": "custom",
-  "color": "050506"
+  "color": "E4D0A0",
+  "publicHost": "mythengine.grok.me",
+  "description": "Is life a game, or a myth we live from the inside?"
 }

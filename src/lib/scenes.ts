@@ -1,5 +1,6 @@
 import type { Scene } from "./types";
 import { PSYCHE_SCENES } from "./psyche-quest";
+import { PLOT_SCENES } from "./plot-walks";
 
 export const SCENES: Scene[] = [
   {
@@ -57,7 +58,7 @@ export const SCENES: Scene[] = [
   {
     id: "coin",
     title: "The last coin",
-    body: "A stranger's hands, open. One coin left in the world, or so it feels. Their palms are weather. They do not explain the request.",
+    body: "A stranger’s hands, open. One coin left in the world, or so it feels. Their palms are weather. They do not explain the request.",
     art: "/art/scene-coin.jpg",
     choices: [
       {
@@ -69,7 +70,7 @@ export const SCENES: Scene[] = [
       {
         id: "ask",
         label: "I ask their name first",
-        after: "They tell you, or they don't. Either way you have refused to let the moment be only a transaction.",
+        after: "They tell you, or they don’t. Either way you have refused to let the moment be only a transaction.",
         weights: { threshold: 2, craft: 1 },
       },
       {
@@ -317,5 +318,5 @@ export const SCENES: Scene[] = [
 ];
 
 export const SCENE_BY_ID: Record<string, Scene> = Object.fromEntries(
-  [...SCENES, ...PSYCHE_SCENES].map((s) => [s.id, s]),
+  [...SCENES, ...PSYCHE_SCENES, ...PLOT_SCENES].map((s) => [s.id, s]),
 );

@@ -1,4 +1,5 @@
 import { Sigil } from "@/components/sigil";
+import { ShareLooking } from "@/components/share-looking";
 import { Button } from "@/components/ui/button";
 import { livingMyth, useGame } from "@/lib/game-store";
 import { mythArt } from "@/lib/myths";
@@ -13,19 +14,16 @@ export function RevealScreen() {
   const question = save.current?.question;
   const taken = (save.history.at(-1)?.signs ?? []) as SignKind[];
   if (!myth) return null;
+  const looking = question ?? myth.reflection;
 
   return (
     <ArtFrame src={mythArt(myth.id)} align="end" dim="bg-bg/45">
-      <p className="text-sm tracking-[0.32em] text-gold uppercase">You returned</p>
+      <p className="text-sm tracking-[0.32em] text-gold uppercase">The weather</p>
       <p className="mt-3 text-base tracking-[0.22em] text-teal uppercase">{myth.name}</p>
-      {question ? (
-        <h1 className="display mt-4 max-w-4xl text-4xl leading-[1.08] text-fg sm:text-6xl">
-          {question}
-        </h1>
-      ) : (
-        <h1 className="display mt-4 text-4xl text-fg sm:text-6xl">{myth.name}</h1>
-      )}
-      <p className="font-garamond mt-6 max-w-3xl text-xl text-fg/90 sm:text-2xl">
+      <h1 className="display mt-4 w-full text-4xl leading-[1.08] text-fg sm:text-6xl">
+        {looking}
+      </h1>
+      <p className="font-garamond mt-6 w-full text-xl text-fg/90 sm:text-2xl">
         The myth names the weather you flew. Not fate. A question you can carry.
       </p>
       {taken.length ? (
@@ -38,13 +36,19 @@ export function RevealScreen() {
           ))}
         </ul>
       ) : null}
-      <div className="mt-10 flex items-center gap-4">
+      <div className="mt-10 flex flex-wrap items-center gap-5">
         <span className="grid h-12 w-12 place-items-center rounded-full border border-gold/35">
           <Sigil kind={myth.sigil} className="h-7 w-7" />
         </span>
         <Button className="min-h-12 px-8 tracking-[0.18em] uppercase" onClick={() => begin()}>
           Play the field
         </Button>
+        <ShareLooking
+          art={mythArt(myth.id)}
+          kicker={myth.name}
+          question={looking}
+          mythId={myth.id}
+        />
       </div>
     </ArtFrame>
   );

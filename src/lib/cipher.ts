@@ -1,4 +1,4 @@
-/** Four faces of the Book's English cipher. No fifth face. */
+/** Four faces of the Book’s English cipher. No fifth face. */
 
 export const FACES = [
   "ordinal",
@@ -111,7 +111,7 @@ export const CIPHER_WORDS = [
   "Myth",
   "mythengine",
   "Question",
-  "Don't Panic",
+  "Don’t Panic",
 ] as const;
 
 export const CIPHER_READINGS = CIPHER_WORDS.map(readWord);
@@ -143,8 +143,8 @@ export const CIPHER_PLATES: CipherPlateSpec[] = [
     note: "Adams gave the culture an Answer. The cipher returns the Question.",
   },
   {
-    word: "Don't Panic",
-    display: "DON'T PANIC",
+    word: "Don’t Panic",
+    display: "DON’T PANIC",
     face: "reduction",
     note: "The towel. Meaning not included.",
   },

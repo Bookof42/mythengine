@@ -2,12 +2,28 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-r
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { Shell } from "@/components/shell";
+import "../styles.css";
 import appCss from "../styles.css?url";
 
 const APP_NAME = "mythengine";
 
+function publicHost() {
+  const raw = String(
+    (typeof process !== "undefined" && process.env?.VITE_PUBLIC_HOSTNAME) || "",
+  )
+    .split(",")[0]
+    .trim()
+    .split(":")[0]
+    .toLowerCase();
+  if (!raw || !raw.includes(".") || /^\d{1,3}(?:\.\d{1,3}){3}$/.test(raw)) return "";
+  return raw;
+}
+
 export const Route = createRootRoute({
-  head: () => ({
+  head: () => {
+    const host = publicHost();
+    const xBanner = host ? `https://${host}/x-banner.jpg` : undefined;
+    return {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -18,9 +34,17 @@ export const Route = createRootRoute({
         content:
           "mythengine is reverse reduction 42, the same seal as Myth in reverse ordinal. A game about the question: is life a game, or a myth we live from the inside?",
       },
+      ...(xBanner ? [{ property: "x:game:image", content: xBanner }] : []),
+    ],
+    styles: [
+      {
+        children:
+          "html,body{background:#050506;color:#ede6d6;margin:0}img{max-width:100%;display:block}",
+      },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "preload", as: "image", href: "/art/hero.jpg" },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
@@ -29,7 +53,8 @@ export const Route = createRootRoute({
         href: "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap",
       },
     ],
-  }),
+    };
+  },
   component: Root,
   notFoundComponent: NotFound,
 });

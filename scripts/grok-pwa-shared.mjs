@@ -93,10 +93,17 @@ export function publicAppHost(hostHeader) {
   return host;
 }
 
-export function resolvePublicHost(hostHeader) {
-  return (
-    publicAppHost(hostHeader) || publicAppHost(process.env?.VITE_PUBLIC_HOSTNAME)
+export function resolvePublicHost(hostHeader, site = {}) {
+  const fromReq = publicAppHost(hostHeader);
+  const fromEnv = publicAppHost(process.env?.VITE_PUBLIC_HOSTNAME);
+  const fromSite = publicAppHost(site?.publicHost);
+  const grokMe = [fromSite, fromEnv, fromReq].find((h) =>
+    String(h).endsWith(".grok.me"),
   );
+  if (!fromReq) return fromEnv || "";
+  const internal = /\.vercel\.app$/.test(fromReq) || fromReq.includes("xai-org");
+  if (internal && grokMe) return grokMe;
+  return fromReq;
 }
 
 export function isInstallQuery(url) {
@@ -297,7 +304,7 @@ export function grokOgHeadTags({
   documentTitle = "",
 } = {}) {
   const title = resolveOgTitle(site, appName, host, documentTitle);
-  const publicHost = resolvePublicHost(host);
+  const publicHost = resolvePublicHost(host, site);
   const tags = [
     `<meta name="twitter:card" content="summary_large_image">`,
     `<meta property="og:title" content="${escapeHtml(title)}">`,

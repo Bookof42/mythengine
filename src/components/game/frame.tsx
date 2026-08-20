@@ -4,7 +4,6 @@ export function ArtFrame({
   src,
   children,
   align = "end",
-  dim = "bg-bg/60",
 }: {
   src: string;
   children: React.ReactNode;
@@ -12,16 +11,23 @@ export function ArtFrame({
   dim?: string;
 }) {
   return (
-    <main className="relative min-h-dvh overflow-x-hidden">
+    <main
+      className="fixed inset-0 z-40 overflow-y-auto overflow-x-hidden bg-bg"
+      style={{
+        backgroundImage: `url("${src}")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <img
         src={src}
         alt=""
-        className="absolute inset-0 h-full w-full object-cover"
+        className="pointer-events-none absolute inset-0 h-full min-h-full w-full object-cover"
       />
-      <div className={cn("absolute inset-0 vignette", dim)} />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-bg via-bg/50 to-transparent" />
       <div
         className={cn(
-          "relative z-10 mx-auto flex min-h-dvh w-full max-w-6xl flex-col px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-16 sm:px-8 sm:pt-20",
+          "relative z-10 mx-auto flex min-h-dvh w-full max-w-6xl flex-col px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(3.5rem,env(safe-area-inset-top))] sm:px-8 sm:pt-20",
           align === "center" ? "justify-center" : "justify-end",
         )}
       >

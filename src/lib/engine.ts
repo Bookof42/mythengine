@@ -178,7 +178,7 @@ export function matchMyth(
 
 export function pickQuestion(myth: Myth, seed: number) {
   const rand = seededRandom(seed + 42);
-  return pickOne(myth.questions, rand);
+  return pickOne(Object.values(myth.questions), rand);
 }
 
 export function profileFromHistory(

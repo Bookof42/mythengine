@@ -25,7 +25,7 @@ export const CARDS: OracleCard[] = [
     id: "moth",
     name: "The Moth",
     fragment:
-      "A small body throws itself at a light it cannot hold. Some call it death. Some call it worship. The card does not decide.",
+      "Psychē is soul, and butterfly. The moth is the same word after dark. A small body throws itself at a light it cannot hold. Some call it death. Some call it worship. The card does not decide.",
     sigil: "moth",
     toward: { eros: 2, devotion: 2 },
     away: { sovereignty: 2, craft: 1 },
@@ -153,7 +153,7 @@ export const CARDS: OracleCard[] = [
   },
   {
     id: "moon",
-    name: "The Moon's Hour",
+    name: "The Moon’s Hour",
     fragment:
       "A face that changes and calls it honesty. What is full in you will wane. What is dark in you is not empty.",
     sigil: "moon",

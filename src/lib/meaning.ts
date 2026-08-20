@@ -8,7 +8,7 @@ export type QuotedLine = {
   href: string;
 };
 
-/** Elon's public coordinates, as the meaning-of-life walk cites them. Checkable. */
+/** Elon’s public coordinates, as the meaning-of-life walk cites them. Checkable. */
 export const ELON_ORIGIN: QuotedLine[] = [
   {
     id: "consciousness",
@@ -50,7 +50,7 @@ export const ELON_WALK: QuotedLine[] = [
   },
   {
     id: "entropy",
-    text: "In the end, it's all about entropy",
+    text: "In the end, it’s all about entropy",
     cite: "Elon Musk",
     source: "Reply on X to John Carmack · 13 August 2021",
     href: "https://x.com/elonmusk/status/1426315521360896001",
@@ -59,7 +59,7 @@ export const ELON_WALK: QuotedLine[] = [
 
 export const ELON_AVATAR: QuotedLine = {
   id: "avatar",
-  text: "Am I an avatar in someone's game?",
+  text: "Am I an avatar in someone’s game?",
   cite: "Elon Musk",
   source: "Everyday Astronaut · Starbase Tour Part 2 · Summer 2021",
   href: "https://youtu.be/SA8ZBJWo73E?t=3064",
@@ -68,7 +68,7 @@ export const ELON_AVATAR: QuotedLine = {
 export const ELON_SIM: QuotedLine[] = [
   {
     id: "vetting",
-    text: "We could be intelligences in a world simulator, where we are assessed for goodness/safety before being released into the \"real world\". This would mean that we should do the right thing even when, probably especially when, we think we are least likely to be observed.",
+    text: "We could be intelligences in a world simulator, where we are assessed for goodness/safety before being released into the “real world”. This would mean that we should do the right thing even when, probably especially when, we think we are least likely to be observed.",
     cite: "Elon Musk",
     source: "Conversation with Grok, shared as The Meaning of Life",
     href: "https://x.com/elonmusk/status/2024209490049208594",
@@ -82,9 +82,9 @@ export const ELON_SIM: QuotedLine[] = [
   },
   {
     id: "stream",
-    text: "Look at the future from a standpoint of the probabilities. It's like a branching stream of probabilities, and there are actions that we can take that affect those probabilities.",
+    text: "Look at the future from a standpoint of the probabilities. It’s like a branching stream of probabilities, and there are actions that we can take that affect those probabilities.",
     cite: "Elon Musk",
-    source: "TED2017 · The future we're building",
+    source: "TED2017 · The future we’re building",
     href: "https://www.ted.com/talks/elon_musk_the_future_we_re_building_and_boring",
   },
 ];

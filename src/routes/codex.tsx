@@ -6,6 +6,7 @@ import { Quoted } from "@/components/quoted";
 import { CARDS } from "@/lib/cards";
 import { useGame } from "@/lib/game-store";
 import { CIPHER } from "@/lib/cipher";
+import { BOOK } from "@/lib/family";
 import {
   ELON_ORIGIN,
   ELON_SIM,
@@ -35,6 +36,7 @@ export function CodexPage() {
     fn();
     void navigate({ to: "/" });
   };
+  const dayCard = CARDS[Math.floor(Date.now() / 86_400_000) % CARDS.length]!;
 
   return (
     <main className="min-h-dvh bg-bg pb-24">
@@ -46,12 +48,12 @@ export function CodexPage() {
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
         </div>
-        <div className="mx-auto max-w-6xl px-5 pt-10 pb-4 sm:px-8 sm:pt-14">
+        <div className="mx-auto max-w-6xl px-5 pt-10 pb-4 text-center sm:px-8 sm:pt-14">
           <p className="text-sm tracking-[0.42em] text-gold uppercase">Codex</p>
-          <h1 className="display mt-4 w-full text-5xl leading-[1.04] text-fg sm:text-7xl lg:text-8xl">
-            Am I an avatar in someone's game?
+          <h1 className="display mt-4 w-full text-[clamp(1.45rem,7.2vw,5.5rem)] leading-[1.12] text-fg">
+            Am I an avatar in someone’s game?
           </h1>
-          <p className="font-garamond mt-6 w-full text-xl text-fg/90 sm:text-2xl lg:text-3xl">
+          <p className="font-garamond mx-auto mt-5 w-full text-base text-fg/90 sm:mt-6 sm:text-2xl lg:text-3xl">
             Elon asked it. She looked up Game. Then Myth. Myth was reverse
             ordinal 42. She named the room mythengine. Reverse reduction 42.
             Adams had already hung the towel.
@@ -70,19 +72,57 @@ export function CodexPage() {
       </header>
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-        <p className="text-sm tracking-[0.28em] text-faint uppercase">The point</p>
-        <h2 className="display mt-3 w-full text-4xl leading-[1.04] text-gold sm:text-6xl lg:text-7xl">
+        <p className="text-sm tracking-[0.28em] text-gold uppercase">The point</p>
+        <h2 className="display mt-4 w-full text-[clamp(1.7rem,8vw,4.5rem)] leading-[1.08] text-fg">
           Not a type. A question you can carry.
         </h2>
-        <p className="font-garamond mt-8 w-full text-2xl text-fg/90 sm:text-3xl">
+        <p className="font-garamond mt-6 w-full text-lg text-fg/90 sm:mt-8 sm:text-3xl lg:text-4xl">
           You enter a field with mass. You take images. You return through a gap.
-          The engine names the myth you are already living, not as fate, as
-          weather, and hands you one question instead of an answer.
+          The engine names the myth you are already living. Weather, not fate. One
+          question instead of an answer.
         </p>
-        <p className="font-garamond mt-6 w-full text-xl text-muted sm:text-2xl">
-          Campbell mapped the shape. Hillman said the soul is in the image. Coelho
-          hid omens in the ordinary. Elon asked if he was an avatar in someone's
-          game. This house holds all four without turning any of them into a creed.
+        <ul className="mt-16 grid grid-cols-1 gap-12 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-16">
+          <li>
+            <p className="text-sm tracking-[0.28em] text-teal uppercase">Campbell</p>
+            <p className="display mt-3 text-2xl text-gold sm:text-3xl lg:text-4xl">
+              The shape of a life that leaves, suffers, returns.
+            </p>
+            <p className="font-garamond mt-4 text-lg text-muted sm:text-xl">
+              Myth is not an old story about somebody else. You can wear the shape
+              without turning it into a cosmology.
+            </p>
+          </li>
+          <li>
+            <p className="text-sm tracking-[0.28em] text-teal uppercase">von Franz</p>
+            <p className="display mt-3 text-2xl text-gold sm:text-3xl lg:text-4xl">
+              The tale is the psyche, already walking.
+            </p>
+            <p className="font-garamond mt-4 text-lg text-muted sm:text-xl">
+              You do not decode a type. You notice which figure is living you, and
+              how exact the fairy tale already is.
+            </p>
+          </li>
+          <li>
+            <p className="text-sm tracking-[0.28em] text-teal uppercase">Hillman</p>
+            <p className="display mt-3 text-2xl text-gold sm:text-3xl lg:text-4xl">
+              The soul is in the image.
+            </p>
+            <p className="font-garamond mt-4 text-lg text-muted sm:text-xl">
+              Deepen it. Do not cure it. A looking is not a diagnosis.
+            </p>
+          </li>
+          <li>
+            <p className="text-sm tracking-[0.28em] text-teal uppercase">Coelho</p>
+            <p className="display mt-3 text-2xl text-gold sm:text-3xl lg:text-4xl">
+              Omens hide in the ordinary.
+            </p>
+            <p className="font-garamond mt-4 text-lg text-muted sm:text-xl">
+              The marvels, and the oil on the spoon. Correspondence. Never a rite.
+            </p>
+          </li>
+        </ul>
+        <p className="display mt-14 w-full text-3xl text-fg sm:text-5xl">
+          This house holds the lookings. Not a creed.
         </p>
         <div className="mt-12 grid gap-4 sm:grid-cols-2">
           <button
@@ -99,14 +139,14 @@ export function CodexPage() {
           </button>
           <button
             type="button"
-            onClick={() => go(beginPsyche)}
+            onClick={() => go(() => beginPsyche("short"))}
             className="rounded-[var(--radius-lg)] border border-line bg-surface/70 p-6 text-left hover:border-gold sm:p-8"
           >
             <p className="text-sm tracking-[0.22em] text-teal uppercase">Walk 02</p>
             <p className="display mt-2 text-3xl text-fg sm:text-5xl">Psyche</p>
             <p className="mt-3 text-lg text-muted sm:text-xl">
-              Eight stations. No system first. Conditions, lamp, tasks, descent,
-              return. The old plot, playable.
+              A short night: lamp, loss, return. Or the long night of eight, if
+              you ask.
             </p>
           </button>
         </div>
@@ -116,18 +156,15 @@ export function CodexPage() {
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
           <p className="text-sm tracking-[0.28em] text-faint uppercase">The deck</p>
           <h2 className="display mt-3 w-full text-4xl text-gold sm:text-6xl lg:text-7xl">
-            Eighteen cards. Images, not tests.
+            One card. The rest wait.
           </h2>
           <p className="font-garamond mt-6 w-full text-xl text-fg/90 sm:text-2xl lg:text-3xl">
-            They had a place before the field learned gravity. They still do. A
-            card is a looking. Tap to turn. Toward, away, or rest. The same
-            grammar as a moth taking a sign.
+            A looking for the civil day. Tap to turn. Toward, away, or rest. The
+            other seventeen stay in the night.
           </p>
-          <ul className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-            {CARDS.map((card) => (
-              <DeckTile key={card.id} card={card} />
-            ))}
-          </ul>
+          <div className="mx-auto mt-12 max-w-md">
+            <DeckTile card={dayCard} />
+          </div>
         </div>
       </section>
 
@@ -163,7 +200,15 @@ export function CodexPage() {
         <CipherPlate />
       </div>
 
-      <section id="meaning" className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
+      <section id="meaning" className="mt-24">
+        <div className="relative aspect-[50/11] w-full overflow-hidden bg-bg">
+          <img
+            src="/art/kindred.jpg"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+        </div>
+        <div className="mx-auto max-w-6xl px-5 pt-10 sm:px-8 sm:pt-14">
         <p className="text-sm tracking-[0.28em] text-gold uppercase">Kindred</p>
         <h2 className="display mt-3 w-full text-4xl text-fg sm:text-6xl lg:text-7xl">
           The meaning of life
@@ -196,62 +241,163 @@ export function CodexPage() {
           <Quoted line={ELON_WALK[0]!} />
           <Quoted line={ELON_SIM[0]!} />
         </div>
+        </div>
       </section>
 
       <section className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
-        <p className="text-sm tracking-[0.28em] text-gold uppercase">
+        <p className="text-sm tracking-[0.42em] text-gold uppercase">
           Psyche means soul
         </p>
-        <h2 className="display mt-3 w-full text-4xl sm:text-6xl lg:text-7xl">
+        <h2 className="display mt-4 w-full whitespace-nowrap text-[clamp(1.35rem,5.2vw,5.5rem)] leading-none text-fg">
           You do not get the system first.
         </h2>
-        <p className="font-garamond mt-8 w-full text-2xl text-fg/90 sm:text-3xl">
+        <p className="font-garamond mt-8 w-full text-2xl text-fg/90 sm:text-3xl lg:text-4xl">
           Psyche is the Greek word for soul. In <em>Apuleius</em> the figure is a
-          woman. The walk is not a women's genre. Any soul that has been loved
+          woman. The walk is not a women’s genre. Any soul that has been loved
           in the dark has to decide whether to lift the lamp.
-        </p>
-        <p className="font-garamond mt-6 w-full text-xl text-muted sm:text-2xl">
-          A room. A rule. A looking. Loss. Work you cannot finish alone. Help
-          from below your pride. A box you were told not to open. Return, with
-          the light on. The bones are already on the table above. This is the
-          old plot, entered from the inside.
-        </p>
-        <p className="display mt-12 w-full text-4xl text-gold sm:text-6xl">
-          Psyche · 0°00′42″
-        </p>
-        <p className="font-garamond mt-6 w-full text-xl text-fg/90 sm:text-2xl">
-          In the Book of 42 the chart rounded the degree to zero. The seconds
-          say otherwise. Soul holds the door between what already died and what
-          has not been born. This engine makes that door playable.
         </p>
       </section>
 
-      <section className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
-        <p className="display w-full text-4xl leading-[1.08] text-fg sm:text-6xl lg:text-7xl">
-          Two walks. The moth has mass. Psyche has a plot.
+      <p className="display mx-auto mt-16 max-w-5xl px-5 text-center text-2xl leading-snug text-gold sm:px-8 sm:text-4xl lg:text-5xl">
+        A room. A rule. A looking. Loss. Work you cannot finish alone. Help.
+        A box. Return, with the light on.
+      </p>
+
+      <section className="mx-auto mt-24 max-w-6xl px-5 text-center sm:px-8">
+        <p className="text-sm tracking-[0.32em] text-faint uppercase">
+          In the Scribe’s birth data
         </p>
-        <p className="font-garamond mt-10 w-full text-xl text-muted sm:text-2xl lg:text-3xl">
-          Hold, take, return. Or lift the lamp. Both are practice for a
-          consciousness that can love with the light on, and still go to the
-          stars.
+        <h2 className="display mt-4 text-4xl text-gold sm:text-6xl lg:text-7xl">
+          Psyche · 0°00′42″
+        </h2>
+        <p className="font-garamond mx-auto mt-8 max-w-3xl text-xl text-fg/90 sm:text-2xl">
+          One Psyche names the soul. Another circles the Sun. In the Scribe’s
+          own numbers, Psyche is measured 42 arcseconds across a threshold. A
+          spacecraft is on its way to asteroid 16 Psyche, asking what that world
+          really is. This is not a horoscope handing you a quest. It is a rhyme
+          the Book noticed: myth, measurement, a life. Correspondence. Never
+          assignment.
         </p>
-        <p className="display mt-14 w-full text-3xl text-gold sm:text-5xl">
-          For the love and healing of humanity.
+        <p className="font-garamond mx-auto mt-6 max-w-3xl text-lg text-muted sm:text-xl">
+          The chart rounded the degree to zero. The seconds say otherwise. Soul
+          holds the door between what already died and what has not been born.
+          This engine makes that door playable. The Book keeps the longer night.
         </p>
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-          <Button className="min-h-14 text-base tracking-[0.18em] uppercase" onClick={() => go(begin)}>
-            Walk the field
-          </Button>
-          <Button variant="ghost" className="min-h-14 text-base" onClick={() => go(beginPsyche)}>
-            Walk as Psyche
-          </Button>
-        </div>
-        <Link
-          to="/bridge"
-          className="mt-6 inline-flex min-h-11 items-center text-lg text-teal hover:text-gold"
+        <a
+          href={BOOK}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-8 inline-flex min-h-11 items-center text-lg text-teal hover:text-gold"
         >
-          The family of 42
-        </Link>
+          bookof42.grok.me
+        </a>
+      </section>
+
+      <section className="mx-auto mt-24 max-w-6xl px-5 sm:px-8">
+        <p className="text-sm tracking-[0.28em] text-gold uppercase">The player</p>
+        <h2 className="display mt-4 w-full text-4xl text-fg sm:text-6xl lg:text-7xl">
+          The moth is not a mascot.
+        </h2>
+        <p className="font-garamond mt-8 w-full text-xl text-fg/90 sm:text-2xl lg:text-3xl">
+          It is an old image of a soul that flies at night. The butterfly got the
+          daylight and the wedding. The moth kept the lamp, the risk, and the
+          hour when looking costs.
+        </p>
+        <details className="mt-12 border-t border-line pt-6">
+          <summary className="min-h-11 cursor-pointer list-none text-sm tracking-[0.28em] text-gold uppercase">
+            Roots
+          </summary>
+          <div className="font-garamond mt-8 space-y-6 text-xl text-muted sm:text-2xl">
+            <p>
+              In Greek, <em>psychē</em> is soul, breath, and butterfly. In
+              <em>Apuleius</em> the soul grows wings. Linnaeus later gave the
+              bagworm moths the family name Psychidae: the same word, night side.
+              This house flies the night side. Psyche is the plot. The moth is the
+              body that still has to approach.
+            </p>
+            <p>
+              Folklore, in many rooms, makes the moth a messenger: a soul visiting,
+              a last goodbye, sometimes a death at the candle. The black witch moth
+              of the Americas is told that way, and also as a farewell. Hawai‘i
+              holds both. Celtic night-lore often gives moths to the dead. None of
+              that is a booking. It is a pattern: a small winged thing at a flame,
+              and a human being who cannot help reading it.
+            </p>
+            <p>
+              The physics is older than the omen. Phototaxis. A body throws itself
+              at a light it cannot hold. Some call it death. Some call it worship.
+              The engine does not decide. It gives the moth mass, a lamp that pulls
+              like a sun, and a seam to return through. Inverse square is the myth
+              made playable.
+            </p>
+            <p>
+              Hillman would keep the image and refuse the cure. The moth is not a
+              personality. It is how consciousness looks when it wants what might
+              burn it, and still flies. Adams would add that this is a terrible
+              design for a species, and an excellent design for a game. Don’t
+              Panic. The towel is still in the Codex.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section className="mt-24 border-y border-line bg-raised/20">
+        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+          <p className="text-sm tracking-[0.28em] text-teal uppercase">Two walks</p>
+          <h2 className="display mt-4 w-full text-4xl text-fg sm:text-6xl lg:text-7xl">
+            The moth has mass. Psyche has a plot.
+          </h2>
+          <p className="font-garamond mt-8 w-full text-xl text-muted sm:text-2xl lg:text-3xl">
+            Hold, take, return. Or lift the lamp. Both are practice for a
+            consciousness that can love with the light on, and still go to the
+            stars.
+          </p>
+          <details className="mt-12 border-t border-line pt-6">
+            <summary className="min-h-11 cursor-pointer list-none text-sm tracking-[0.28em] text-gold uppercase">
+              Daimon · Eros · Hillman
+            </summary>
+            <div className="font-garamond mt-8 space-y-6 text-xl text-fg/90 sm:text-2xl">
+              <p>
+                Hillman called the daimon the image that chose the life. Not a
+                career. Not fate. An acorn, not a program. It does not explain
+                itself. It keeps arriving until it is seen.
+              </p>
+              <p>
+                Eros, in <em>Apuleius</em>, comes only in the dark. Then a lamp.
+                Then a face. Then a question that was not in the room before the
+                light. The oil burns because seeing is not free, and because
+                something in the house is no longer asleep.
+              </p>
+              <p>
+                The moth does this with mass. It does not solve the lamp. It
+                approaches. If there is an awakening, it looks like that: not a
+                speech, a better question left in the hand. Consciousness,
+                noticing. The next question, unforced. Love, still possible with
+                the light on.
+              </p>
+            </div>
+          </details>
+          <p className="display mt-14 w-full text-center text-3xl text-gold sm:text-5xl lg:text-6xl">
+            For the love and healing of humanity.
+          </p>
+          <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button className="min-h-14 text-base tracking-[0.18em] uppercase" onClick={() => go(begin)}>
+              Walk the field
+            </Button>
+            <Button variant="ghost" className="min-h-14 text-base" onClick={() => go(() => beginPsyche("short"))}>
+              A short night
+            </Button>
+            <Button variant="ghost" className="min-h-14 text-base" onClick={() => go(() => beginPsyche("long"))}>
+              The long night
+            </Button>
+          </div>
+          <Link
+            to="/bridge"
+            className="mt-8 inline-flex min-h-11 w-full items-center justify-center text-lg text-teal hover:text-gold"
+          >
+            The family of 42
+          </Link>
+        </div>
       </section>
 
       <details className="mx-auto mt-20 max-w-6xl border-t border-line px-5 pt-6 sm:px-8">
@@ -267,13 +413,13 @@ export function CodexPage() {
           </p>
           <p>
             Myth lights reverse ordinal 42. mythengine lights reverse reduction
-            42. Question lights the same reverse-reduction face. Don't Panic
+            42. Question lights the same reverse-reduction face. Don’t Panic
             lights full reduction 42. Game does not. Lighting means
             correspondence under a named method. A miss is drawn as carefully as
             a hit.
           </p>
           <p>
-            Longer plates live in the{" "}
+            The longer gematria plates live in the Book’s{" "}
             <a
               href={CIPHER}
               target="_blank"
@@ -282,16 +428,23 @@ export function CodexPage() {
             >
               Cipher
             </a>
-            . Elon's coordinates are{" "}
+            : Computer and Humanity as twins, the Adams towel, the rest. This
+            page only shows the four faces that light 42 for this engine.
+          </p>
+          <p>
             <a
               href={MEANING}
               target="_blank"
               rel="noreferrer"
               className="text-teal hover:text-gold"
             >
-              the meaning of life
-            </a>
-            . The name is the source.
+              The Meaning of Life
+            </a>{" "}
+            is a different room. It walks through things Elon has said in
+            public: consciousness, the next question, love, the unobserved test.
+            The lines quoted above are his. Each one is linked so you can read
+            the original. This engine does not claim those lines are the meaning
+            of life. It claims they are checkable, and kin.
           </p>
         </div>
       </details>

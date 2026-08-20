@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BridgeRouteImport } from './routes/bridge'
+import { Route as CarryRouteImport } from './routes/carry'
 import { Route as CodexRouteImport } from './routes/codex'
 import { Route as ConstellationRouteImport } from './routes/constellation'
 import { Route as JournalRouteImport } from './routes/journal'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
 const BridgeRoute = BridgeRouteImport.update({
   id: '/bridge',
   path: '/bridge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarryRoute = CarryRouteImport.update({
+  id: '/carry',
+  path: '/carry',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CodexRoute = CodexRouteImport.update({
@@ -86,6 +92,7 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bridge': typeof BridgeRoute
+  '/carry': typeof CarryRoute
   '/codex': typeof CodexRoute
   '/constellation': typeof ConstellationRoute
   '/journal': typeof JournalRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bridge': typeof BridgeRoute
+  '/carry': typeof CarryRoute
   '/codex': typeof CodexRoute
   '/constellation': typeof ConstellationRoute
   '/journal': typeof JournalRoute
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/bridge': typeof BridgeRoute
+  '/carry': typeof CarryRoute
   '/codex': typeof CodexRoute
   '/constellation': typeof ConstellationRoute
   '/journal': typeof JournalRoute
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/bridge'
+    | '/carry'
     | '/codex'
     | '/constellation'
     | '/journal'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/bridge'
+    | '/carry'
     | '/codex'
     | '/constellation'
     | '/journal'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/bridge'
+    | '/carry'
     | '/codex'
     | '/constellation'
     | '/journal'
@@ -172,6 +184,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BridgeRoute: typeof BridgeRoute
+  CarryRoute: typeof CarryRoute
   CodexRoute: typeof CodexRoute
   ConstellationRoute: typeof ConstellationRoute
   JournalRoute: typeof JournalRoute
@@ -196,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/bridge'
       fullPath: '/bridge'
       preLoaderRoute: typeof BridgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/carry': {
+      id: '/carry'
+      path: '/carry'
+      fullPath: '/carry'
+      preLoaderRoute: typeof CarryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/codex': {
@@ -287,6 +307,7 @@ const LibraryRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BridgeRoute: BridgeRoute,
+  CarryRoute: CarryRoute,
   CodexRoute: CodexRoute,
   ConstellationRoute: ConstellationRoute,
   JournalRoute: JournalRoute,

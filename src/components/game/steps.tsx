@@ -4,6 +4,7 @@ import { CARD_BY_ID } from "@/lib/cards";
 import { KIT } from "@/lib/kit";
 import { PATH_BY_ID } from "@/lib/paths";
 import { PSYCHE_BY_ID } from "@/lib/psyche-quest";
+import { PLOT_BY_ID } from "@/lib/plot-walks";
 import { SCENE_BY_ID } from "@/lib/scenes";
 import { useGame } from "@/lib/game-store";
 import type { PlayStep } from "@/lib/types";
@@ -21,6 +22,10 @@ export function PlayStepView() {
   const step = current.steps[current.index];
   if (!step) return null;
   const psyche = current.mode === "psyche" ? PSYCHE_BY_ID[step.id] : undefined;
+  const plotNight =
+    current.mode === "walk" && current.mythId
+      ? PLOT_BY_ID[current.mythId]?.night
+      : undefined;
 
   if (current.afterText) {
     return (
@@ -29,14 +34,24 @@ export function PlayStepView() {
           total={current.steps.length}
           index={current.index}
           psyche={psyche}
+          plotNight={plotNight}
           prop={step.kind === "scene" ? STATION_PROP[step.id] : CARD_PROP[step.id]}
         />
         <p className="enter display w-full text-3xl text-fg sm:text-5xl lg:text-6xl">
           {current.afterText}
         </p>
-        <Button className="enter mt-8 min-h-14 w-full sm:w-auto" onClick={() => continueAfter()}>
-          Continue
-        </Button>
+        <div className="mt-8 flex flex-wrap items-center gap-5">
+          <Button className="enter min-h-14 w-full sm:w-auto" onClick={() => continueAfter()}>
+            Continue
+          </Button>
+          <button
+            type="button"
+            className="enter min-h-11 text-sm tracking-[0.2em] text-muted uppercase hover:text-gold"
+            onClick={() => continueAfter()}
+          >
+            Skip
+          </button>
+        </div>
       </ArtFrame>
     );
   }
@@ -49,6 +64,7 @@ export function PlayStepView() {
         total={current.steps.length}
         index={current.index}
         psyche={psyche}
+        plotNight={plotNight}
       />
     );
   }
@@ -103,22 +119,27 @@ function StationChrome({
   total,
   index,
   psyche,
+  plotNight,
   prop,
 }: {
   total: number;
   index: number;
   psyche?: (typeof PSYCHE_BY_ID)[string];
+  plotNight?: string;
   prop?: string;
 }) {
   return (
     <div className="mb-5">
       {prop ? (
-        <img src={prop} alt="" className="mb-4 h-16 w-16 object-contain sm:h-20 sm:w-20" />
+        <img src={prop} alt="" className="mb-4 h-16 w-16 bg-transparent object-contain sm:h-20 sm:w-20" />
       ) : null}
       {psyche ? (
         <p className="mb-3 text-sm tracking-[0.28em] text-gold uppercase">
           {psyche.gameWord} · {psyche.beat}
         </p>
+      ) : null}
+      {plotNight ? (
+        <p className="mb-3 text-sm tracking-[0.28em] text-gold uppercase">{plotNight}</p>
       ) : null}
       <PathDots total={total} index={index} />
     </div>
@@ -131,12 +152,14 @@ function SceneView({
   total,
   index,
   psyche,
+  plotNight,
 }: {
   step: PlayStep;
   onChoose: (id: string) => void;
   total: number;
   index: number;
   psyche?: (typeof PSYCHE_BY_ID)[string];
+  plotNight?: string;
 }) {
   const scene = SCENE_BY_ID[step.id];
   if (!scene) return null;
@@ -146,12 +169,13 @@ function SceneView({
         total={total}
         index={index}
         psyche={psyche}
+        plotNight={plotNight}
         prop={STATION_PROP[step.id]}
       />
-      <h2 className="display mt-2 w-full text-4xl leading-[1.04] text-fg sm:text-6xl lg:text-7xl">
+      <h2 className="display mt-2 w-full text-[clamp(1.6rem,8vw,4.5rem)] leading-[1.08] text-fg">
         {scene.title}
       </h2>
-      <p className="font-garamond mt-5 w-full text-xl text-fg/90 sm:text-2xl lg:text-3xl">
+      <p className="font-garamond mt-4 w-full text-base text-fg/90 sm:mt-5 sm:text-2xl lg:text-3xl">
         <WithApuleius text={scene.body} />
       </p>
       <ul className="mt-10 flex w-full flex-col gap-2">
@@ -162,7 +186,7 @@ function SceneView({
               className="flex w-full min-h-14 items-center py-3 text-left sm:min-h-16"
               onClick={() => onChoose(choice.id)}
             >
-              <span className="display text-xl leading-snug text-gold hover:text-teal sm:text-3xl lg:text-4xl">
+              <span className="display text-lg leading-snug text-gold hover:text-teal sm:text-3xl lg:text-4xl">
                 {choice.label}
               </span>
             </button>

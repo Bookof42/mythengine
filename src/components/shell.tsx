@@ -21,7 +21,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const begin = useGame((s) => s.begin);
   const beginPsyche = useGame((s) => s.beginPsyche);
   const inRooms = useGame((s) => s.save.current?.screen === "play");
-  const playing = inRooms;
+  const playing = inRooms && pathname === "/";
 
   useEffect(() => {
     if (!ready) hydrate();
@@ -76,11 +76,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
           aria-label="mythengine home"
         >
           <EngineMark className="header-mark h-8 w-8 sm:h-9 sm:w-9" />
-          <span className="header-mark display text-base tracking-[0.2em] text-gold sm:text-lg">
+          <span className="header-mark display text-sm tracking-[0.14em] text-gold sm:text-lg sm:tracking-[0.2em]">
             mythengine
           </span>
         </Link>
-        <nav className="pointer-events-auto hidden items-center gap-4 lg:flex xl:gap-6">
+        <nav
+          aria-label="House"
+          className="pointer-events-auto absolute top-[max(0.7rem,env(safe-area-inset-top))] left-1/2 hidden -translate-x-1/2 items-center gap-5 lg:flex xl:gap-7"
+        >
           <button
             type="button"
             onClick={startPlay}
@@ -169,7 +172,18 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 onClick={startPsyche}
                 className="display mt-1 min-h-11 w-full text-left text-xl text-fg hover:text-teal"
               >
-                Walk as Psyche
+                A short night
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  beginPsyche("long");
+                  void navigate({ to: "/" });
+                  setOpen(false);
+                }}
+                className="display mt-1 min-h-11 w-full text-left text-xl text-fg hover:text-teal"
+              >
+                The long night
               </button>
 
               <p className="mt-8 text-[10px] tracking-[0.28em] text-faint uppercase">House</p>
@@ -229,7 +243,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       ) : null}
 
       <div className="relative z-10 flex min-h-screen flex-1 flex-col">{children}</div>
-      {playing ? null : <SiteFooter />}
+      {playing || atHome ? null : <SiteFooter />}
     </div>
   );
 }
@@ -248,7 +262,7 @@ function AuthSlot() {
       </SignedIn>
       <SignedOut>
         <Link to="/login" className="text-teal hover:text-gold">
-          Sign in to keep a journal across devices
+          Sign in to keep the walk
         </Link>
       </SignedOut>
     </div>

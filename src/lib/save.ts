@@ -27,7 +27,7 @@ export type PlaySnapshot = {
   screen: "play" | "reveal" | "question" | "after";
   mythId?: string;
   question?: string;
-  mode?: "field" | "psyche";
+  mode?: "field" | "psyche" | "walk";
 };
 
 export type SaveState = {
@@ -41,6 +41,8 @@ export type SaveState = {
   anonId: string;
   signs: SignKind[];
   seals: SealKind[];
+  lastTrail?: { x: number; y: number }[];
+  lastKept?: SignKind;
 };
 
 const defaults = (): SaveState => ({

@@ -1,6 +1,9 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ShareLooking } from "@/components/share-looking";
 import { WithApuleius } from "@/components/with-apuleius";
+import { QUESTION_VOICES } from "@/lib/myth-questions";
 import { getMyth, mythArt } from "@/lib/myths";
+import { PLOT_BY_ID } from "@/lib/plot-walks";
 import { useGame } from "@/lib/game-store";
 
 export const Route = createFileRoute("/library/$mythId")({
@@ -11,7 +14,9 @@ function MythPage() {
   const { mythId } = Route.useParams();
   const myth = getMyth(mythId);
   const beginPsyche = useGame((s) => s.beginPsyche);
+  const beginWalk = useGame((s) => s.beginWalk);
   const navigate = useNavigate();
+  const plot = myth ? PLOT_BY_ID[myth.id] : undefined;
   if (!myth) {
     return (
       <main className="grid min-h-dvh place-items-center px-6 text-center">
@@ -63,18 +68,34 @@ function MythPage() {
         <p className="display mx-auto mt-16 max-w-xl text-center text-2xl text-gold sm:text-3xl">
           {myth.reflection}
         </p>
+        <div className="mt-8 flex justify-center">
+          <ShareLooking
+            art={mythArt(myth.id)}
+            kicker={myth.name}
+            question={myth.questions.coelho}
+            mythId={myth.id}
+          />
+        </div>
 
         <details className="mt-16 border-t border-line pt-6">
           <summary className="min-h-11 cursor-pointer list-none text-[11px] tracking-[0.28em] text-gold uppercase">
             Inspect
           </summary>
-          <div className="font-garamond mt-6 space-y-5 text-base text-muted">
+          <div className="font-garamond mt-6 space-y-6 text-base text-muted sm:text-lg">
             <p>{myth.psychology}</p>
-            <ul className="space-y-3">
-              {[...myth.questions]
-                .sort((a, b) => a.length - b.length || a.localeCompare(b))
-                .map((q) => (
-                <li key={q}>{q}</li>
+            <p className="text-sm tracking-[0.22em] text-gold uppercase">
+              The shadow
+            </p>
+            <p className="text-fg/90">{myth.shadow}</p>
+            <p className="text-sm tracking-[0.22em] text-gold uppercase">
+              Four lookings
+            </p>
+            <ul className="space-y-5">
+              {QUESTION_VOICES.map(([key, label]) => (
+                <li key={key}>
+                  <p className="text-xs tracking-[0.22em] text-teal uppercase">{label}</p>
+                  <p className="mt-1 text-fg/90">{myth.questions[key]}</p>
+                </li>
               ))}
             </ul>
           </div>
@@ -86,18 +107,49 @@ function MythPage() {
               Play the structure
             </p>
             <p className="font-garamond mt-4 text-lg text-fg/90">
-              Eight stations. No explanation first. Conditions, prohibition, lamp,
-              loss, tasks, helpers, underworld, return.
+              A short night: lamp, loss, return. The long night: eight stations.
+              No explanation first.
             </p>
+            <div className="mt-6 flex flex-wrap gap-5">
+              <button
+                type="button"
+                className="min-h-11 text-sm tracking-wide text-gold hover:text-teal"
+                onClick={() => {
+                  beginPsyche("short");
+                  void navigate({ to: "/" });
+                }}
+              >
+                A short night
+              </button>
+              <button
+                type="button"
+                className="min-h-11 text-sm tracking-wide text-muted hover:text-gold"
+                onClick={() => {
+                  beginPsyche("long");
+                  void navigate({ to: "/" });
+                }}
+              >
+                The long night
+              </button>
+            </div>
+          </section>
+        ) : null}
+
+        {plot ? (
+          <section className="mt-16">
+            <p className="text-[11px] tracking-[0.28em] text-gold uppercase">
+              Enter the plot
+            </p>
+            <p className="font-garamond mt-4 text-lg text-fg/90">{plot.night}</p>
             <button
               type="button"
               className="mt-6 min-h-11 text-sm tracking-wide text-gold hover:text-teal"
               onClick={() => {
-                beginPsyche();
+                beginWalk(plot.id);
                 void navigate({ to: "/" });
               }}
             >
-              Walk as Psyche →
+              Three stations
             </button>
           </section>
         ) : null}

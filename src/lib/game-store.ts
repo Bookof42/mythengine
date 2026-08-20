@@ -10,7 +10,7 @@ import {
   type Priors,
 } from "./engine";
 import { buildPsycheSequence } from "./psyche-quest";
-import { SCENE_BY_ID } from "./scenes";
+import { buildPlotSequence } from "./plot-walks";
 import { MYTH_BY_ID } from "./myths";
 import {
   asFullWeights,
@@ -33,7 +33,8 @@ type GameStore = {
   hydrate: () => void;
   refreshPriors: () => Promise<void>;
   begin: () => void;
-  beginPsyche: () => void;
+  beginPsyche: (night?: "short" | "long") => void;
+  beginWalk: (mythId: string) => void;
   choose: (choice: string) => void;
   continueAfter: () => void;
   flipCard: () => void;
@@ -47,6 +48,7 @@ type GameStore = {
     weights: Record<Archetype, number>,
     records: SessionResult["steps"],
     signs?: SignKind[],
+    trail?: { x: number; y: number }[],
   ) => void;
 };
 
@@ -68,7 +70,11 @@ function finishSession(save: SaveState, priors: Priors | null): SaveState {
   if (!current) return save;
   const exclude = save.history.slice(-2).map((h) => h.mythId);
   let myth: Myth | undefined =
-    current.mode === "psyche" ? MYTH_BY_ID.psyche : undefined;
+    current.mode === "psyche"
+      ? MYTH_BY_ID.psyche
+      : current.mode === "walk" && current.mythId
+        ? MYTH_BY_ID[current.mythId]
+        : undefined;
   if (!myth) {
     let birthBoost = undefined;
     if (save.usePattern && save.birth?.date) {
@@ -111,7 +117,9 @@ export const useGame = create<GameStore>((set, get) => ({
 
   hydrate: () => {
     let save = loadSave();
-    if (save.current && save.current.screen !== "play") {
+    // Always open the house. A saved flight was trapping the whole site
+    // on one canvas and hiding the other rooms.
+    if (save.current) {
       save = write({ ...save, current: undefined });
     }
     audio.setMuted(save.muted);
@@ -149,12 +157,12 @@ export const useGame = create<GameStore>((set, get) => ({
     set({ save });
   },
 
-  beginPsyche: () => {
+  beginPsyche: (night = "short") => {
     audio.unlock();
     audio.cue("begin");
     audio.setSection("play");
     const seed = Date.now() % 2147483646;
-    const steps = buildPsycheSequence();
+    const steps = buildPsycheSequence(night);
     const current: PlaySnapshot = {
       seed,
       sessionId: crypto.randomUUID(),
@@ -166,6 +174,30 @@ export const useGame = create<GameStore>((set, get) => ({
       screen: "play",
       cardFlipped: false,
       mode: "psyche",
+    };
+    const save = write({ ...get().save, current });
+    set({ save });
+  },
+
+  beginWalk: (mythId: string) => {
+    const steps = buildPlotSequence(mythId);
+    if (!steps.length) return;
+    audio.unlock();
+    audio.cue("begin");
+    audio.setSection("play");
+    const seed = Date.now() % 2147483646;
+    const current: PlaySnapshot = {
+      seed,
+      sessionId: crypto.randomUUID(),
+      steps,
+      index: 0,
+      weights: emptyWeights(),
+      records: [],
+      startedAt: new Date().toISOString(),
+      screen: "play",
+      cardFlipped: false,
+      mode: "walk",
+      mythId,
     };
     const save = write({ ...get().save, current });
     set({ save });
@@ -195,20 +227,16 @@ export const useGame = create<GameStore>((set, get) => ({
       ...current.records,
       { kind: step.kind, itemId: step.id, choice },
     ];
-    let afterText: string | undefined;
-    if (step.kind === "scene") {
-      afterText = SCENE_BY_ID[step.id]?.choices.find((c) => c.id === choice)?.after;
-    }
     const nextCurrent: PlaySnapshot = {
       ...current,
       weights,
       records,
-      afterText,
+      afterText: undefined,
       cardFlipped: false,
     };
     const next = write({ ...save, current: nextCurrent });
     set({ save: next });
-    if (!afterText) get().continueAfter();
+    get().continueAfter();
   },
 
   continueAfter: () => {
@@ -290,7 +318,7 @@ export const useGame = create<GameStore>((set, get) => ({
     set({ save: next });
   },
 
-  finishArcade: (weights, records, signs = []) => {
+  finishArcade: (weights, records, signs = [], trail = []) => {
     const { save, priors } = get();
     if (!save.current) return;
     const nextSave = {
@@ -314,6 +342,7 @@ export const useGame = create<GameStore>((set, get) => ({
         signs,
       };
       const shelf = [...new Set([...finished.signs, ...signs])];
+      const ghost = trail.filter((_, i) => i % 4 === 0).slice(-48);
       const seals =
         signs.length >= 4 && finished.current?.records.some((r) => r.choice === "return")
           ? [...new Set([...finished.seals, "aperture" as const])]
@@ -322,6 +351,8 @@ export const useGame = create<GameStore>((set, get) => ({
         ...finished,
         signs: shelf,
         seals,
+        lastTrail: ghost,
+        lastKept: signs[0],
         history: [...finished.history, session].slice(-40),
       });
       set({ save: withHistory });

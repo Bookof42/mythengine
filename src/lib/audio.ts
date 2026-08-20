@@ -34,16 +34,11 @@ class ApertureAudio {
       this.comp.ratio.value = 3;
       this.comp.attack.value = 0.01;
       this.comp.release.value = 0.18;
-      this.music.gain.value = 0.16;
-      this.sfx.gain.value = 0.38;
-      this.master.gain.value = this.muted ? 0 : 0.62;
-      const hp = this.ctx.createBiquadFilter();
-      hp.type = "highpass";
-      hp.frequency.value = 260;
-      hp.Q.value = 0.7;
-      this.music.connect(hp);
+      this.music.gain.value = 0.1;
+      this.sfx.gain.value = 0.22;
+      this.master.gain.value = this.muted ? 0 : 0.48;
       this.sfx.connect(this.comp);
-      hp.connect(this.comp);
+      this.music.connect(this.comp);
       this.comp.connect(this.master);
       this.master.connect(this.ctx.destination);
     }
@@ -63,7 +58,7 @@ class ApertureAudio {
   setMuted(muted: boolean) {
     this.muted = muted;
     if (!this.master || !this.ctx) return;
-    this.master.gain.setTargetAtTime(muted ? 0 : 0.62, this.ctx.currentTime, 0.05);
+    this.master.gain.setTargetAtTime(muted ? 0 : 0.48, this.ctx.currentTime, 0.05);
     if (!muted && this.nodes.length === 0) this.setSection(this.section);
   }
 
@@ -75,29 +70,13 @@ class ApertureAudio {
     this.clearAmbient(0.35);
     if (this.muted || !this.unlocked) return;
     if (section === "quiet") return;
-    if (section === "question") {
-      this.pad(392, 0.012);
-      return;
-    }
-    if (section === "reveal") {
-      this.pad(330, 0.02);
-      this.pad(495, 0.012);
-      this.pad(660, 0.008);
-      return;
-    }
-    if (section === "omen") {
-      this.pad(523.25, 0.016);
-      this.pad(784, 0.007);
-      return;
-    }
     if (section === "play") {
       this.startFlightBus();
-      this.pad(659.25, 0.008);
       return;
     }
     this.air();
-    this.pad(523.25, 0.01);
-    this.pad(783.99, 0.005);
+    if (section === "reveal") this.pad(196, 0.008);
+    else this.pad(174.61, 0.006);
   }
 
   cue(
@@ -115,34 +94,22 @@ class ApertureAudio {
     if (!this.ctx || !this.sfx || this.muted) return;
     const t = this.ctx.currentTime;
     if (name === "flip") {
-      this.blip(t, 740, 0.12, 0.07);
-      this.noise(t, 0.08, 1800, 0.05);
+      this.blip(t, 392, 0.09, 0.04);
     } else if (name === "step") {
-      this.blip(t, 196, 0.11, 0.06);
-      this.noise(t, 0.06, 700, 0.04);
+      this.blip(t, 164, 0.1, 0.04);
     } else if (name === "choose") {
-      this.blip(t, 392, 0.08, 0.05);
-      this.blip(t + 0.06, 494, 0.1, 0.04);
+      this.blip(t, 220, 0.1, 0.035);
     } else if (name === "begin") {
-      this.blip(t, 220, 0.22, 0.08);
-      this.blip(t + 0.11, 330, 0.26, 0.07);
-      this.blip(t + 0.24, 440, 0.32, 0.05);
+      this.blip(t, 174.61, 0.18, 0.05);
     } else if (name === "capture" || name === "take") {
-      this.blip(t, 523.25, 0.18, 0.11);
-      this.blip(t + 0.05, 783.99, 0.26, 0.09);
-      this.blip(t + 0.14, 1046.5, 0.34, 0.06);
-      this.noise(t, 0.1, 1800, 0.06);
+      this.blip(t, 246.94, 0.16, 0.06);
+      this.noise(t, 0.07, 900, 0.03);
     } else if (name === "gap") {
-      this.blip(t, 164.81, 0.28, 0.08);
-      this.blip(t + 0.1, 246.94, 0.34, 0.06);
-      this.noise(t, 0.12, 900, 0.05);
+      this.blip(t, 130.81, 0.22, 0.05);
     } else if (name === "omen") {
-      this.blip(t, 523.25, 0.38, 0.06);
-      this.blip(t + 0.14, 659.25, 0.42, 0.05);
+      this.blip(t, 196, 0.2, 0.035);
     } else if (name === "reveal") {
-      this.blip(t, 146.83, 0.5, 0.09);
-      this.blip(t + 0.16, 220, 0.55, 0.08);
-      this.blip(t + 0.34, 329.63, 0.8, 0.07);
+      this.blip(t, 146.83, 0.28, 0.05);
     }
   }
 
@@ -150,19 +117,19 @@ class ApertureAudio {
     if (!this.ctx || this.muted) return;
     const t = this.ctx.currentTime;
     if (this.wind) {
-      const air = Math.min(0.12, 0.015 + state.speed / 2800);
-      this.wind.gain.setTargetAtTime(air, t, 0.1);
+      const air = Math.min(0.07, 0.01 + state.speed / 4200);
+      this.wind.gain.setTargetAtTime(air, t, 0.12);
     }
     if (this.lampGain) {
-      const near = Math.min(0.11, 36 / Math.max(28, state.lamp));
-      this.lampGain.gain.setTargetAtTime(near, t, 0.14);
+      const near = Math.min(0.045, 18 / Math.max(40, state.lamp));
+      this.lampGain.gain.setTargetAtTime(near, t, 0.2);
     }
     if (this.wellFilter) {
-      this.wellFilter.frequency.setTargetAtTime(state.well ? 320 : 2400, t, 0.28);
+      this.wellFilter.frequency.setTargetAtTime(state.well ? 280 : 900, t, 0.3);
     }
-    if (state.flap && t - this.lastFlap > 0.22) {
+    if (state.flap && t - this.lastFlap > 0.48) {
       this.lastFlap = t;
-      this.noise(t, 0.09, 1100, 0.035);
+      this.noise(t, 0.06, 480, 0.018);
     }
   }
 
@@ -171,20 +138,20 @@ class ApertureAudio {
     const ctx = this.ctx;
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
-    filter.frequency.value = 2400;
+    filter.frequency.value = 900;
     filter.Q.value = 0.7;
     filter.connect(this.music);
     this.wellFilter = filter;
 
     const windGain = ctx.createGain();
-    windGain.gain.value = 0.02;
+    windGain.gain.value = 0.012;
     const src = ctx.createBufferSource();
     src.buffer = this.pinkBuffer(2);
     src.loop = true;
     const wf = ctx.createBiquadFilter();
     wf.type = "bandpass";
-    wf.frequency.value = 1400;
-    wf.Q.value = 0.55;
+    wf.frequency.value = 520;
+    wf.Q.value = 0.45;
     src.connect(wf);
     wf.connect(windGain);
     windGain.connect(filter);
@@ -193,27 +160,15 @@ class ApertureAudio {
     this.nodes.push(src, wf, windGain, filter);
 
     const lg = ctx.createGain();
-    lg.gain.value = 0.02;
+    lg.gain.value = 0.01;
     const o1 = ctx.createOscillator();
     o1.type = "sine";
-    o1.frequency.value = 440;
-    const o2 = ctx.createOscillator();
-    o2.type = "sine";
-    o2.frequency.value = 659.25;
-    const lfo = ctx.createOscillator();
-    const lfoG = ctx.createGain();
-    lfo.frequency.value = 0.13;
-    lfoG.gain.value = 4;
-    lfo.connect(lfoG);
-    lfoG.connect(o1.frequency);
+    o1.frequency.value = 82.41;
     o1.connect(lg);
-    o2.connect(lg);
     lg.connect(filter);
     o1.start();
-    o2.start();
-    lfo.start();
     this.lampGain = lg;
-    this.nodes.push(o1, o2, lfo, lfoG, lg);
+    this.nodes.push(o1, lg);
   }
 
   private air() {
@@ -230,7 +185,7 @@ class ApertureAudio {
     bp.frequency.value = 2400;
     bp.Q.value = 0.6;
     const g = ctx.createGain();
-    g.gain.value = 0.035;
+    g.gain.value = 0.018;
     src.connect(hp);
     hp.connect(bp);
     bp.connect(g);
@@ -259,7 +214,7 @@ class ApertureAudio {
     const lg = ctx.createGain();
     lfo.type = "sine";
     lfo.frequency.value = 0.07;
-    lg.gain.value = gain * 0.45;
+    lg.gain.value = gain * 0.12;
     lfo.connect(lg);
     lg.connect(g.gain);
     a.connect(f);

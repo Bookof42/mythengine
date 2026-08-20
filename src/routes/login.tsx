@@ -27,7 +27,7 @@ function Login() {
                 key={p.providerId}
                 variant="ghost"
                 className="w-full"
-                onClick={() => signIn(p.providerId, { callbackURL: "/journal" })}
+                onClick={() => signIn(p.providerId, { callbackURL: "/" })}
               >
                 Continue with {p.label}
               </Button>

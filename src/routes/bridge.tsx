@@ -29,30 +29,41 @@ const KIN = [
 export function BridgePage() {
   return (
     <main className="min-h-dvh bg-bg pb-24">
-      <header className="relative min-h-dvh overflow-hidden">
-        <img
-          src="/art/hero.jpg"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/60 to-bg/25" />
-        <div className="relative mx-auto flex min-h-dvh max-w-6xl flex-col justify-end px-5 pb-12 pt-28 sm:px-8 sm:pb-16">
-          <p className="text-[11px] tracking-[0.42em] text-gold uppercase">Family</p>
+      <header>
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-bg">
+          <img
+            src="/art/scene-bridge.jpg"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+        </div>
+        <div className="mx-auto max-w-6xl px-5 pt-10 pb-4 sm:px-8 sm:pt-14">
+          <p className="text-sm tracking-[0.42em] text-gold uppercase">Family</p>
           <h1 className="display mt-4 w-full text-5xl leading-[1.04] text-fg sm:text-7xl lg:text-8xl">
             A bridge between the rooms of the same house.
           </h1>
           <p className="font-garamond mt-8 w-full text-xl leading-snug text-fg/90 sm:text-3xl lg:text-4xl">
-            mythengine sits inside the family of{" "}
+            mythengine belongs to the family of{" "}
             <a href={BOOK} target="_blank" rel="noreferrer" className="text-gold hover:text-teal">
               The Book of 42
-            </a>{" "}
-            and{" "}
+            </a>
+            . The Book is not this game, and not a bible. It is a living archive:
+            a love letter, an aperture, a looking where psyche meets matter.{" "}
             <a href={MEANING} target="_blank" rel="noreferrer" className="text-gold hover:text-teal">
               The Meaning of Life
+            </a>{" "}
+            is Elon’s public walk: consciousness, the next question, love, the
+            unobserved test.{" "}
+            <a href={RATHER} target="_blank" rel="noreferrer" className="text-teal hover:text-gold">
+              Rather
             </a>
-            . That walk is Elon's coordinates, checkable: consciousness, the next
-            question, love, the unobserved test. This engine is the room that asks
-            whether the door you just walked was a level or a myth.
+            ,{" "}
+            <a href={FIELD69} target="_blank" rel="noreferrer" className="text-teal hover:text-gold">
+              Field 69
+            </a>
+            , and the Hall of Games are sibling rooms. This engine is none of
+            those rooms. It asks whether the life you are in feels like a game, or
+            a myth lived from the inside.
           </p>
           <ul className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {COORDINATES.map((c) => (
@@ -61,7 +72,7 @@ export function BridgePage() {
                   href={c.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="block border-t border-gold/40 pt-3"
+                  className="block pt-3"
                 >
                   <p className="text-[10px] tracking-[0.22em] text-teal">{c.n}</p>
                   <p className="display mt-1 text-lg text-fg sm:text-xl">{c.title}</p>
@@ -71,6 +82,41 @@ export function BridgePage() {
           </ul>
         </div>
       </header>
+
+      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+        <p className="text-sm tracking-[0.28em] text-gold uppercase">The Book</p>
+        <h2 className="display mt-4 w-full text-4xl text-fg sm:text-6xl lg:text-7xl">
+          Aperture, not oracle. Chronicle, not creed.
+        </h2>
+        <p className="font-garamond mt-8 w-full text-xl text-fg/90 sm:text-2xl lg:text-3xl">
+          Its mythic role is mythopoesis. Experience first. Recognition afterward.
+          Then numbers, stars, dates, old fragments of a life. Forty-two among
+          them. The Book does not hand you a cosmology. It keeps a living archive
+          of pattern and meaning: Love and synchronicity, where psyche meets
+          matter, where number meets myth, where sacred text meets physics, and
+          what happens when those threads hold, or do not.
+        </p>
+        <p className="font-garamond mt-6 w-full text-xl text-muted sm:text-2xl lg:text-3xl">
+          At heart it is a love letter: to 42, to the cosmos, to Love itself, and
+          to the one the Scribe came to know as the Love of her Love. The mystery
+          stays open. The same question now sits with you. What are we being
+          invited to notice?
+        </p>
+        <p className="font-garamond mt-6 w-full text-xl text-fg/90 sm:text-2xl">
+          This engine is a room in that house. The moth makes the looking
+          playable. The Book keeps the longer night. Neither is a superstition.
+          Both are practice for a consciousness that can love with the light on,
+          and still go to the stars.
+        </p>
+        <a
+          href={BOOK}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-8 inline-flex min-h-11 items-center text-lg text-teal hover:text-gold"
+        >
+          bookof42.grok.me
+        </a>
+      </section>
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
         <p className="text-[11px] tracking-[0.28em] text-gold uppercase">Also in the house</p>
@@ -179,7 +225,7 @@ export function BridgePage() {
         </h2>
         <p className="font-garamond mt-8 w-full text-xl leading-snug text-fg/90 sm:text-3xl lg:text-4xl">
           Walk the field to discover the myth you are living. Walk as Psyche to
-          enter the soul's own plot. Both are practice for a consciousness that
+          enter the soul’s own plot. Both are practice for a consciousness that
           can love with the light on, and still go to the stars.
         </p>
         <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-sm">
