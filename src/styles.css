@@ -1,0 +1,386 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --color-bg: #050506;
+  --color-fg: #ede6d6;
+  --color-muted: #c5d0cd;
+  --color-faint: #8b9694;
+  --color-teal: #8ec4c0;
+  --color-gold: #e4d0a0;
+  --color-surface: #0c0e0e;
+  --color-raised: #121616;
+  --color-line: color-mix(in oklab, #ede6d6 12%, transparent);
+  --color-line-strong: color-mix(in oklab, #ede6d6 22%, transparent);
+  --color-ink: #12110e;
+
+  --font-display: "Fraunces", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-serif: "EB Garamond", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-sans: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+
+  --shadow-soft: 0 24px 60px color-mix(in oklab, #000 55%, transparent);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-size: 18px;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100dvh;
+    background: var(--color-bg);
+    overscroll-behavior: none;
+  }
+
+  img {
+    background-color: var(--color-bg);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    line-height: 1.55;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-teal) 40%, transparent);
+    color: var(--color-fg);
+  }
+
+  input,
+  textarea {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  .grain {
+    position: relative;
+  }
+  .grain::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.55'/></svg>");
+  }
+
+  .vignette {
+    box-shadow: inset 0 0 120px 40px color-mix(in oklab, var(--color-bg) 82%, transparent);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 300;
+  }
+
+  .font-garamond,
+  .type-body {
+    font-family: var(--font-serif);
+  }
+
+  .hairline {
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .card-stage {
+    perspective: 1400px;
+  }
+
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card-3d.is-flipped {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: rotateY(0deg);
+  }
+
+  .card-face.is-back {
+    transform: rotateY(180deg) translateZ(1px);
+  }
+
+  .wick-float {
+    animation: wick-float 4.8s ease-in-out infinite;
+  }
+
+  .pulse-ring {
+    animation: pulse-ring 3.6s ease-in-out infinite;
+  }
+
+  .enter {
+    animation: enter-up 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .enter-delay-1 {
+    animation-delay: 80ms;
+  }
+  .enter-delay-2 {
+    animation-delay: 160ms;
+  }
+  .enter-delay-3 {
+    animation-delay: 240ms;
+  }
+  .enter-delay-4 {
+    animation-delay: 320ms;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .hero-stage {
+    background: var(--color-bg);
+  }
+
+  .hero-stage::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 2;
+    height: 5.5rem;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-bg) 72%, transparent),
+      transparent
+    );
+  }
+
+  .hero-ken {
+    transform: scale(1.02);
+    animation: ken-burns 32s ease-in-out infinite alternate;
+    will-change: transform;
+    object-position: center center;
+  }
+
+  .hero-floor {
+    pointer-events: none;
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 24%;
+    background: linear-gradient(
+      to top,
+      color-mix(in oklab, var(--color-bg) 82%, transparent),
+      color-mix(in oklab, var(--color-bg) 28%, transparent) 55%,
+      transparent
+    );
+  }
+
+  .hero-lamp {
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    bottom: 16%;
+    z-index: 2;
+    width: 180px;
+    height: 180px;
+    transform: translateX(-50%);
+    background: radial-gradient(
+      circle,
+      color-mix(in oklab, var(--color-gold) 42%, transparent) 0%,
+      color-mix(in oklab, var(--color-gold) 12%, transparent) 42%,
+      transparent 72%
+    );
+    animation: lamp-pulse 3.2s ease-in-out infinite;
+  }
+
+  .hero-rings {
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    z-index: 1;
+    width: min(70%, 720px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-rings span {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--color-gold) 22%, transparent);
+    animation: ring-spin 80s linear infinite;
+  }
+
+  .hero-rings span:nth-child(2) {
+    inset: 8%;
+    animation-duration: 110s;
+    animation-direction: reverse;
+    border-color: color-mix(in oklab, var(--color-gold) 16%, transparent);
+  }
+
+  .hero-rings span:nth-child(3) {
+    inset: 18%;
+    animation-duration: 64s;
+    border-color: color-mix(in oklab, var(--color-teal) 18%, transparent);
+  }
+
+  .hero-rings span:nth-child(4) {
+    inset: 30%;
+    animation-duration: 140s;
+    animation-direction: reverse;
+    border-color: color-mix(in oklab, var(--color-gold) 12%, transparent);
+  }
+
+  .hero-stars {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.55;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, var(--color-gold), transparent),
+      radial-gradient(1px 1px at 28% 42%, var(--color-fg), transparent),
+      radial-gradient(1.5px 1.5px at 63% 22%, var(--color-gold), transparent),
+      radial-gradient(1px 1px at 78% 36%, var(--color-teal), transparent),
+      radial-gradient(1px 1px at 18% 68%, var(--color-fg), transparent),
+      radial-gradient(1.5px 1.5px at 88% 14%, var(--color-gold), transparent);
+    animation: star-twinkle 6s ease-in-out infinite;
+  }
+
+  .measure-plate {
+    background-color: var(--color-bg);
+    background-image:
+      linear-gradient(color-mix(in oklab, var(--color-fg) 5%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklab, var(--color-fg) 5%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center;
+  }
+}
+
+@keyframes wick-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes pulse-ring {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.07) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes lamp-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.12);
+  }
+}
+
+@keyframes ring-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes star-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wick-float,
+  .pulse-ring,
+  .enter,
+  .card-3d,
+  .hero-ken,
+  .hero-lamp,
+  .hero-rings span,
+  .hero-stars {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .hero-ken {
+    transform: none;
+  }
+}

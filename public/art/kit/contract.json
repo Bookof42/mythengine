@@ -1,0 +1,22 @@
+{
+  "name": "mythengine-kit",
+  "palette": {
+    "bg": "#050506",
+    "gold": "#e4d0a0",
+    "teal": "#8ec4c0",
+    "stone": "#12181c"
+  },
+  "rules": {
+    "text": "never bake letters into buttons, icons, or panels",
+    "sprites": "solid #FF00FF then chroma; JPEG often lands rose (198,37,115), key that too",
+    "chain": "one contract still, then image-to-image for every sibling so stroke and metal match",
+    "mascot": "one hover sheet for the moth, variants only by editing that path",
+    "panels": "ornament in corners, uniform edges, 9-slice ready",
+    "buttons": "geometry-identical normal / hover / pressed"
+  },
+  "icons": ["aperture", "lamp", "seed", "key", "thread", "cup", "stone", "mirror", "box"],
+  "props": ["lamp", "well", "threshold", "ring"],
+  "style": "hand-painted",
+  "buttons": ["normal", "hover", "pressed"],
+  "panels": ["dialog"]
+}
