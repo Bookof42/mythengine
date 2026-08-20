@@ -34,6 +34,12 @@ export function SiteFooter() {
         <p className="display mt-5 text-[0.65rem] tracking-[0.28em] text-faint">
           Mythengine · 42
         </p>
+        <p
+          className="mt-6 font-garamond text-sm tracking-[0.28em] text-faint/45"
+          aria-label="24 42"
+        >
+          24 | 42
+        </p>
       </div>
     </footer>
   );

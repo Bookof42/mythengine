@@ -37,18 +37,16 @@ export function CipherPlate() {
               <p className="text-sm tracking-[0.28em] text-gold sm:text-base sm:tracking-[0.42em]">
                 42 // Cipher
               </p>
-              <h3 className="display mt-4 w-full text-[clamp(1.85rem,8.5vw,4.5rem)] leading-[1.1] tracking-[0.04em] text-fg sm:mt-5">
-                {plate.display}
-              </h3>
-              <p className="mt-3 text-sm tracking-[0.18em] text-gold sm:mt-4 sm:text-base sm:tracking-[0.32em]">
+              <h3 className="sr-only">{plate.display}</h3>
+              <p className="mt-4 text-sm tracking-[0.18em] text-gold sm:mt-5 sm:text-base sm:tracking-[0.32em]">
                 <span className="sm:hidden">{FACE_SHORT[plate.face]}</span>
                 <span className="hidden sm:inline">{FACE_LABEL[plate.face]}</span>
               </p>
-              <div className="mx-auto mt-5 flex w-full gap-0.5 sm:mt-8 sm:gap-2">
+              <div className="mx-auto mt-5 flex w-full gap-px bg-[var(--color-line)] p-px sm:mt-8">
                 {tiles.map((tile, i) => (
                   <div
                     key={`${tile.letter}-${i}`}
-                    className="flex min-h-[4.25rem] min-w-0 flex-1 flex-col items-center justify-center border border-gold/40 px-0 py-2 sm:min-h-[5.5rem] sm:px-3 sm:py-3"
+                    className="flex min-h-[4.25rem] min-w-0 flex-1 flex-col items-center justify-center bg-bg px-0 py-2 sm:min-h-[5.5rem] sm:px-3 sm:py-3"
                   >
                     <span className="display text-[clamp(1.15rem,5.6vw,2.15rem)] leading-none tracking-[0.02em] text-fg">
                       {tile.letter}
