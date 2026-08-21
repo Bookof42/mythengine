@@ -9,9 +9,8 @@ import {
 } from "@/lib/flight-sim";
 import { KIT, SIGN_ICONS } from "@/lib/kit";
 import { audio } from "@/lib/audio";
-import { type Weather } from "@/lib/cards";
-import { matchMyth } from "@/lib/engine";
-import { SIGNS, carried, carriedSentence, emptyHeld, type SignKind } from "@/lib/signs";
+import { SIGNS, carried, emptyHeld, type SignKind } from "@/lib/signs";
+import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -43,15 +42,23 @@ export function FieldView() {
   const abandon = useGame((s) => s.abandon);
   const lastTrail = useGame((s) => s.save.lastTrail);
   const lastKept = useGame((s) => s.save.lastKept);
-  const history = useGame((s) => s.save.history);
-  const priors = useGame((s) => s.priors);
   const finished = useRef(false);
   const [hint, setHint] = useState("Hold to burn.");
   const [telem, setTelem] = useState("Hold · Take · Return");
   const [held, setHeld] = useState(emptyHeld());
   const [lastTaken, setLastTaken] = useState<SignKind | null>(null);
   const [ending, setEnding] = useState(false);
-  const [weather, setWeather] = useState<Weather | null>(null);
+  const [hintOn, setHintOn] = useState(true);
+
+  useEffect(() => {
+    if (!hint) {
+      setHintOn(false);
+      return;
+    }
+    setHintOn(true);
+    const id = window.setTimeout(() => setHintOn(false), 4200);
+    return () => window.clearTimeout(id);
+  }, [hint]);
 
   useEffect(() => {
     audio.unlock();
@@ -190,7 +197,6 @@ export function FieldView() {
     let last = performance.now();
     let raf = 0;
     let lastHint = sim.hint;
-    let lastWeather = sim.weather?.cardId ?? "";
     let lastTelem = "";
     let lastHeld = "000";
     let lastGate = "";
@@ -208,10 +214,6 @@ export function FieldView() {
       if (sim.hint !== lastHint) {
         lastHint = sim.hint;
         setHint(sim.hint);
-      }
-      const weatherKey = sim.weather?.cardId ?? "";
-      if (weatherKey !== lastWeather) {
-        lastWeather = weatherKey;
       }
       const heldKey = SIGNS.map((k) => (sim.held[k] ? "1" : "0")).join("");
       if (heldKey !== lastHeld) {
@@ -253,18 +255,7 @@ export function FieldView() {
         lastEnding = true;
         setEnding(true);
         audio.cue("reveal");
-        const myth = matchMyth(sim.weights, {
-          seed: Date.now() % 2147483646,
-          excludeIds: history.slice(-2).map((h) => h.mythId),
-          priors,
-        });
-        const reason = carriedSentence(sim.held, myth.name);
-        setWeather({
-          name: myth.name,
-          line: reason,
-          cardId: "return",
-        });
-        sim.hint = reason;
+        sim.hint = "You returned.";
       }
       const { w, h } = view();
       drawWorld(ctx, sim, w, h);
@@ -322,17 +313,13 @@ export function FieldView() {
           <X className="h-5 w-5" />
         </button>
       </div>
-      <div className="pointer-events-none absolute inset-x-0 top-[max(2.6rem,calc(env(safe-area-inset-top)+1.8rem))] z-10 px-4 text-center sm:top-16 sm:px-6">
-        {weather ? (
-          <>
-            <p className="display text-base text-gold sm:text-3xl">{weather.name}</p>
-            <p className="mx-auto mt-2 max-w-xl text-sm text-fg/90 sm:text-xl">
-              {weather.line}
-            </p>
-          </>
-        ) : (
-          <p className="display text-sm text-gold/80 sm:text-xl">{hint}</p>
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-x-0 top-[max(2.6rem,calc(env(safe-area-inset-top)+1.8rem))] z-10 px-4 text-center transition-opacity duration-700 sm:top-16 sm:px-6",
+          hintOn && hint ? "opacity-100" : "opacity-0",
         )}
+      >
+        <p className="display text-sm text-gold/80 sm:text-xl">{hint}</p>
       </div>
       <div className="pointer-events-none absolute bottom-[max(1.1rem,calc(env(safe-area-inset-bottom)+0.5rem))] left-2 right-[4.6rem] z-10 flex justify-center gap-1 sm:left-1/2 sm:right-auto sm:bottom-8 sm:w-auto sm:-translate-x-1/2 sm:gap-2">
         {SIGNS.map((k) => (
