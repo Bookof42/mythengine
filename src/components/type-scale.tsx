@@ -70,7 +70,7 @@ export function TypeScale({ className }: { className?: string }) {
             aria-pressed={on}
             onClick={() => choose(s.id)}
             className={cn(
-              "display min-h-8 min-w-7 px-1 leading-none rounded-full sm:min-h-9 sm:min-w-8 sm:px-1.5",
+              "font-note min-h-8 min-w-7 px-1 leading-none rounded-full sm:min-h-9 sm:min-w-8 sm:px-1.5",
               s.className,
               on ? "bg-gold/15 text-gold" : "text-muted hover:text-gold",
             )}

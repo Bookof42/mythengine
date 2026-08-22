@@ -29,7 +29,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
-      { name: "theme-color", content: "#050506" },
+      { name: "theme-color", content: "#0c0b0a" },
       { name: "description", content: SEO.description },
       { name: "author", content: "The Book of 42" },
       { name: "robots", content: "index,follow" },
@@ -61,7 +61,7 @@ export const Route = createRootRoute({
     styles: [
       {
         children:
-          "html,body{background:#050506;color:#ede6d6;margin:0}img{max-width:100%;display:block}",
+          "html,body{background:#0c0b0a;color:#e7e0d3;margin:0;color-scheme:dark}img{max-width:100%;display:block}",
       },
     ],
     links: [
@@ -74,7 +74,7 @@ export const Route = createRootRoute({
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap",
       },
     ],
     };

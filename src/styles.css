@@ -2,21 +2,21 @@
 @import "tw-animate-css";
 
 @theme {
-  --color-bg: #050506;
-  --color-fg: #ede6d6;
-  --color-muted: #c5d0cd;
-  --color-faint: #8b9694;
+  --color-bg: #0c0b0a;
+  --color-fg: #e7e0d3;
+  --color-muted: #b3bfbc;
+  --color-faint: #8a918f;
   --color-teal: #8EC4C0;
   --color-gold: #e4d0a0;
-  --color-surface: #0c0e0e;
-  --color-raised: #121616;
-  --color-line: color-mix(in oklab, #ede6d6 12%, transparent);
-  --color-line-strong: color-mix(in oklab, #ede6d6 22%, transparent);
+  --color-surface: #121110;
+  --color-raised: #181615;
+  --color-line: color-mix(in oklab, #e7e0d3 10%, transparent);
+  --color-line-strong: color-mix(in oklab, #e7e0d3 18%, transparent);
   --color-ink: #12110e;
 
   --font-display: "Fraunces", "Palatino Linotype", Palatino, Georgia, serif;
   --font-serif: "EB Garamond", "Palatino Linotype", Palatino, Georgia, serif;
-  --font-sans: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Libre Franklin", "Segoe UI", system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --radius-xs: 4px;
@@ -34,6 +34,7 @@
     -moz-osx-font-smoothing: grayscale;
     background: var(--color-bg);
     color: var(--color-fg);
+    color-scheme: dark;
     font-size: calc(18px * var(--text-scale, 1));
     overflow-x: clip;
     overflow-y: auto;
@@ -66,7 +67,7 @@
     font-family: var(--font-sans);
     background: var(--color-bg);
     color: var(--color-fg);
-    line-height: 1.55;
+    line-height: 1.62;
   }
 
   h1,
@@ -108,7 +109,7 @@
     pointer-events: none;
     position: absolute;
     inset: 0;
-    opacity: 0.09;
+    opacity: 0.045;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.55'/></svg>");
   }
@@ -125,6 +126,12 @@
   .font-garamond,
   .type-body {
     font-family: var(--font-serif);
+  }
+
+  .font-note {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    letter-spacing: 0.01em;
   }
 
   .copy {

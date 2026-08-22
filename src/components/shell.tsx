@@ -85,7 +85,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="grain relative flex min-h-dvh flex-col bg-bg text-fg">
       {playing || vacuum ? null : (
-      <header className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-center justify-between gap-2 px-2 pt-[max(0.7rem,env(safe-area-inset-top))] sm:gap-3 sm:px-6">
+      <header className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-center justify-between gap-2 bg-gradient-to-b from-bg/80 to-transparent px-2 pt-[max(0.7rem,env(safe-area-inset-top))] pb-8 sm:gap-3 sm:px-6">
         <div className="pointer-events-auto flex min-w-0 items-center gap-1 sm:gap-2">
           {atHome ? null : (
             <button
@@ -95,7 +95,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               aria-label="Back"
             >
               <ChevronLeft className="h-5 w-5 shrink-0" />
-              <span className="display text-sm tracking-[0.12em] sm:text-base">Back</span>
+              <span className="font-note text-sm tracking-[0.08em] sm:text-base">Back</span>
             </button>
           )}
           <Link
@@ -121,7 +121,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             onClick={startPlay}
-            className="text-base text-gold hover:text-teal display"
+            className="text-base text-gold hover:text-teal font-note tracking-[0.06em]"
           >
             Field
           </button>
@@ -130,7 +130,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               key={link.to}
               to={link.to}
               className={cn(
-                "display text-base text-muted hover:text-gold",
+                "font-note text-base tracking-[0.06em] text-muted hover:text-gold",
                 pathname === link.to && "text-gold",
               )}
             >
@@ -258,7 +258,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="display inline-flex min-h-11 items-center text-xl text-teal hover:text-gold"
+                    className="font-note inline-flex min-h-11 items-center text-lg text-teal hover:text-gold"
                   >
                     {link.label}
                   </a>
@@ -288,7 +288,7 @@ function MobileDock({
   onHouse: () => void;
 }) {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-bg/95 lg:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-bg/92 backdrop-blur-md lg:hidden">
       <nav
         aria-label="Rooms"
         className="flex items-center justify-center gap-8 pb-[max(0.4rem,env(safe-area-inset-bottom))] pt-1"
@@ -298,7 +298,7 @@ function MobileDock({
           onClick={onHouse}
           className="flex min-h-12 min-w-[4.2rem] items-center justify-center text-gold"
         >
-          <span className="display text-sm tracking-[0.14em]">House</span>
+          <span className="font-note text-sm tracking-[0.1em]">House</span>
         </button>
         {HEADER_LINKS.map((link) => (
           <Link
@@ -311,7 +311,7 @@ function MobileDock({
                 : "text-muted",
             )}
           >
-            <span className="display">{link.label}</span>
+            <span className="font-note">{link.label}</span>
           </Link>
         ))}
       </nav>
