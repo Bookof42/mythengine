@@ -41,9 +41,9 @@ export const OMENS: Omen[] = [
   },
   {
     id: "comb",
-    title: "Hair in the current",
-    body: "The source of food is tangled. Going down gently is the work, not another hunt.",
-    prompt: "What grief have you left uncombed while you waited for provision?",
+    title: "Tangled hair",
+    body: "In one northern story the food of the people lives in a woman’s hair at the bottom of the sea. When the hair snarls, the animals stay away. Someone has to go down and comb it, gently. Not hunt harder. Sit with what is snarled.",
+    prompt: "",
     sigil: "bone",
     moon: "waning",
     weights: { descent: 2, devotion: 1 },
@@ -169,7 +169,7 @@ export const OMENS: Omen[] = [
     id: "bridge-night",
     title: "One appointed crossing",
     body: "Two callings can be real. They do not have to become one life. A crossing is enough.",
-    prompt: "Which two things have you been trying to fuse that need their own names?",
+    prompt: "",
     sigil: "bridge",
     moon: "full",
     weights: { eros: 2, craft: 1, threshold: 1 },
@@ -231,3 +231,32 @@ export const OMENS: Omen[] = [
 ];
 
 export const OMEN_BY_ID = Object.fromEntries(OMENS.map((o) => [o.id, o]));
+
+/** Which library door this daily looking opens. */
+export const OMEN_MYTH: Record<string, string> = {
+  unopened: "psyche",
+  "small-fire": "brigid",
+  "too-much-light": "psyche",
+  comb: "sedna",
+  "thread-hand": "ariadne",
+  "two-colors": "chameleon",
+  "sweet-water": "dionysus",
+  "cave-laugh": "amaterasu",
+  "unfinished-tale": "scheherazade",
+  "ford-alone": "cuchulainn",
+  "visible-mend": "nuwa",
+  lamp: "psyche",
+  dumpling: "momotaro",
+  weighing: "maat",
+  east: "quetzalcoatl",
+  peach: "momotaro",
+  "owl-hour": "blodeuwedd",
+  "bridge-night": "weaver",
+  "stolen-sun": "raven",
+  "seven-gates": "inanna",
+  "walls-of-uruk": "gilgamesh",
+  "cold-vat": "cuchulainn",
+  imbolc: "brigid",
+  "forgotten-size": "hanuman",
+};
+

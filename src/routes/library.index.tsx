@@ -52,23 +52,19 @@ function LibraryGrid() {
           <h1 className="display mt-4 w-full text-[clamp(2.4rem,12vw,6rem)] leading-[1.05] text-fg">
             The myth library
           </h1>
-          <p className="font-garamond mt-5 w-full text-xl leading-snug text-fg/90 sm:mt-6 sm:text-2xl lg:text-3xl">
+          <p className="font-garamond mt-5 w-full text-2xl leading-snug text-fg/90 sm:mt-6 sm:text-3xl lg:text-4xl">
             Myth is not an old story about somebody else. It is the plot you are
             already inside. You may read these rooms without flying. You may fly
             and never open this door. Either way you have already left home.
           </p>
-          <p className="font-garamond mt-4 w-full text-xl leading-snug text-muted sm:mt-5 sm:text-2xl lg:text-3xl">
-            These are not types. They are images. Do not take a number and go
-            home improved. Stand in front of one until it looks back.
-          </p>
-          <p className="display mt-6 w-full text-[clamp(1.6rem,7vw,3.75rem)] text-gold sm:mt-8">
+          <p className="display mt-6 w-full text-[clamp(1.8rem,7vw,3.75rem)] text-gold sm:mt-8">
             Forty-two, because the Answer arrived first.
           </p>
-          <p className="font-garamond mt-3 w-full text-xl leading-snug text-fg/90 sm:mt-4 sm:text-2xl">
-            The Question is still outstanding. Don’t Panic. The towel is in the
-            Codex. The mice have not been consulted. Psyche is the hinge. The rest
-            are mirrors, and one of them is you, which is awkward, and also the
-            point.
+          <p className="font-garamond mt-3 w-full text-2xl leading-snug text-fg/90 sm:mt-4 sm:text-3xl">
+            The Question is still outstanding. <em>Don’t Panic</em>. The towel is
+            in the Codex. The mice have not been consulted. Psyche is the hinge.
+            The rest are mirrors, and one of them is you, which is awkward, and
+            also the point.
           </p>
         </div>
       </section>
@@ -143,13 +139,13 @@ function LibraryGrid() {
         <h2 className="display mt-4 w-full text-[clamp(2rem,9vw,4.5rem)] text-fg">
           Not the villain. The figure the tale will not leave out.
         </h2>
-        <p className="font-garamond mt-6 w-full text-xl leading-snug text-fg/90 sm:mt-8 sm:text-2xl lg:text-3xl">
+        <p className="font-garamond mt-6 w-full text-2xl leading-snug text-fg/90 sm:mt-8 sm:text-3xl lg:text-4xl">
           Jung called it the shadow: what the persona will not claim. von Franz
           found it in the rejected sibling, the animal, the witch who is also the
           helper. Hillman said do not improve it. Personify it. Let it have an
           image.
         </p>
-        <p className="font-garamond mt-6 w-full text-xl text-muted sm:text-2xl">
+        <p className="font-garamond mt-6 w-full text-2xl text-muted sm:text-3xl">
           Campbell’s guardian at the threshold is often this. Adams, being Adams,
           would add that the mice have a shadow too, and it is probably
           bureaucracy. In Inspect, each plot keeps one. Not a type. The other in
@@ -202,11 +198,11 @@ function MythDoor({
           {myth.origin}
         </span>
         {wide ? (
-          <span className="font-garamond mt-4 block max-w-3xl text-xl text-fg/90 sm:text-2xl">
+          <span className="font-garamond mt-4 block max-w-3xl text-2xl text-fg/90 sm:text-3xl">
             <WithApuleius text={myth.short} />
           </span>
         ) : (
-          <span className="font-garamond mt-3 block text-lg text-fg/90 sm:text-xl">
+          <span className="font-garamond mt-3 block text-xl text-fg/90 sm:text-2xl">
             <WithApuleius text={myth.short} />
           </span>
         )}

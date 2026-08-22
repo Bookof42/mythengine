@@ -1,5 +1,5 @@
 import { addWeights, emptyWeights } from "./engine";
-import { weatherFor, type Weather } from "./cards";
+import { lookWeather, CARD_SIGN, weatherFor, type Look, type Weather } from "./cards";
 import { carried, emptyHeld, type SignKind } from "./signs";
 import type { Archetype, StepRecord } from "./types";
 
@@ -58,6 +58,10 @@ export type FlightSim = {
   everThrust: boolean;
   mothSpoken: boolean;
   weather: Weather | null;
+  lookT: number;
+  lookChoice: Look["choice"] | null;
+  favored: SignKind | null;
+  gapSize: number;
   weights: Record<Archetype, number>;
   records: StepRecord[];
   done: boolean;
@@ -110,17 +114,24 @@ function circular(radius: number, angle: number, ccw = true) {
 export function createFlight(opts?: {
   ghost?: { x: number; y: number }[];
   kept?: SignKind | null;
+  look?: Look | null;
 }): FlightSim {
-  const r0 = 500;
+  const look = opts?.look ?? null;
+  const weather = look ? lookWeather(look) : null;
+  const r0 = look?.choice === "toward" ? 440 : look?.choice === "away" ? 580 : 500;
   const vc = Math.sqrt(MU / r0);
+  const circularStart = look?.choice === "rest";
   const moth = {
     x: -r0,
     y: 0,
     vx: 0,
-    vy: -vc * 0.97,
+    vy: circularStart ? -vc : -vc * 0.97,
     angle: -Math.PI / 2,
   };
   const kept = opts?.kept ?? null;
+  const favored = look
+    ? ((CARD_SIGN[look.cardId] as SignKind | undefined) ?? null)
+    : null;
   const motes = [
     { ...circular(215, 0.6), kind: "seed" as const },
     { ...circular(255, 2.3), kind: "key" as const },
@@ -131,6 +142,8 @@ export function createFlight(opts?: {
   ].filter((m) => m.kind !== kept);
   const held = emptyHeld();
   if (kept) held[kept] = true;
+  const gapSize =
+    look?.choice === "toward" ? 0.38 : look?.choice === "away" ? 0.62 : GAP;
   return {
     t: 0,
     moth,
@@ -158,17 +171,21 @@ export function createFlight(opts?: {
     periapsis: RING_R,
     apoapsis: r0,
     held,
-    giftT: 0,
+    giftT: look ? 5.2 : 0,
     boxReady: false,
     lastTaken: null,
     everThrust: false,
     mothSpoken: false,
-    weather: null,
+    weather,
+    lookT: look ? 6 : 0,
+    lookChoice: look?.choice ?? null,
+    favored,
+    gapSize,
     weights: emptyWeights(),
     records: [],
     done: false,
     doneT: 0,
-    hint: "Hold. Take the gold. Come back through the gap.",
+    hint: weather?.line ?? "Hold.",
     ghost: opts?.ghost ?? [],
   };
 }
@@ -227,7 +244,9 @@ function speak(sim: FlightSim, event: string) {
 function stateHint(sim: FlightSim) {
   const loot = carried(sim.held).length;
   if (sim.done) return sim.hint;
-  if (!sim.everThrust) return "Hold. Take the gold. Come back through the gap.";
+  if (sim.giftT > 0 && sim.weather) return sim.weather.line;
+  if (!sim.everThrust && sim.t < 10) return "Hold.";
+  if (!sim.everThrust) return "The nearest gold. Then the seam.";
   if (loot === 0) return "Take the gold.";
   if (!sim.entered && !sim.exited) return "The seam is open.";
   if (sim.burned && sim.inWell) return "Don’t Panic.";
@@ -263,9 +282,22 @@ function physics(sim: FlightSim, dt: number, input: FlightInput) {
   if (sim.giftT <= 0) sim.weather = null;
 
   const m = sim.moth;
+  sim.lookT = Math.max(0, sim.lookT - dt);
   const g = gravity(m.x, m.y);
   let ax = g.ax;
   let ay = g.ay;
+  if (sim.lookT > 0 && sim.lookChoice === "toward") {
+    ax += g.ax * 0.22;
+    ay += g.ay * 0.22;
+  } else if (sim.lookT > 0 && sim.lookChoice === "away") {
+    ax -= g.ax * 0.14;
+    ay -= g.ay * 0.14;
+  } else if (sim.lookT > 0 && sim.lookChoice === "rest") {
+    const r = Math.hypot(m.x, m.y) || 1;
+    const circ = circular(r, Math.atan2(m.y, m.x));
+    ax += (circ.vx - m.vx) * 0.35;
+    ay += (circ.vy - m.vy) * 0.35;
+  }
 
   sim.thrusting = false;
   if (input.thrust || input.keys.x || input.keys.y) {
@@ -326,7 +358,7 @@ function physics(sim: FlightSim, dt: number, input: FlightInput) {
   sim.periapsis = el.periapsis;
   sim.apoapsis = el.apoapsis;
 
-  const gap = GAP + (sim.held.key ? 0.28 : 0);
+  const gap = sim.gapSize + (sim.held.key ? 0.28 : 0);
   const pr = el.r;
   const ang = Math.atan2(m.y, m.x);
   const inGap = Math.abs(wrap(ang - sim.gapAngle)) < gap;

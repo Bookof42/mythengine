@@ -6,7 +6,7 @@
   --color-fg: #ede6d6;
   --color-muted: #c5d0cd;
   --color-faint: #8b9694;
-  --color-teal: #8eaaa4;
+  --color-teal: #8EC4C0;
   --color-gold: #e4d0a0;
   --color-surface: #0c0e0e;
   --color-raised: #121616;
@@ -199,6 +199,20 @@
     background: color-mix(in oklab, var(--color-bg) 18%, transparent);
   }
 
+  .walk-card .walk-art {
+    height: 22dvh;
+  }
+  .walk-card .walk-art img {
+    object-fit: cover;
+  }
+  .walk-card .walk-copy {
+    overflow: hidden;
+    justify-content: center;
+  }
+  .walk-card .walk-art::after {
+    background: color-mix(in oklab, var(--color-bg) 28%, transparent);
+  }
+
   @media (orientation: landscape) and (max-height: 640px) {
     .walk-frame {
       flex-direction: row;
@@ -252,6 +266,21 @@
   .hairline {
     height: 1px;
     background: var(--color-line);
+  }
+
+  .menu-hint {
+    animation: menuPulse 1.1s ease-in-out 2;
+  }
+  @keyframes menuPulse {
+    0%,
+    100% {
+      color: var(--color-gold);
+      transform: scale(1);
+    }
+    45% {
+      color: var(--color-teal);
+      transform: scale(1.14);
+    }
   }
 
   .card-stage {

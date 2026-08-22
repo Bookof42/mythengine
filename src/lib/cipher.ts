@@ -134,19 +134,19 @@ export const CIPHER_PLATES: CipherPlateSpec[] = [
     word: "mythengine",
     display: "MYTHENGINE",
     face: "reverseReduction",
-    note: "The title. Reverse reduction, the same seal.",
+    note: "The title.\nReverse reduction, the same seal.",
   },
   {
     word: "Question",
     display: "QUESTION",
     face: "reverseReduction",
-    note: "Adams gave the culture an Answer. Consciousness is how a better Question arrives.",
+    note: "Adams gave the culture an Answer.\nConsciousness is how a better Question arrives.",
   },
   {
     word: "Don’t Panic",
     display: "DON’T PANIC",
     face: "reduction",
-    note: "The towel. Meaning not included.",
+    note: "The towel.\nMeaning not included.",
   },
 ];
 

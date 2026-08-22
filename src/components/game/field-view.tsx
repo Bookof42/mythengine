@@ -12,22 +12,33 @@ import { audio } from "@/lib/audio";
 import { SIGNS, carried, emptyHeld, type SignKind } from "@/lib/signs";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
+import { AudioToggle } from "@/components/audio-toggle";
 import { useEffect, useRef, useState } from "react";
 
-function load(src: string) {
+function load(src: string): HTMLImageElement | null {
   if (typeof Image === "undefined") return null;
   const img = new Image();
   img.src = src;
   return img;
 }
 
-const mothFrames = KIT.mascot.moth.map(load);
-const skyImg = load(KIT.field);
-const wellImg = load(KIT.props.well);
-const lampImg = load(KIT.props.lamp);
-const signImgs = Object.fromEntries(
-  SIGNS.map((k) => [k, load(SIGN_ICONS[k])]),
-) as Record<SignKind, HTMLImageElement>;
+type Sprites = {
+  moth: (HTMLImageElement | null)[];
+  sky: HTMLImageElement | null;
+  well: HTMLImageElement | null;
+  lamp: HTMLImageElement | null;
+  signs: Partial<Record<SignKind, HTMLImageElement | null>>;
+};
+
+function sprites(): Sprites {
+  return {
+    moth: KIT.mascot.moth.map(load),
+    sky: load(KIT.field),
+    well: load(KIT.props.well),
+    lamp: load(KIT.props.lamp),
+    signs: Object.fromEntries(SIGNS.map((k) => [k, load(SIGN_ICONS[k])])),
+  };
+}
 
 export function FieldView() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,6 +53,7 @@ export function FieldView() {
   const abandon = useGame((s) => s.abandon);
   const lastTrail = useGame((s) => s.save.lastTrail);
   const lastKept = useGame((s) => s.save.lastKept);
+  const lastLook = useGame((s) => s.save.lastLook);
   const finished = useRef(false);
   const [hint, setHint] = useState("Hold to burn.");
   const [telem, setTelem] = useState("Hold · Take · Return");
@@ -64,10 +76,11 @@ export function FieldView() {
     audio.unlock();
     audio.setSection("play");
     const canvas = canvasRef.current;
+    const art = sprites();
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const sim = createFlight({ ghost: lastTrail, kept: lastKept });
+    const sim = createFlight({ ghost: lastTrail, kept: lastKept, look: lastLook });
     simRef.current = sim;
     finished.current = false;
     const input = inputRef.current;
@@ -234,7 +247,7 @@ export function FieldView() {
         if (lastGate && gate > lastGate) {
           audio.cue("gap");
           try {
-            navigator.vibrate?.(18);
+            navigator.vibrate?.(sim.burned ? 40 : 18);
           } catch {
             /* */
           }
@@ -258,7 +271,7 @@ export function FieldView() {
         sim.hint = "You returned.";
       }
       const { w, h } = view();
-      drawWorld(ctx, sim, w, h);
+      drawWorld(ctx, sim, w, h, art);
       if (sim.done && sim.doneT > 5.2 && !finished.current) {
         finished.current = true;
         finishArcade(sim.weights, sim.records, carried(sim.held), sim.trail);
@@ -303,7 +316,7 @@ export function FieldView() {
         className="absolute inset-0 h-full w-full touch-none"
         style={{ touchAction: "none" }}
       />
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center px-2 pt-[max(0.4rem,env(safe-area-inset-top))] sm:px-5">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between px-2 pt-[max(0.4rem,env(safe-area-inset-top))] sm:px-5">
         <button
           type="button"
           className="pointer-events-auto flex h-11 items-center gap-0.5 pr-2 text-gold/80 hover:text-gold"
@@ -312,6 +325,7 @@ export function FieldView() {
         >
           <X className="h-5 w-5" />
         </button>
+        <AudioToggle className="pointer-events-auto" />
       </div>
       <div
         className={cn(
@@ -364,6 +378,7 @@ function drawWorld(
   sim: FlightSim,
   w: number,
   h: number,
+  art: Sprites,
 ) {
   const shake = sim.trauma * sim.trauma * 12;
   ctx.save();
@@ -374,11 +389,11 @@ function drawWorld(
   ctx.save();
   ctx.translate(w / 2 - sim.cam.x, h / 2 - sim.cam.y);
 
-  if (skyImg?.complete && skyImg.naturalWidth) {
+  if (art.sky?.complete && art.sky.naturalWidth) {
     const fw = 2000;
     const fh = 1125;
     ctx.globalAlpha = 0.72;
-    ctx.drawImage(skyImg, -fw / 2, -fh * 0.62, fw, fh);
+    ctx.drawImage(art.sky, -fw / 2, -fh * 0.62, fw, fh);
     ctx.globalAlpha = 1;
   }
 
@@ -398,9 +413,9 @@ function drawWorld(
   drawPath(ctx, sim.ghost, "rgba(228,208,160,0.16)", 1.3);
   drawPath(ctx, sim.trail, "rgba(142,196,192,0.45)", 1.6);
 
-  if (wellImg?.complete) {
+  if (art.well?.complete) {
     ctx.globalAlpha = 0.9;
-    ctx.drawImage(wellImg, WELL.x - 88, WELL.y - 70, 176, 176);
+    ctx.drawImage(art.well, WELL.x - 88, WELL.y - 70, 176, 176);
     ctx.globalAlpha = 1;
   }
 
@@ -412,8 +427,8 @@ function drawWorld(
   ctx.beginPath();
   ctx.arc(0, 0, 72, 0, Math.PI * 2);
   ctx.fill();
-  if (lampImg?.complete && lampImg.naturalWidth) {
-    ctx.drawImage(lampImg, -18, -22, 36, 44);
+  if (art.lamp?.complete && art.lamp.naturalWidth) {
+    ctx.drawImage(art.lamp, -18, -22, 36, 44);
   }
 
   let nearest: (typeof sim.motes)[number] | null = null;
@@ -426,8 +441,9 @@ function drawWorld(
     }
   }
   for (const mote of sim.motes) {
-    const icon = signImgs[mote.kind];
-    const near = mote === nearest;
+    const icon = art.signs[mote.kind];
+    const near =
+      mote === nearest || (sim.lookT > 0 && sim.favored === mote.kind);
     const pulse = near
       ? 1.12 + 0.2 * Math.abs(Math.sin(sim.t * 3.4))
       : 1 + 0.04 * Math.sin(sim.t * 2.2 + mote.x * 0.01);
@@ -460,12 +476,12 @@ function drawWorld(
 
   for (const s of sim.sparks) {
     ctx.globalAlpha = Math.max(0, s.life);
-    ctx.fillStyle = s.gold ? "#e4d0a0" : "#8eaaa4";
+    ctx.fillStyle = s.gold ? "#e4d0a0" : "#8EC4C0";
     ctx.fillRect(s.x, s.y, 2.2, 2.2);
   }
   ctx.globalAlpha = 1;
 
-  const moth = mothFrames[Math.floor(sim.t * (sim.thrusting ? 16 : 7)) % 4];
+  const moth = art.moth[Math.floor(sim.t * (sim.thrusting ? 16 : 7)) % 4];
   if (moth?.complete) {
     ctx.save();
     ctx.translate(sim.moth.x, sim.moth.y);

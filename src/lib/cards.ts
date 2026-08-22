@@ -202,6 +202,35 @@ export const SIGN_WEATHER: Record<string, string> = {
 
 export type Weather = { name: string; line: string; cardId: string };
 
+export type Look = { cardId: string; choice: "toward" | "away" | "rest" };
+
+/** Card → gold in the field. A looking tugs the next orbit. */
+export const CARD_SIGN: Record<string, string> = {
+  seed: "seed",
+  key: "key",
+  thread: "thread",
+  cup: "cup",
+  bone: "stone",
+  scale: "mirror",
+  well: "box",
+  aperture: "key",
+  moth: "cup",
+  flame: "cup",
+  bridge: "thread",
+};
+
+export function lookWeather(look: Look): Weather | null {
+  const card = CARD_BY_ID[look.cardId];
+  if (!card) return null;
+  const line =
+    look.choice === "toward"
+      ? "Taken. The lamp pulls a little more."
+      : look.choice === "away"
+        ? "Left. The seam is a little wider."
+        : "Held. The first ellipse wants to close.";
+  return { name: card.name, line, cardId: card.id };
+}
+
 export function weatherFor(event: string): Weather | null {
   const cardId = SIGN_WEATHER[event];
   if (!cardId) return null;

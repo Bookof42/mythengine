@@ -9,7 +9,7 @@ import { SCENE_BY_ID } from "@/lib/scenes";
 import { useGame } from "@/lib/game-store";
 import type { PlayStep } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { ArtFrame, PathDots } from "./frame";
 import { WithApuleius } from "@/components/with-apuleius";
 
@@ -192,57 +192,47 @@ function CardView({
   earned?: boolean;
 }) {
   const card = CARD_BY_ID[step.id];
-  const startX = useRef<number | null>(null);
   if (!card) return null;
 
   return (
-    <ArtFrame src="/art/card-back.jpg" align="center" dim="bg-bg/70" fit="contain">
-      <div className="mx-auto flex w-full max-w-lg flex-col items-center text-center">
+    <ArtFrame src="/art/card-back.jpg" align="center" dim="bg-bg/70" fit="card">
+      <div className="mx-auto flex w-full max-w-2xl flex-col items-center text-center">
         <PathDots total={total} index={index} />
-        <p className="mb-5 text-sm tracking-[0.28em] text-gold uppercase">
+        <p className="mb-4 text-sm tracking-[0.28em] text-gold uppercase">
           {earned ? "The station offers a card" : "A card"}
         </p>
-        <div className="card-stage w-full max-w-[18rem] sm:max-w-xs">
+        <div className="card-stage w-full max-w-xl">
           <button
             type="button"
             className={cn(
-              "relative block aspect-[3/4] w-full",
+              "relative mx-auto block aspect-[16/10] w-full",
               "card-3d",
               flipped && "is-flipped",
             )}
             onClick={() => {
               if (!flipped) onFlip();
             }}
-            onPointerDown={(e) => {
-              startX.current = e.clientX;
-            }}
-            onPointerUp={(e) => {
-              if (!flipped || startX.current == null) return;
-              const dx = e.clientX - startX.current;
-              if (dx > 60) onChoose("toward");
-              else if (dx < -60) onChoose("away");
-            }}
-            aria-label={flipped ? card.name : "Turn the card"}
+            aria-label={flipped ? card.name : "Tap the card"}
           >
-            <div className="card-face absolute inset-0 overflow-hidden rounded-[22px] border border-gold/40">
+            <div className="card-face absolute inset-0 overflow-hidden rounded-[18px] border border-gold/40">
               <img src="/art/card-back.jpg" alt="" className="h-full w-full object-cover" />
-              <div className="absolute inset-0 grid place-items-center bg-bg/25">
+              <div className="absolute inset-0 grid place-items-center bg-bg/20">
                 <p className="display text-sm tracking-[0.3em] text-gold">TURN</p>
               </div>
             </div>
-            <div className="card-face is-back absolute inset-0 overflow-hidden rounded-[22px] border border-teal/40 bg-surface p-6">
+            <div className="card-face is-back absolute inset-0 overflow-hidden rounded-[18px] border border-teal/40 bg-raised/90 p-5">
               <div className="flex h-full flex-col items-center justify-center text-center">
                 {CARD_PROP[card.id] ? (
                   <img
                     src={CARD_PROP[card.id]}
                     alt=""
-                    className="h-20 w-20 object-contain sm:h-24 sm:w-24"
+                    className="h-16 w-16 object-contain mix-blend-screen sm:h-20 sm:w-20"
                   />
                 ) : (
-                  <Sigil kind={card.sigil} className="h-16 w-16" />
+                  <Sigil kind={card.sigil} className="h-14 w-14" />
                 )}
-                <h2 className="display mt-4 text-3xl text-fg">{card.name}</h2>
-                <p className="copy mt-3 text-fg/90">
+                <h2 className="display mt-3 text-2xl text-fg sm:text-3xl">{card.name}</h2>
+                <p className="font-garamond mt-2 max-w-md text-lg text-fg/90 sm:text-xl">
                   {card.fragment}
                 </p>
               </div>
@@ -250,27 +240,27 @@ function CardView({
           </button>
         </div>
         {flipped ? (
-          <ul className="enter mt-8 flex w-full flex-col items-center gap-2">
+          <ul className="enter mt-6 flex w-full items-center justify-center gap-8">
             {(
               [
-                ["away", "I turn away"],
-                ["rest", "I rest with it"],
-                ["toward", "I am drawn"],
+                ["away", "Leave"],
+                ["rest", "Hold"],
+                ["toward", "Take"],
               ] as const
             ).map(([id, label]) => (
-              <li key={id} className="w-full">
+              <li key={id}>
                 <button
                   type="button"
-                  className="flex w-full min-h-14 items-center justify-center py-3"
+                  className="display min-h-12 text-xl text-gold hover:text-teal sm:text-2xl"
                   onClick={() => onChoose(id)}
                 >
-                  <span className="display text-xl text-gold hover:text-teal sm:text-3xl">{label}</span>
+                  {label}
                 </button>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="mt-6 text-lg text-faint">Tap the card. Trust the first motion.</p>
+          <p className="mt-5 text-base text-faint">Tap the card.</p>
         )}
       </div>
     </ArtFrame>

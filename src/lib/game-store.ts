@@ -28,9 +28,11 @@ type Screen = "threshold" | "play" | "reveal" | "question" | "after";
 
 type GameStore = {
   ready: boolean;
+  house: boolean;
   save: SaveState;
   priors: Priors | null;
   hydrate: () => void;
+  openHouse: () => void;
   refreshPriors: () => Promise<void>;
   begin: () => void;
   beginPsyche: (night?: "short" | "long") => void;
@@ -104,6 +106,7 @@ function finishSession(save: SaveState, priors: Priors | null): SaveState {
 
 export const useGame = create<GameStore>((set, get) => ({
   ready: false,
+  house: false,
   save: {
     version: 2,
     history: [],
@@ -124,8 +127,12 @@ export const useGame = create<GameStore>((set, get) => ({
       save = write({ ...save, current: undefined });
     }
     audio.setMuted(save.muted);
-    set({ save, ready: true });
+    set({ save, ready: true, house: false });
     void get().refreshPriors();
+  },
+
+  openHouse: () => {
+    set({ house: true });
   },
 
   refreshPriors: async () => {
@@ -231,6 +238,11 @@ export const useGame = create<GameStore>((set, get) => ({
       ...current.records,
       { kind: step.kind, itemId: step.id, choice },
     ];
+    const lastLook =
+      step.kind === "card" &&
+      (choice === "toward" || choice === "away" || choice === "rest")
+        ? { cardId: step.id, choice }
+        : save.lastLook;
     const nextCurrent: PlaySnapshot = {
       ...current,
       weights,
@@ -238,7 +250,7 @@ export const useGame = create<GameStore>((set, get) => ({
       afterText: undefined,
       cardFlipped: false,
     };
-    const next = write({ ...save, current: nextCurrent });
+    const next = write({ ...save, current: nextCurrent, lastLook });
     set({ save: next });
     get().continueAfter();
   },

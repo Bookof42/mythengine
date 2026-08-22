@@ -4,6 +4,7 @@ export const BOOK = "https://bookof42.grok.me";
 export { MEANING };
 export const RATHER = "https://rather.grok.me";
 export const FIELD69 = "https://field69.grok.me";
+export const SOULSQUEST = "https://soulsquest.grok.me";
 
 export const DEGREES = [
   {
@@ -79,6 +80,12 @@ export const ARCHIVE_DOORS = [
     title: "Field 69",
     line: "A body in a field. Capture as physics. This engine’s kin.",
     href: FIELD69,
+    kicker: "Kin",
+  },
+  {
+    title: "Soul’s Quest",
+    line: "Psyche’s becoming. Awake, with the light on.",
+    href: SOULSQUEST,
     kicker: "Kin",
   },
   {

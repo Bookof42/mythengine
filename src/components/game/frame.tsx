@@ -12,11 +12,11 @@ export function ArtFrame({
   children: React.ReactNode;
   align?: "end" | "center";
   dim?: string;
-  fit?: "cover" | "contain";
+  fit?: "cover" | "contain" | "card";
 }) {
   const stepBack = useGame((s) => s.stepBack);
   return (
-    <main className={cn("walk-frame", fit === "contain" && "walk-contain")}>
+    <main className={cn("walk-frame", fit === "contain" && "walk-contain", fit === "card" && "walk-card")}>
       <div className="walk-art">
         <img src={src} alt="" />
       </div>

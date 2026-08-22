@@ -40,8 +40,8 @@ export function RevealScreen() {
         <span className="grid h-12 w-12 place-items-center rounded-full border border-gold/35">
           <Sigil kind={myth.sigil} className="h-7 w-7" />
         </span>
-        <Button className="min-h-12 px-8 tracking-[0.18em] uppercase" onClick={() => begin()}>
-          Play the field
+        <Button className="display min-h-12 px-8 text-base tracking-normal" onClick={() => begin()}>
+          Walk the Field
         </Button>
         <ShareLooking
           art={mythArt(myth.id)}

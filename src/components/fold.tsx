@@ -13,10 +13,10 @@ export function Fold({
   summaryClassName?: string;
 }) {
   return (
-    <details className={cn("group border-t border-line pt-6", className)}>
+    <details className={cn("group border-t border-line", className)}>
       <summary
         className={cn(
-          "flex min-h-11 cursor-pointer list-none items-center gap-2 text-gold",
+          "flex min-h-11 cursor-pointer list-none items-center gap-2 py-3 text-gold",
           summaryClassName,
         )}
       >
@@ -26,7 +26,7 @@ export function Fold({
           aria-hidden
         />
       </summary>
-      {children}
+      <div className="hidden pb-2 group-open:block">{children}</div>
     </details>
   );
 }

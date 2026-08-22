@@ -4,10 +4,7 @@ export declare const OG_SITE_REL_PATH: string;
 export declare function escapeHtml(value: unknown): string;
 export declare function appNameFromHost(hostHeader: string | null | undefined): string;
 export declare function publicAppHost(hostHeader: string | null | undefined): string;
-export declare function resolvePublicHost(
-  hostHeader: string | null | undefined,
-  site?: { publicHost?: string },
-): string;
+export declare function resolvePublicHost(hostHeader: string | null | undefined): string;
 export declare function isInstallQuery(url: string | null | undefined): boolean;
 export declare function isDocumentPath(pathname: string | null | undefined): boolean;
 export declare function acceptsHtml(accept: string | null | undefined): boolean;
@@ -46,8 +43,10 @@ export type GrokHeadContext = {
 };
 
 export declare function readOgSite(cwd?: string): OgSite;
+export declare function ogCardPublicPath(cwd?: string): string;
 export declare function snapshotOgIdentity(cwd?: string): { site: OgSite };
 export declare function customOgAssetPath(cwd?: string): string;
+export declare function resolveOgCardAsset(site?: OgSite, cwd?: string): string;
 export declare function ogServiceUrl(): string;
 export declare function titleFromDocument(html: string): string;
 export declare function resolveOgTitle(
@@ -62,6 +61,7 @@ export declare function grokOgHeadTags(ctx?: {
   appName?: string;
   site?: OgSite;
   documentTitle?: string;
+  cwd?: string;
 }): string[];
 export declare function stripShareMetaTags(html: string): string;
 export declare function normalizeHeadContext(ctx?: GrokHeadContext): {

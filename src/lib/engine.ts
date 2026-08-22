@@ -191,17 +191,9 @@ export function profileFromHistory(
   return w;
 }
 
-export function pickOmen(
-  date: Date,
-  profile: Record<Archetype, number>,
-): Omen {
-  const rand = seededRandom(hashString(`${todayKey(date)}:omen:v2`));
-  const scored = OMENS.map((omen) => ({
-    omen,
-    s: cosine(profile, omen.weights) + rand() * 0.15,
-  }));
-  scored.sort((a, b) => b.s - a.s);
-  return scored[0]!.omen;
+export function pickOmen(date: Date): Omen {
+  const i = Math.abs(hashString(`${todayKey(date)}:omen:v3`)) % OMENS.length;
+  return OMENS[i]!;
 }
 
 export function describeStep(step: PlayStep) {

@@ -128,6 +128,35 @@ export const PLOT_WALKS: PlotWalk[] = [
       },
     ],
   },
+  {
+    id: "odysseus",
+    name: "Odysseus",
+    night: "Two shores",
+    scenes: [
+      {
+        id: "odysseus-forever",
+        title: "A forever",
+        body: "A goddess. A bed. No Ithaca. The sea is kind here. Your name is a rumor you can almost stop needing.",
+        art: "/art/myths/odysseus.jpg",
+        choices: [
+          { id: "stay", label: "Stay. Let the mortal room forget you", after: "", weights: { eros: 2, descent: 1 } },
+          { id: "weep", label: "Sit on the shore and weep for a life that is already yours", after: "", weights: { eros: 2, return: 2 } },
+          { id: "name", label: "Speak the name that is still on a door", after: "", weights: { quest: 2, return: 2 } },
+        ],
+      },
+      {
+        id: "odysseus-name",
+        title: "A name",
+        body: "A mortal room. A weaving. He leaves paradise because the door still has his name on it. Some hear an adventure. Some hear a love story.",
+        art: "/art/scene-sea.jpg",
+        choices: [
+          { id: "sail", label: "Sail, with the forever still in the body", after: "", weights: { quest: 2, eros: 1, return: 1 } },
+          { id: "loyal", label: "Keep the loyalty that made the nymph not enough", after: "", weights: { devotion: 3, return: 2 } },
+          { id: "both", label: "Let both shores be true", after: "", weights: { craft: 2, shadow: 1, return: 1 } },
+        ],
+      },
+    ],
+  },
 ];
 
 export const PLOT_SCENES: Scene[] = PLOT_WALKS.flatMap((w) => w.scenes);

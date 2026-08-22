@@ -38,8 +38,15 @@ export const ELON_WALK: QuotedLine[] = [
     id: "awareness",
     text: "Awareness awakening",
     cite: "Elon Musk",
-    source: "On X · 4 May 2022",
+    source: "Reply on X · 4 May 2022 · to “What is the most amazing thing you know?”",
     href: "https://x.com/elonmusk/status/1521734378442788865",
+  },
+  {
+    id: "enlightenment",
+    text: "Really, the only thing that makes sense is to strive for greater collective enlightenment.",
+    cite: "Elon Musk",
+    source: "Businessweek · 13 September 2012",
+    href: "https://time.com/4093414/elon-musk-quotes/",
   },
   {
     id: "journey",

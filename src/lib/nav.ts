@@ -1,4 +1,4 @@
-import { BOOK, FIELD69, MEANING, RATHER } from "./family";
+import { BOOK, FIELD69, MEANING, RATHER, SOULSQUEST } from "./family";
 
 export const PLAY_LINKS = [
   { to: "/library", label: "Library", line: "Forty-two mirrors." },
@@ -17,7 +17,8 @@ export const HEADER_LINKS = [
 
 export const FAMILY_LINKS = [
   { href: BOOK, label: "The Book of 42" },
-  { href: MEANING, label: "themeaningoflife" },
-  { href: RATHER, label: "rather" },
-  { href: FIELD69, label: "field69" },
+  { href: MEANING, label: "The Meaning of Life" },
+  { href: RATHER, label: "Rather" },
+  { href: FIELD69, label: "Field 69" },
+  { href: SOULSQUEST, label: "Soul’s Quest" },
 ] as const;

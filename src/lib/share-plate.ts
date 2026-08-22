@@ -71,7 +71,7 @@ export async function composeSharePlate(payload: SharePayload, kind: Kind = "x")
   ctx.font = "500 18px 'DM Sans', sans-serif";
   ctx.fillText("MYTHENGINE  ·  42", 64, 72);
 
-  ctx.fillStyle = "#8eaaa4";
+  ctx.fillStyle = "#8EC4C0";
   ctx.font = "500 16px 'DM Sans', sans-serif";
   ctx.fillText("THE WEATHER", 64, kind === "card" ? h - 420 : 390);
 

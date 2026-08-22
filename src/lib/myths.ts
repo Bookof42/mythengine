@@ -29,9 +29,9 @@ const RAW = [
     origin: "Roman / Greek (Apuleius)",
     short:
       "Psyche means soul. In Apuleius a mortal is loved in the dark and ruins the spell by lighting a lamp. The rest is the labor of becoming someone who can love with the light on.",
-    full: "Psyche is so beautiful that people forget Aphrodite. The goddess sends Eros to ruin her; he falls in love instead, and keeps her in a palace where she may have everything except his face. Her sisters plant suspicion. She lifts the lamp. Hot oil wakes him. He flees.\n\nWhat follows is not romance. It is a sequence of impossible tasks set by Aphrodite: sorting seeds, gathering golden wool, fetching beauty from the underworld. Psyche does not win by remaining innocent. She wins by completing the work of soul: discernment, courage, and the willingness to look.\n\nJoseph Campbell would recognize the whole arc: departure, ordeal, helpers, descent, return. A game designer would recognize it too. Quest. Rules. Failure. Inventory. Party. Boss-level tasks. Dungeon. Transformation. In Apuleius she does not receive an explanation of the system first. She encounters conditions. She makes choices. She violates a prohibition. She loses something. She is given work she cannot finish alone. She gets help. She goes down. She comes back changed.\n\nIn the Book of 42, natal Psyche is Sagittarius 0°00′42″. The chart rounded her to zero. The seconds say otherwise. She is not at the threshold. She has crossed it. Forty-two arcseconds into the question. Soul holds the door between what already died and what has not been born. This engine treats that door as playable: not a chart to decode in advance, a walk you enter without the map.",
+    full: "Psyche is so beautiful that people forget Aphrodite. The goddess sends Eros to ruin her; he falls in love instead, and keeps her in a palace where she may have everything except his face. Her sisters plant suspicion. She lifts the lamp. Hot oil wakes him. He flees.\n\nHillman called the daimon the image that chose the life. Eros, in this tale, is that image before he is a husband. He comes only in the dark. The lamp does not invent him. It makes him visible. He is not only a bridegroom. He is the arriving that will not explain itself until it is seen.\n\nWhat follows is not romance. It is a sequence of impossible tasks set by Aphrodite: sorting seeds, gathering golden wool, fetching beauty from the underworld. Psyche does not win by remaining innocent. She wins by completing the work of soul: discernment, courage, and the willingness to look.\n\nIn Apuleius she does not receive an explanation of the system first. She encounters conditions. She makes choices. She violates a prohibition. She loses something. She is given work she cannot finish alone. She gets help. She goes down. She comes back changed.",
     psychology:
-      "Psyche is the part of you that cannot stay unconscious and still call it love. Lighting the lamp is the crisis. The tasks after the lamp are the real marriage: inner, not ceremonial. Hillman would say the soul is made, not found. The natal signature at 0°00′42″ is the same teaching in a degree: you do not start on a magical zero. You start already inside the question.",
+      "Psyche is the part of you that cannot stay unconscious and still call it love. Lighting the lamp is the crisis. The tasks after the lamp are the real marriage: inner, not ceremonial. Hillman would say the soul is made, not found.",
     reflection: "Where have you been loved in the dark, and what are you afraid will happen if you look?",
     weights: { eros: 3, craft: 1, descent: 1, devotion: 1 },
     questions: [
@@ -48,8 +48,8 @@ const RAW = [
     tradition: "Greek",
     origin: "Homeric Greek",
     short:
-      "A clever man spends ten years getting home and discovers that home is a test as hard as any monster. The journey was never only geography.",
-    full: "Troy falls by a trick. Then the sea begins. Cyclops, witches, the dead, the song that unmakes sailors, the cattle of the sun. Odysseus is praised for metis (cunning) and punished for it in the same breath. He is nobody in the cave and a king in disguise on his own threshold. Penelope weaves and unweaves. The dog dies of recognition. The bow is strung by the only one who remembers how.\n\nThe Odyssey is not an adventure story with a domestic ending. It is the long education of a person who must become recognizable to the life they left.",
+      "A clever man spends ten years getting home. Some hear monsters. Some hear a man who left a nymph and paradise because he loved a life that was already his.",
+    full: "Troy falls by a trick. Then the sea begins. Cyclops, witches, the dead, the song that unmakes sailors, the cattle of the sun. Calypso keeps him seven years on an island that is almost enough: a goddess, a bed, a forever that does not include home. She offers immortality. He sits on the shore and weeps for Ithaca. For Penelope, who weaves and unweaves. He leaves paradise because the mortal room still has his name on it.\n\nHe is nobody in the cave and a king in disguise on his own threshold. The dog dies of recognition. The bow is strung by the only one who remembers how.\n\nSome hear an adventure that ends at the door. Some, putting a hand on the same poem, feel a long education: a person trying to become recognizable to the life they left. Some hear a love story. Loyalty. A man who would not stay in a perfect place that was not his. The sea, the threshold, and the marriage can all be true.",
     psychology:
       "When Odysseus surfaces, the psyche is in a long homecoming. Cunning got you this far; cunning will not be enough at the door. The last labor is to be seen without the costume.",
     reflection: "What are you still disguising yourself as, even in the rooms that already know your name?",
@@ -67,7 +67,7 @@ const RAW = [
     tradition: "Greek",
     origin: "Cretan / Greek",
     short:
-      "She gives the hero a thread, then is abandoned on the shore. Later a god arrives, and the story becomes about what happens after you are left holding the method.",
+      "She gives the hero a thread, then is abandoned on the shore. Later a god arrives.",
     full: "The labyrinth is her father’s machine for hiding shame. Theseus is the visiting solution. Ariadne knows the architecture, so she hands him the thread: the only honest technology in the myth. He kills the bull-man, follows the thread out, and sails without her.\n\nOn Naxos she is wreckage. Then Dionysus. The constellation Corona Borealis is sometimes told as her crown, set in the sky so the abandonment is not the last frame. Ariadne is not the helper. She is the one who understood the maze, survived being useful, and had to invent a life that was not a function of someone else’s victory.",
     psychology:
       "Ariadne appears when you have been the thread for other people. The crisis is not the labyrinth: you already know labyrinths. The crisis is the beach after the hero leaves, and whether you can stop being infrastructure.",
@@ -239,7 +239,7 @@ const RAW = [
     origin: "Egyptian",
     short:
       "A sister-wife gathers the scattered pieces of a murdered king and makes a child from what remains. Devotion here is a technology of reconstitution.",
-    full: "Osiris is tricked into a coffin and cut to pieces. Isis searches the length of Egypt. She finds what she can, invents what she cannot, and from the reassembled beloved she conceives Horus. She is magician, mourner, mother, and the throne itself: her name is the seat.\n\nThis is not a story about waiting. It is a story about the intelligence of love that refuses annihilation. The pieces will not jump back together. Someone has to go looking.",
+    full: "Osiris is tricked into a coffin and cut to pieces. Isis searches the length of Egypt. She finds what she can, invents what she cannot, and from the reassembled beloved she conceives Horus. She is magician, mourner, mother, and the throne itself: her name is the seat.\n\nSome feel a widow’s waiting. Others feel the intelligence of a love that refuses annihilation: the pieces will not jump back together. Someone has to go looking.",
     psychology:
       "Isis appears when something precious has been dismembered: a life, a body of work, a family, a faith. The medicine is not positive thinking. It is the slow, exact labor of gathering.",
     reflection: "What scattered thing in your life is waiting for someone with the patience to look for every piece?",
@@ -315,7 +315,7 @@ const RAW = [
     origin: "Akan, and the Atlantic world",
     short:
       "A spider bargains with the sky for the world’s stories. The treasure is not gold. It is the right to tell.",
-    full: "Kwaku Anansi is a spider, a man, a hunger for stories. In the best-known telling he goes to the sky and bargains with Nyame for the world’s tales. The price is a set of impossible catches: hornets, a python, a leopard, sometimes a being who cannot be held. He pays with cunning rather than force, and the stories come down.\n\nThe spider travels. In the Caribbean he is Anancy. In the American South he is Aunt Nancy. The names change because the people had to. The pattern does not: a small being who refuses to let the large keep the narrative.\n\nThese are living stories, told in many nations, not one people’s secret to flatten. The public teaching is this: the treasure is the right to tell. A game would call it unlocking the lore. A life would call it taking your mouth back.",
+    full: "Kwaku Anansi is a spider, a man, a hunger for stories. In the best-known telling he goes to the sky and bargains with Nyame for the world’s tales. The price is a set of impossible catches: hornets, a python, a leopard, sometimes a being who cannot be held. He pays with cunning rather than force, and the stories come down.\n\nThe spider travels. In the Caribbean he is Anancy. In the American South he is Aunt Nancy. The names change because the people had to. The pattern does not: a small being who refuses to let the large keep the narrative.\n\nThese are living stories, told in many nations, not one people’s secret to flatten. The public teaching is this: the treasure is the right to tell.",
     psychology:
       "Anansi arrives when your story is being held in someone else’s mouth. Trickster here is not mischief for its own sake. It is the intelligence of the small, paying an impossible price to own the telling. Beware using cunning as a way to never be known.",
     reflection: "Whose mouth has been telling your life, and what would it cost to take the stories back?",
@@ -334,7 +334,7 @@ const RAW = [
     origin: "Epic of Old Mali",
     short:
       "A child who cannot walk is prophesied to found a nation. Exile, then iron, then a standing. Mali is made from a delayed body.",
-    full: "The Epic of Sundiata is West Africa’s great public poem of exile and return. A prophecy says a child of Sogolon will found a nation. The child cannot walk. The court laughs. Years later, in exile, he stands: iron becomes a staff, the staff becomes a king. He returns, defeats Soumaoro of Sosso, and Mali is made.\n\nGriots have carried this across the Sahel for centuries. It is not a village cult. It is an epic, as Homer is an epic: a civilizational memory of a body that was not supposed to rise, rising.\n\nCampbell would recognize the departure, the helpers, the ordeal, the return with a boon that is a people. The engine treats the walk as playable. What was delayed was not denied.",
+    full: "The Epic of Sundiata is West Africa’s great public poem of exile and return. A prophecy says a child of Sogolon will found a nation. The child cannot walk. The court laughs. Years later, in exile, he stands: iron becomes a staff, the staff becomes a king. He returns, defeats Soumaoro of Sosso, and Mali is made.\n\nGriots have carried this across the Sahel for centuries. It is not a village cult. It is an epic, as Homer is an epic: a civilizational memory of a body that was not supposed to rise, rising.\n\nWhat was delayed was not denied.",
     psychology:
       "Sundiata is the self that was written off early. Shame about a slow body, a late start, a prophecy no one else can see. The work is not to pretend the delay did not happen. The work is to stand when standing becomes possible, and to found something from the years that looked like nothing.",
     reflection: "What in you was not supposed to stand, and what nation is waiting on that first step?",
@@ -429,7 +429,7 @@ const RAW = [
     origin: "Chinese (Qixi)",
     short:
       "A weaver-goddess and a mortal herdsman are separated by the Milky Way and allowed one bridge of magpies a year. Longing becomes a calendar.",
-    full: "Zhinü weaves the clouds. Niulang tends cattle. Their love is so absorbing that the work of heaven and earth slips. They are parted by a river of stars. Once a year, magpies make a bridge.\n\nThe tale is not a tragedy that forgot to end. It is a design for desire that must live alongside duty. The night of Qixi is the night the design becomes visible: love as an appointed crossing, not a permanent fusion.",
+    full: "Zhinü weaves the clouds. Niulang tends cattle. Their love is so absorbing that the work of heaven and earth slips. They are parted by a river of stars. Once a year, magpies make a bridge.\n\nSome hear a tragedy that forgot to end. Others feel a design: two real callings, a river, one night the magpies still keep. Love as an appointed crossing. The night of Qixi is when that design becomes visible.",
     psychology:
       "Two vocations, two loves, two offices. Fusion is the romantic solution and the wreck. The mature form of eros is a bridge: rare, prepared, enough. Keep the date. Do not burn the river to make a permanent noon.",
     reflection: "What river runs between two real callings, and when is the crossing?",
@@ -542,7 +542,7 @@ const RAW = [
     tradition: "Hindu",
     origin: "Hindu epic (Rāmāyaṇa)",
     short:
-      "A monkey-god forgets his own strength until someone reminds him. Devotion, here, is not self-erasure. It is power that has a direction.",
+      "A monkey-god forgets his own strength until someone reminds him.",
     full: "Hanumān is son of the wind. As a child he reaches for the sun. Cursed to forget his powers until they are needed, he lives as a capable servant among the vānaras. When the sea must be crossed to find Sītā, Jāmbavān reminds him who he is. He grows. He leaps. He finds. He burns a city and brings a mountain of herbs when a single plant is not enough.\n\nHe tears open his chest in some images and Rāma is there. The point is not masochism. The point is a heart that has a true north.",
     psychology:
       "Hanumān is forgotten capacity. Many people live a smaller voltage because some early reaching was punished. The friend who reminds you is part of the myth. Devotion is the channel that lets the voltage move without electrocuting the house.",
@@ -562,7 +562,7 @@ const RAW = [
     origin: "Hindu (Mahābhārata)",
     short:
       "A woman follows Death himself down the road and wins her husband back with the kind of speech that cannot be refused. Love as precise argument.",
-    full: "Sāvitrī chooses Satyavān knowing he is fated to die in a year. When Yama comes, she walks after him. She does not wail. She converses: about dharma, about generosity, about the duties of a sovereign of death. Each boon she wins seems modest until the last one cannot be fulfilled unless Satyavān lives. Yama smiles, and the year unknots.\n\nThis is not a story of cheating death by force. It is a story of a mind so aligned that even Death prefers to keep its word to her.",
+    full: "Sāvitrī chooses Satyavān knowing he is fated to die in a year. When Yama comes, she walks after him. She does not wail. She converses: about dharma, about generosity, about the duties of a sovereign of death. Each boon she wins seems modest until the last one cannot be fulfilled unless Satyavān lives. Yama smiles, and the year unknots.\n\nSome hear a woman cheating death by force. Others feel a mind so aligned that even Death prefers to keep its word to her. Both hands are on the same story.",
     psychology:
       "Sāvitrī is love with a spine and a vocabulary. Grief that can still think is not cold; it is adult. She appears when a loss looks absolute and a conversation: with fate, with a system, with yourself: is the remaining instrument.",
     reflection: "What would you say, calmly, to the thing that is taking what you love?",
@@ -619,7 +619,7 @@ const RAW = [
     origin: "Irish / Celtic",
     short:
       "A triple figure of the forge, the poem, and the well. She is the saint and the goddess in the same flame, which is to say: some fires refuse to pick a single church.",
-    full: "Brigid keeps a fire. She is smith, healer, poet: three crafts that all require heat under control. Wells are hers; Imbolc is hers, the first stirring under winter. In Christian Ireland she becomes a saint without quite extinguishing the older blaze. People still leave cloth out overnight for her blessing.\n\nShe is not a muse who visits. She is a practice: tend the fire, tend the well, say the true word, make the useful thing.",
+    full: "Brigid keeps a fire. She is smith, healer, poet: three crafts that all require heat under control. Wells are hers; Imbolc is hers, the first stirring under winter. In Christian Ireland she becomes a saint without quite extinguishing the older blaze. People still leave cloth out overnight for her blessing.\n\nSome meet a muse who visits. Others meet a craft that stays: tend the fire, tend the well, say the true word, make the useful thing. The cloth on the step can hold both.",
     psychology:
       "Brigid arrives when your life wants to be one thing and is in fact three. The forge, the lyric, and the healing are not a confusion. They are a triple office. Burnout is what happens when you tend only one and call the others hobbies.",
     reflection: "Which of your three fires has gone out from neglect, not from fate?",
@@ -789,8 +789,8 @@ const RAW = [
     tradition: "Arabic",
     origin: "Arabic / Persian storytelling",
     short:
-      "A woman marries a king who kills his wives at dawn and survives by not finishing the story. Narrative as a technology of staying alive.",
-    full: "Shahryar has been betrayed and has decided that women will not live long enough to betray him again. Scheherazade volunteers. Each night she opens a tale and leaves a door ajar. Curiosity, which had curdled into violence, becomes the reason to let the sun rise on her. After a thousand and one nights the king is different, and so is she: a mother, a weaver of worlds, a political actor.\n\nThe point is not that stories are cute. The point is that a psyche in revenge-time can be re-paced by a better pattern.",
+      "A woman marries a king who kills his wives at dawn and survives by not finishing the story.",
+    full: "Shahryar has been betrayed and has decided that women will not live long enough to betray him again. Scheherazade volunteers. Each night she opens a tale and leaves a door ajar. Curiosity, which had curdled into violence, becomes the reason to let the sun rise on her. After a thousand and one nights the king is different, and so is she: a mother, a weaver of worlds, a political actor.",
     psychology:
       "Scheherazade is the part of you that knows how to keep a dangerous room interested in tomorrow. It is also the exhaustion of being the only adult in a wounded system. The myth asks whether your storytelling is still saving a life: yours included, or merely delaying a dawn you now need.",
     reflection: "What story are you leaving unfinished in order to survive, and is it still time to survive that way?",
@@ -822,4 +822,8 @@ export function getMyth(id: string) {
 
 export function mythArt(id: string) {
   return `/art/myths/${id}.jpg`;
+}
+
+export function xTalkUrl(name: string) {
+  return `https://x.com/search?q=${encodeURIComponent(`"${name}"`)}&src=typed_query`;
 }

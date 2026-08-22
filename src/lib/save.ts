@@ -43,6 +43,7 @@ export type SaveState = {
   seals: SealKind[];
   lastTrail?: { x: number; y: number }[];
   lastKept?: SignKind;
+  lastLook?: { cardId: string; choice: "toward" | "away" | "rest" };
 };
 
 const defaults = (): SaveState => ({

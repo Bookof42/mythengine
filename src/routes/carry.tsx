@@ -37,7 +37,9 @@ function CarryPage() {
           <h1 className="display mt-4 w-full text-4xl leading-[1.08] text-fg sm:text-6xl lg:text-7xl">
             {question}
           </h1>
-          <p className="display mt-8 text-2xl text-gold sm:text-3xl">Don’t Panic</p>
+          <p className="display mt-8 text-2xl text-gold sm:text-3xl">
+            <em>Don’t Panic</em>
+          </p>
           <div className="mt-10 flex flex-wrap items-center gap-6">
             <ShareLooking
               art={art}
